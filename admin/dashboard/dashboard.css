@@ -7,4 +7,6 @@
 .dashboard_content {
  flex: 1;
  background: #F9FAFB;
+ height: 100vh;
+ overflow-y: auto;
 }

@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="project-description">
-      <span>{{showFullDescription ? projectDetails.description : projectDetails.description.substring(100) + "..."}}</span>
+      <span>{{showFullDescription ? projectDetails.description : projectDetails.description.substring(0,150) + "..."}}</span>
       <span class="show-more" ng-click="showFullDescription = !showFullDescription">{{showFullDescription ? "Show Less" : "Show More"}}</span>
     </div>
   </div>

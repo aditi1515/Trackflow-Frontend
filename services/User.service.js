@@ -6,6 +6,7 @@ function UserService($q, $http, $state, BASE_URL, subdomainService) {
 
  //add new user
  this.createUser = function (user) {
+  console.log("User data: ", user);
   return $http.post(BASE_URL + "user/", user);
  };
 

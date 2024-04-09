@@ -881,3 +881,7 @@ option {
  font-size: 14px;
  font-weight: 600;
 }
+
+.select2-selection__choice__remove {
+ width: auto;
+}

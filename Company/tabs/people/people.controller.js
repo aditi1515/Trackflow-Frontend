@@ -12,8 +12,10 @@ function companyPeopleController(
  $scope.isEditing = false;
  $scope.currentEditingEmployee = null;
  $scope.formHolder = {};
+ $scope.addEmployeeFormData = {};
  //submit add employee form
  $scope.addEmployeeFormSubmit = function (modalId, addEmployeeForm) {
+  console.log("Adding employee: ", $scope.addEmployeeFormData);
   UserService.createUser({ user: $scope.addEmployeeFormData })
    .then(function (response) {
     console.log("Employee added successfully: ", response);
