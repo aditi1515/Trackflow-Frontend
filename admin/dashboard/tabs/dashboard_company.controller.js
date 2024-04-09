@@ -52,23 +52,15 @@ function dashboardCompanyController(
 
   var _company = angular.copy(company);
 
-  var editCompanyData = {
-   name: _company.name,
-   domain: _company.domain,
-   city: _company.city,
-   state: _company.state,
-   country: _company.country,
-   previewLogo: [{ url: company.logo }],
-   previousLogo: _company.logo,
-   isEnabled: _company.isEnabled,
-   admin: {
-    firstname: _company.admin.firstname,
-    lastname: _company.admin.lastname,
-    email: _company.admin.email,
-    phoneNumber: parseInt(_company.admin.phoneNumber),
-   },
-   previousData: company,
-  };
+
+  var editCompanyData = _company;
+  editCompanyData.previousData = company;
+  editCompanyData.previewLogo = [{ url: company.logo }];
+  editCompanyData.previousLogo = company.logo;
+  editCompanyData.admin.phoneNumber = parseInt(company.admin.phoneNumber);
+
+  delete editCompanyData.logo;
+
   $scope.currentEditingCompany = company;
   $scope.addCompanyFormData = editCompanyData;
   // console.log($scope.editCompanyData);
@@ -79,6 +71,9 @@ function dashboardCompanyController(
 
  //edit company form submit
  $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
+
+  console.log("Editing company: ", $scope.addCompanyFormData);
+
   CompanyService.editCompany(
    $scope.currentEditingCompany._id,
    $scope.addCompanyFormData
@@ -108,7 +103,7 @@ function dashboardCompanyController(
   CompanyService.getCompanies(pageNo, pageSize, query)
    .then(function (response) {
     $scope.companiesData = response.data;
-    
+
     console.log("Companies: ", $scope.companiesData);
    })
    .catch(function (err) {

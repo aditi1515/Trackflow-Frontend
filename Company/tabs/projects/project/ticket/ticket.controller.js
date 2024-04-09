@@ -28,11 +28,26 @@ function ticketController(
 
  //add ticket
  $scope.addTicketFormSubmit = function (modalId, addTicketForm) {
-  $scope.addTicketFormData.metaData = {
-   companyDetails: $scope.company,
-   projectDetails: $scope.projectDetails,
-   user: $scope.profile,
-  };
+ 
+  $scope.addTicketFormData.projectDetails = {
+    _id: $scope.projectDetails._id,
+    name : $scope.projectDetails.name,
+    key : $scope.projectDetails.key
+  }
+
+  $scope.addTicketFormData.companyDetails = {
+    _id: $scope.company._id,
+    name : $scope.company.name,
+    domain : $scope.company.domain
+  }
+
+  $scope.addTicketFormData.assignedBy = {
+    _id: $scope.profile._id,
+    firstname: $scope.profile.firstname,
+    lastname: $scope.profile.lastname,
+    email: $scope.profile.email,
+    image: $scope.profile.image,
+  }
 
   console.log("Add ticket form data: ", $scope.addTicketFormData);
 
@@ -182,7 +197,7 @@ function ticketController(
   $scope.isEditing = false;
 
   $scope.viewTicketDetails = angular.copy(ticket);
-  $scope.viewTicketDetails.previousTicket = angular.copy(ticket);
+  $scope.viewTicketDetails.previousTicket = ticket
 
   $scope.viewTicketDetails.removedAttachments = [];
   $scope.viewTicketDetails.previousAttachments = ticket.attachments;
@@ -191,11 +206,12 @@ function ticketController(
   $scope.viewTicketDetails.attachments = [];
   $scope.viewTicketDetails.removeAssignees = [];
   $scope.viewTicketDetails.dueDate = new Date(ticket.dueDate);
-  $scope.viewTicketDetails.metaData = {
-   company: $scope.company,
-   project: $scope.projectDetails,
-   assignedBy: $scope.profile,
-  };
+  
+  // $scope.viewTicketDetails.metaData = {
+  //  company: $scope.company,
+  //  project: $scope.projectDetails,
+  //  assignedBy: $scope.profile,
+  // };
   $scope.minDueDate = new Date(ticket.createdAt);
 
   ModalService.showModal(modalId);

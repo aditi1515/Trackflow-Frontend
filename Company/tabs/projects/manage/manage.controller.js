@@ -55,11 +55,21 @@ function companyProjectsManageController(
    }
   }
 
-  ($scope.addProjectFormData.metaData = {
-   company: $scope.company,
-   user: $scope.profile,
-  }),
-   console.log("Form data: ", $scope.addProjectFormData);
+  $scope.addProjectFormData.companyDetails = {
+   _id: $scope.company._id,
+   name: $scope.company.name,
+   domain: $scope.company.domain,
+  };
+
+  $scope.addProjectFormData.createdBy = {
+   _id: $scope.profile._id,
+   firstname: $scope.profile.firstname,
+   lastname: $scope.profile.lastname,
+   email: $scope.profile.email,
+   image: $scope.profile.image,
+  };
+
+  console.log("Form data: ", $scope.addProjectFormData);
   ProjectService.addProject($scope.addProjectFormData)
    .then(function (response) {
     SnackbarService.showAlert("Project created successfully", 2000, "success");
@@ -79,25 +89,35 @@ function companyProjectsManageController(
 
   console.log("Editing project: ", project);
 
-  var editProjectFormData = {
-   name: project.name,
-   description: project.description,
-   inProgress: project.inProgress,
-   dueDate: new Date(project.dueDate),
-   people: project.people,
-   previewLogo: [{ url: project.logo }],
-   previousLogo: project.logo,
-   membersAlreadySelected: project.members,
-   companyDetails : project.companyDetails,
-   removedMembers: [],
-   members: [],
-   key: project.key,
-   previousData: angular.copy(project),
-   metaData: {
-    company: $scope.company,
-    user: $scope.profile,
-   },
-  };
+  var _project = angular.copy(project);
+
+  // var editProjectFormData = {
+  //  name: project.name,
+  //  description: project.description,
+  //  inProgress: project.inProgress,
+  //  dueDate: new Date(project.dueDate),
+  //  people: project.people,
+  //  previewLogo: [{ url: project.logo }],
+  //  previousLogo: project.logo,
+  //  membersAlreadySelected: project.members,
+  //  companyDetails : project.companyDetails,
+  //  removedMembers: [],
+  //  members: [],
+  //  key: project.key,
+  //  previousData: angular.copy(project),
+  //  metaData: {
+  //   company: $scope.company,
+  //   user: $scope.profile,
+  //  },
+  // };
+
+  var editProjectFormData = _project;
+  editProjectFormData.previousData = project;
+  editProjectFormData.previewLogo = [{ url: project.logo }];
+  editProjectFormData.previousLogo = project.logo;
+  editProjectFormData.dueDate = new Date(project.dueDate);
+  editProjectFormData.membersAlreadySelected = project.members;
+  editProjectFormData.removedMembers = [];
 
   $scope.minDueDate = new Date(project.createdAt);
   $scope.addProjectFormData = editProjectFormData;
@@ -127,7 +147,6 @@ function companyProjectsManageController(
   return $scope.addProjectFormData.membersAlreadySelected?.some(function (
    member
   ) {
-
    return member._id === person._id;
   });
  };
