@@ -1,6 +1,7 @@
 function companyProjectsController(
  $scope,
  $state,
+ $timeout,
  ProjectService,
  UserService,
  TicketService,
@@ -58,27 +59,25 @@ function companyProjectsController(
  $scope.addTicketFormSubmit = function (modalId, addGlobalTicketForm) {
   console.log("Add ticket form data: ", $scope.addGlobalTicketFormData);
 
-
-
   $scope.addGlobalTicketFormData.projectDetails = {
-    _id: $scope.currentlySelectedProject._id,
-    name : $scope.currentlySelectedProject.name,
-    key : $scope.currentlySelectedProject.key
-  }
+   _id: $scope.currentlySelectedProject._id,
+   name: $scope.currentlySelectedProject.name,
+   key: $scope.currentlySelectedProject.key,
+  };
 
   $scope.addGlobalTicketFormData.companyDetails = {
-    _id: $scope.company._id,
-    name : $scope.company.name,
-    domain : $scope.company.domain
-  }
+   _id: $scope.company._id,
+   name: $scope.company.name,
+   domain: $scope.company.domain,
+  };
 
   $scope.addGlobalTicketFormData.assignedBy = {
-    _id: $scope.profile._id,
-    firstname: $scope.profile.firstname,
-    lastname: $scope.profile.lastname,
-    email: $scope.profile.email,
-    image: $scope.profile.image,
-  }
+   _id: $scope.profile._id,
+   firstname: $scope.profile.firstname,
+   lastname: $scope.profile.lastname,
+   email: $scope.profile.email,
+   image: $scope.profile.image,
+  };
 
   TicketService.createTicket($scope.addGlobalTicketFormData)
    .then(function (response) {
@@ -86,7 +85,15 @@ function companyProjectsController(
     ModalService.hideModal(modalId);
     $scope.previewAttachments = [];
     SnackbarService.showAlert("Ticket created successfully", 2000, "success");
-    $state.go("company.projects.project.ticket",{"projectId":$scope.currentlySelectedProject._id});
+
+    $timeout(function () {
+     $state.go("company.projects.project.ticket", {
+      projectId: $scope.currentlySelectedProject._id,
+     });
+     $state.reload("company.projects.project.ticket", {
+      projectId: $scope.currentlySelectedProject._id,
+     });
+    }, 3000);
    })
    .catch(function (error) {
     addTicketForm.errorMessage = error.message;
@@ -96,7 +103,7 @@ function companyProjectsController(
 
  $scope.launchModal = function (modalId) {
   $scope.addGlobalTicketFormData = {
-   dueDate: new Date(),
+   dueDate: new Date(new Date().setDate(new Date().getDate() + 1)),
    ticketType: "BUG",
    priority: "LOW",
    // projectDetails: $scope.currentlySelectedProject,
@@ -115,6 +122,7 @@ function companyProjectsController(
 trackflow.controller("companyProjectsController", [
  "$scope",
  "$state",
+ "$timeout",
  "ProjectService",
  "UserService",
  "TicketService",

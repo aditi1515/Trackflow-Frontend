@@ -28,26 +28,25 @@ function ticketController(
 
  //add ticket
  $scope.addTicketFormSubmit = function (modalId, addTicketForm) {
- 
   $scope.addTicketFormData.projectDetails = {
-    _id: $scope.projectDetails._id,
-    name : $scope.projectDetails.name,
-    key : $scope.projectDetails.key
-  }
+   _id: $scope.projectDetails._id,
+   name: $scope.projectDetails.name,
+   key: $scope.projectDetails.key,
+  };
 
   $scope.addTicketFormData.companyDetails = {
-    _id: $scope.company._id,
-    name : $scope.company.name,
-    domain : $scope.company.domain
-  }
+   _id: $scope.company._id,
+   name: $scope.company.name,
+   domain: $scope.company.domain,
+  };
 
   $scope.addTicketFormData.assignedBy = {
-    _id: $scope.profile._id,
-    firstname: $scope.profile.firstname,
-    lastname: $scope.profile.lastname,
-    email: $scope.profile.email,
-    image: $scope.profile.image,
-  }
+   _id: $scope.profile._id,
+   firstname: $scope.profile.firstname,
+   lastname: $scope.profile.lastname,
+   email: $scope.profile.email,
+   image: $scope.profile.image,
+  };
 
   console.log("Add ticket form data: ", $scope.addTicketFormData);
 
@@ -65,7 +64,11 @@ function ticketController(
     addTicketForm.$setPristine();
     addTicketForm.$setUntouched();
 
-    $state.reload("company.projects.project.ticket");
+    // reload after 2 sec
+
+    $timeout(function () {
+     $state.reload("company.projects.project.ticket");
+    }, 2000);
    })
    .catch(function (error) {
     addTicketForm.errorMessage = error.message;
@@ -197,7 +200,7 @@ function ticketController(
   $scope.isEditing = false;
 
   $scope.viewTicketDetails = angular.copy(ticket);
-  $scope.viewTicketDetails.previousTicket = ticket
+  $scope.viewTicketDetails.previousTicket = ticket;
 
   $scope.viewTicketDetails.removedAttachments = [];
   $scope.viewTicketDetails.previousAttachments = ticket.attachments;
@@ -206,7 +209,7 @@ function ticketController(
   $scope.viewTicketDetails.attachments = [];
   $scope.viewTicketDetails.removeAssignees = [];
   $scope.viewTicketDetails.dueDate = new Date(ticket.dueDate);
-  
+
   // $scope.viewTicketDetails.metaData = {
   //  company: $scope.company,
   //  project: $scope.projectDetails,
