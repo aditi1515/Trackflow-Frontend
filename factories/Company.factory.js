@@ -24,6 +24,10 @@ function CompanyFactory(CompanyService) {
   if (company.previousLogo) {
    this.previousLogo = company.previousLogo;
   }
+
+  if (company.previousData) {
+   this.previousData = company.previousData;
+  }
  }
 
  // method to validate company data
@@ -118,6 +122,7 @@ function CompanyFactory(CompanyService) {
   var _company = angular.copy(company);
   _company.previewLogo = [{ url: company.logo }];
   _company.previousLogo = company.logo;
+  _company.previousData = company;
   delete _company.logo;
   return _company;
  }

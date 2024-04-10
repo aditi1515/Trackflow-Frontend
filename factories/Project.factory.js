@@ -57,6 +57,8 @@ function ProjectFactory(ProjectService) {
   projectData.previewLogo = [{ url: project.logo }];
   projectData.previousLogo = project.logo;
   projectData.removedMembers = [];
+  projectData.previousData = project;
+  projectData.members = [];
   delete projectData.logo;
   return projectData;
  }
