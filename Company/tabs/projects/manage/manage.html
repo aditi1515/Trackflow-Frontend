@@ -162,7 +162,7 @@
        <label for="members"
         >{{isEditingProject ? "Add New Members" : "Members"}}</label
        >
-      
+
        <select
         class="form-control"
         id="members"
@@ -174,7 +174,6 @@
         style="width: 100%"
         placeholder="Select Members"
        >
-     
         <option
          ng-value="{'_id': person._id, 'firstname': person.firstname, 'lastname' : person.lastname , 'email': person.email , 'image': person.image}"
          data-image="{{person.image}}"
@@ -198,8 +197,8 @@
         >
          <img ng-src="{{member.image}}" class="avatar" alt="" />
          <span
-          >{{member.firstname + (member.lastname !== 'undefined'? ' ' + member.lastname :
-          '')}}</span
+          >{{member.firstname + (member.lastname !== 'undefined'? ' ' +
+          member.lastname : '')}}</span
          >
          <i
           class="bi-x-circle-fill"
@@ -223,7 +222,11 @@
       class="error"
       ng-show="addProjectForm.$invalid && addProjectForm.$submitted"
      >
-      {{addProjectForm.errorMessage}} {{editProjectForm.errorMessage}}
+      {{addProjectForm.errorMessage}}
+
+      <div class="error-container" ng-repeat="err in errorMessages">
+       <span>{{err}}</span>
+      </div>
      </div>
     </div>
     <button

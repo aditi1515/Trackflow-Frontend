@@ -1,8 +1,8 @@
 function ProjectService($http, BASE_URL, FormDataFactory) {
  this.addProject = function (project) {
-  var projectFormData = FormDataFactory.getProjectFormData(project);
+  // var projectFormData = FormDataFactory.getProjectFormData(project);
 
-  return $http.post(BASE_URL + "project", projectFormData, {
+  return $http.post(BASE_URL + "project", project, {
    headers: { "Content-Type": undefined },
   });
  };
@@ -15,8 +15,8 @@ function ProjectService($http, BASE_URL, FormDataFactory) {
 
  
  this.updateProject = function (projectId, project) {
-  var projectFormData = FormDataFactory.getProjectFormData(project);
-  return $http.patch(BASE_URL + "project/" + projectId, projectFormData, {
+  // var projectFormData = FormDataFactory.getProjectFormData(project);
+  return $http.patch(BASE_URL + "project/" + projectId, project, {
    headers: { "Content-Type": undefined },
   });
  };

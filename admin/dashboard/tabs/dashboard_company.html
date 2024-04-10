@@ -6,7 +6,10 @@
  <div class="dashboard_company_wrapper">
   <div class="head">
    <h2>Companies</h2>
-   <button class="btn btn-add" ng-click="launchModal('addCompanyModal',addCompanyForm)">
+   <button
+    class="btn btn-add"
+    ng-click="launchModal('addCompanyModal',addCompanyForm)"
+   >
     Add Company
    </button>
   </div>
@@ -256,6 +259,20 @@
        {{addCompanyForm.errorMessage}}
       </div>
      </div>
+
+     <!-- validation errors  -->
+
+     <div class="formerror-list">
+      <div
+       class="error"
+       ng-show="addCompanyFormErrors.length > 0 && addCompanyForm.$submitted && addCompanyForm.$invalid"
+      >
+       <div>
+        <span ng-repeat="error in addCompanyFormErrors">{{ error }}</div>
+       </>
+      </div>
+     </div>
+
      <button
       type="submit"
       class="btn"
@@ -319,7 +336,6 @@
        <td>{{ company.country }}</td>
        <td>{{ company.createdAt | date : 'dd/MM/yyyy' }}</td>
        <td>
-  
         <span
          class="badge"
          ng-class="{'badge-success': company.isEnabled, 'badge-danger': !company.isEnabled}"

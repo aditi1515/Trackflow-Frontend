@@ -300,3 +300,9 @@ button {
 .select2-selection__choice__remove {
  width: auto;
 }
+
+.error-container{
+ display: flex;
+ gap: 0.4rem;
+ flex-direction: column;
+}

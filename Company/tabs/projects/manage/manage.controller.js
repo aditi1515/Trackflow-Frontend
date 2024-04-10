@@ -6,7 +6,8 @@ function companyProjectsManageController(
  SnackbarService,
  UserService,
  ProjectService,
- FilePreviewFactory
+ FilePreviewFactory,
+ ProjectFactory
 ) {
  //add project form data
  function init() {
@@ -31,13 +32,59 @@ function companyProjectsManageController(
  init();
 
  $scope.projectData = {};
- $scope.metaData = {};
 
  //add project form data
- $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
+//  $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
+//   // check if user role is not company admin and not present in addProjectFormData.members then add it
+
+//   if ($scope.profile.role !== "COMPANY_ADMIN") {
+//    var isCreatorPresent = $scope.addProjectFormData.members.some(function (
+//     member
+//    ) {
+//     return member._id === $scope.profile._id;
+//    });
+
+//    if (!isCreatorPresent) {
+//     $scope.addProjectFormData.members.push({
+//      _id: $scope.profile._id,
+//      firstname: $scope.profile.firstname,
+//      lastname: $scope.profile.lastname,
+//      email: $scope.profile.email,
+//      image: $scope.profile.image,
+//     });
+//    }
+//   }
+
+//   $scope.addProjectFormData.companyDetails = {
+//    _id: $scope.company._id,
+//    name: $scope.company.name,
+//    domain: $scope.company.domain,
+//   };
+
+//   $scope.addProjectFormData.createdBy = {
+//    _id: $scope.profile._id,
+//    firstname: $scope.profile.firstname,
+//    lastname: $scope.profile.lastname,
+//    email: $scope.profile.email,
+//   };
+
+//   console.log("Form data: ", $scope.addProjectFormData);
+//   ProjectService.addProject($scope.addProjectFormData)
+//    .then(function (response) {
+//     SnackbarService.showAlert("Project created successfully", 2000, "success");
+//     $state.reload("company.projects");
+//     ModalService.hideModal(modalId);
+//    })
+//    .catch(function (error) {
+//     console.log("Error adding employee: ", error);
+//     addProjectForm.errorMessage = error.data.message;
+//    });
+//  };
+
+$scope.addProjectFormSubmit = function (modalId, addProjectForm) {
   // check if user role is not company admin and not present in addProjectFormData.members then add it
 
-  if ($scope.profile.role !== "COMPANY_ADMIN") {
+  if ($scope.profile.role.name !== "COMPANY_ADMIN") {
    var isCreatorPresent = $scope.addProjectFormData.members.some(function (
     member
    ) {
@@ -55,73 +102,114 @@ function companyProjectsManageController(
    }
   }
 
-  $scope.addProjectFormData.companyDetails = {
-   _id: $scope.company._id,
-   name: $scope.company.name,
-   domain: $scope.company.domain,
-  };
+  var project = new ProjectFactory.Project($scope.addProjectFormData, $scope.profile, $scope.company);
 
-  $scope.addProjectFormData.createdBy = {
-   _id: $scope.profile._id,
-   firstname: $scope.profile.firstname,
-   lastname: $scope.profile.lastname,
-   email: $scope.profile.email,
-  };
+  console.log("Form data: ", project);
 
-  console.log("Form data: ", $scope.addProjectFormData);
-  ProjectService.addProject($scope.addProjectFormData)
-   .then(function (response) {
-    SnackbarService.showAlert("Project created successfully", 2000, "success");
-    $state.reload("company.projects");
-    ModalService.hideModal(modalId);
-   })
-   .catch(function (error) {
-    console.log("Error adding employee: ", error);
-    addProjectForm.errorMessage = error.data.message;
-   });
+  var errors = project.validate();
+
+  if (errors.length > 0) {
+   addProjectForm.errorMessages = errors;
+
+   addProjectForm.$invalid = true;
+   return;
+  }
+  else{
+    project.save().then(function (response) {
+      SnackbarService.showAlert("Project created successfully", 2000, "success");
+      $state.reload("company.projects");
+      ModalService.hideModal(modalId);
+    })
+    .catch(function (error) {
+     console.log("Error adding employee: ", error);
+     addProjectForm.$invalid = true;
+     addProjectForm.errorMessage = error.data.message;
+    });
+  }
  };
+
 
  //populate form with project data
- $scope.editProject = function (project, modalId) {
+//  $scope.editProject = function (project, modalId) {
+//   $scope.isEditingProject = true;
+//   $scope.currentEditingProjectId = project._id;
+
+//   console.log("Editing project: ", project);
+
+//   var _project = angular.copy(project);
+
+//   var editProjectFormData = _project;
+  
+//   editProjectFormData.previewLogo = [{ url: project.logo }];
+//   editProjectFormData.previousLogo = project.logo;
+//   editProjectFormData.dueDate = new Date(project.dueDate);
+//   editProjectFormData.membersAlreadySelected = project.members;
+//   editProjectFormData.removedMembers = [];
+
+//   $scope.minDueDate = new Date(project.createdAt);
+//   $scope.addProjectFormData = editProjectFormData;
+//   ModalService.showModal(modalId);
+//  };
+
+
+$scope.editProject = function (project, modalId) {
   $scope.isEditingProject = true;
   $scope.currentEditingProjectId = project._id;
-
   console.log("Editing project: ", project);
-
-  var _project = angular.copy(project);
-
-  var editProjectFormData = _project;
-  editProjectFormData.previousData = project;
-  editProjectFormData.previewLogo = [{ url: project.logo }];
-  editProjectFormData.previousLogo = project.logo;
-  editProjectFormData.dueDate = new Date(project.dueDate);
-  editProjectFormData.membersAlreadySelected = project.members;
-  editProjectFormData.removedMembers = [];
-
   $scope.minDueDate = new Date(project.createdAt);
-  $scope.addProjectFormData = editProjectFormData;
+  $scope.addProjectFormData = ProjectFactory.prepareEditData(project);
   ModalService.showModal(modalId);
  };
+
  //edit project form submit
- $scope.editProjectFormSubmit = function (modalId, editProjectForm) {
-  console.log("Editing project: ", $scope.addProjectFormData);
-  ProjectService.updateProject(
-   $scope.currentEditingProjectId,
-   $scope.addProjectFormData
-  )
-   .then(function (response) {
-    SnackbarService.showAlert("Project updated successfully", 2000, "success");
-    $state.reload("company.projects");
-    ModalService.hideModal(modalId);
-   })
-   .catch(function (error) {
-    console.log("Error updating project: ", error);
-    editProjectForm.errorMessage = error.data.message;
-    editProjectForm.$invalid = true;
-   });
- };
+//  $scope.editProjectFormSubmit = function (modalId, editProjectForm) {
+//   console.log("Editing project: ", $scope.addProjectFormData);
+//   ProjectService.updateProject(
+//    $scope.currentEditingProjectId,
+//    $scope.addProjectFormData
+//   )
+//    .then(function (response) {
+//     SnackbarService.showAlert("Project updated successfully", 2000, "success");
+//     $state.reload("company.projects");
+//     ModalService.hideModal(modalId);
+//    })
+//    .catch(function (error) {
+//     console.log("Error updating project: ", error);
+//     editProjectForm.errorMessage = error.data.message;
+//     editProjectForm.$invalid = true;
+//    });
+//  };
 
  //to check if member is already present in the project
+ 
+ 
+ $scope.editProjectFormSubmit = function (modalId, editProjectForm) {
+  console.log("Editing project: ", $scope.addProjectFormData);
+ var project = new ProjectFactory.Project($scope.addProjectFormData, $scope.profile, $scope.company);
+
+  var errors = project.validate();
+
+  if (errors.length > 0) {
+   editProjectForm.errorMessages = errors;
+
+   editProjectForm.$invalid = true;
+   return;
+  }
+  else{
+    project.update($scope.currentEditingProjectId).then(function (response) {
+      SnackbarService.showAlert("Project updated successfully", 2000, "success");
+      $state.reload("company.projects");
+      ModalService.hideModal(modalId);
+    })
+    .catch(function (error) {
+     console.log("Error updating project: ", error);
+     editProjectForm.$invalid = true;
+     editProjectForm.errorMessage = error.data.message;
+    });
+  }
+
+ };
+ 
  $scope.isMemberSelected = function (person) {
   return $scope.addProjectFormData.membersAlreadySelected?.some(function (
    member
@@ -210,5 +298,6 @@ trackflow.controller("companyProjectsManageController", [
  "UserService",
  "ProjectService",
  "FilePreviewFactory",
+ "ProjectFactory",
  companyProjectsManageController,
 ]);

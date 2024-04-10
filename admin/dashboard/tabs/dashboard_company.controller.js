@@ -5,7 +5,8 @@ function dashboardCompanyController(
  CompanyService,
  ModalService,
  SnackbarService,
- FilePreviewFactory
+ FilePreviewFactory,
+ CompanyFactory
 ) {
  $scope.addCompanyFormData = {};
 
@@ -22,74 +23,174 @@ function dashboardCompanyController(
  FilePreviewFactory.initFileSelectionListener($scope, filePreviewCallback);
 
  //add company form data
+ //  $scope.addCompanyFormSubmit = function (modalId, addCompanyForm) {
+ //   console.log("Form data: ", $scope.addCompanyFormData);
+ //   CompanyService.saveCompany($scope.addCompanyFormData)
+ //    .then(function (response) {
+ //     console.log("Company saved successfully: ", response);
+ //     SnackbarService.showAlert(
+ //      "Company and Admin saved successfully ",
+ //      2000,
+ //      "success"
+ //     );
+ //     $scope.addCompanyFormData = {}; // reset form data
+ //     addCompanyForm.$setPristine();
+ //     addCompanyForm.$setUntouched();
+ //     getCompanies();
+ //     ModalService.hideModal(modalId);
+ //    })
+ //    .catch(function (err) {
+ //     console.error("Error saving company: ", err.data.message);
+ //     console.log(addCompanyForm);
+ //     addCompanyForm.$invalid = true;
+ //     addCompanyForm.errorMessage = err.data.message;
+ //    });
+ //  };
+
+ $scope.addCompanyFormData = {
+  name: "ABC Corporation",
+  domain: "abccorp",
+  city: "New York",
+  state: "NY",
+  country: "USA",
+  logo: "abccorp_logo.png",
+  previewLogo: [
+   {
+    url: "https://example.com/abccorp_logo.png",
+   },
+  ],
+  admin: {
+   firstname: "Emily",
+   lastname: "Johnson",
+   email: "emily.johnson@abccorp.com",
+   phoneNumber: "1234567890",
+  },
+ };
+
  $scope.addCompanyFormSubmit = function (modalId, addCompanyForm) {
   console.log("Form data: ", $scope.addCompanyFormData);
-  CompanyService.saveCompany($scope.addCompanyFormData)
-   .then(function (response) {
-    console.log("Company saved successfully: ", response);
-    SnackbarService.showAlert(
-     "Company and Admin saved successfully ",
-     2000,
-     "success"
-    );
-    $scope.addCompanyFormData = {}; // reset form data
-    addCompanyForm.$setPristine();
-    addCompanyForm.$setUntouched();
-    getCompanies();
-    ModalService.hideModal(modalId);
-   })
-   .catch(function (err) {
-    console.error("Error saving company: ", err.data.message);
-    console.log(addCompanyForm);
-    addCompanyForm.$invalid = true;
-    addCompanyForm.errorMessage = err.data.message;
-   });
+
+  var company = new CompanyFactory.Company($scope.addCompanyFormData);
+
+  console.log("Company data: ", company);
+  var errors = company.validate();
+
+  if (errors.length) {
+   console.log("Errors: ", errors);
+   addCompanyForm.$invalid = true;
+   $scope.addCompanyFormErrors = errors;
+  } else {
+   company
+    .save()
+    .then(function (response) {
+     console.log("Company saved successfully: ", response);
+     SnackbarService.showAlert(
+      "Company and Admin saved successfully ",
+      2000,
+      "success"
+     );
+     $scope.addCompanyFormData = {}; // reset form data
+     addCompanyForm.$setPristine();
+     addCompanyForm.$setUntouched();
+     getCompanies();
+     ModalService.hideModal(modalId);
+    })
+    .catch(function (err) {
+     console.error("Error saving company: ", err.data.message);
+     console.log(addCompanyForm);
+     addCompanyForm.$invalid = true;
+     addCompanyForm.errorMessage = err.data.message;
+    });
+  }
+
+  // CompanyService.saveCompany($scope.addCompanyFormData)
+  //  .then(function (response) {
+  //   console.log("Company saved successfully: ", response);
+  //   SnackbarService.showAlert(
+  //    "Company and Admin saved successfully ",
+  //    2000,
+  //    "success"
+  //   );
+  //   $scope.addCompanyFormData = {}; // reset form data
+  //   addCompanyForm.$setPristine();
+  //   addCompanyForm.$setUntouched();
+  //   getCompanies();
+  //   ModalService.hideModal(modalId);
+  //  })
+  //  .catch(function (err) {
+  //   console.error("Error saving company: ", err.data.message);
+  //   console.log(addCompanyForm);
+  //   addCompanyForm.$invalid = true;
+  //   addCompanyForm.errorMessage = err.data.message;
+  //  });
  };
 
  //populate add company form with previous data
  $scope.editCompany = function (company, modalId) {
-  console.log(company);
-
-  var _company = angular.copy(company);
-
-  var editCompanyData = _company;
-  editCompanyData.previousData = company;
-  editCompanyData.previewLogo = [{ url: company.logo }];
-  editCompanyData.previousLogo = company.logo;
-
-  delete editCompanyData.logo;
-
   $scope.currentEditingCompany = company;
-  $scope.addCompanyFormData = editCompanyData;
-  // console.log($scope.editCompanyData);
-  console.log($scope.addCompanyFormData);
+  $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
   $scope.isEditing = true;
   ModalService.showModal(modalId);
  };
 
  //edit company form submit
- $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
+ //  $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
+ //   console.log("Editing company: ", $scope.addCompanyFormData);
 
+ //   CompanyService.editCompany(
+ //    $scope.currentEditingCompany._id,
+ //    $scope.addCompanyFormData
+ //   )
+ //    .then(function (response) {
+ //     console.log("Company updated successfully: ", response);
+ //     SnackbarService.showAlert("Company updated successfully ", 2000, "success");
+ //     $scope.addCompanyFormData = {}; // reset form data
+ //     editCompanyForm.$setPristine();
+ //     editCompanyForm.$setUntouched();
+ //     getCompanies();
+ //     ModalService.hideModal(modalId);
+ //    })
+ //    .catch(function (err) {
+ //     console.error("Error updating company: ", err.data.message);
+ //     editCompanyForm.$invalid = true;
+ //     editCompanyForm.errorMessage = err.data.message;
+ //    });
+ //  };
+
+ $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
   console.log("Editing company: ", $scope.addCompanyFormData);
 
-  CompanyService.editCompany(
-   $scope.currentEditingCompany._id,
-   $scope.addCompanyFormData
-  )
-   .then(function (response) {
-    console.log("Company updated successfully: ", response);
-    SnackbarService.showAlert("Company updated successfully ", 2000, "success");
-    $scope.addCompanyFormData = {}; // reset form data
-    editCompanyForm.$setPristine();
-    editCompanyForm.$setUntouched();
-    getCompanies();
-    ModalService.hideModal(modalId);
-   })
-   .catch(function (err) {
-    console.error("Error updating company: ", err.data.message);
-    editCompanyForm.$invalid = true;
-    editCompanyForm.errorMessage = err.data.message;
-   });
+  var company = new CompanyFactory.Company($scope.addCompanyFormData);
+
+  console.log("Company data: ", company);
+  var errors = company.validate();
+
+  if (errors.length) {
+   console.log("Errors: ", errors);
+   editCompanyForm.$invalid = true;
+   $scope.editCompanyFormErrors = errors;
+  } else {
+   company
+    .edit($scope.currentEditingCompany._id)
+    .then(function (response) {
+     console.log("Company updated successfully: ", response);
+     SnackbarService.showAlert(
+      "Company updated successfully ",
+      2000,
+      "success"
+     );
+     $scope.addCompanyFormData = {}; // reset form data
+     editCompanyForm.$setPristine();
+     editCompanyForm.$setUntouched();
+     getCompanies();
+     ModalService.hideModal(modalId);
+    })
+    .catch(function (error) {
+     console.error("Error updating company: ", error.message);
+     editCompanyForm.$invalid = true;
+     editCompanyForm.errorMessage = error.message;
+    });
+  }
  };
 
  //display all companies
@@ -155,8 +256,17 @@ function dashboardCompanyController(
   company.isEnabled = !company.isEnabled;
   company.previousData = previousData;
 
-  console.log(companyId);
-  CompanyService.editCompany(companyId, company)
+  var company = new CompanyFactory.Company(company);
+
+  console.log("Company data: ", company);
+  var errors = company.validate();
+
+  if (errors.length) {
+   console.log("Errors: ", errors);
+   return
+  }
+
+  company.edit(companyId)
    .then(function (response) {
     console.log("Company status changed", response);
     getCompanies(
@@ -178,5 +288,6 @@ trackflow.controller("dashboardCompanyController", [
  "ModalService",
  "SnackbarService",
  "FilePreviewFactory",
+ "CompanyFactory",
  dashboardCompanyController,
 ]);

@@ -7,9 +7,9 @@ function CompanyService($http, BASE_URL, FormDataFactory) {
   };
 
   this.saveCompany = function (company) {
-    var formData = FormDataFactory.getCompanyFormData(company); //get data from factory
-    console.log("Company data: ", ...formData);
-    return $http.post(BASE_URL + "company", formData, {
+    // var formData = FormDataFactory.getCompanyFormData(company); //get data from factory
+    console.log("Company data: ", ...company);
+    return $http.post(BASE_URL + "company", company, {
       headers: { "Content-Type": undefined },
     });
   };
@@ -25,8 +25,8 @@ function CompanyService($http, BASE_URL, FormDataFactory) {
   // };
 
   this.editCompany = function (companyId, companyData) {
-    var formData = FormDataFactory.getCompanyFormData(companyData);
-    return $http.patch(BASE_URL + "company/" + companyId, formData, {
+    // var formData = FormDataFactory.getCompanyFormData(companyData);
+    return $http.patch(BASE_URL + "company/" + companyId, companyData, {
       headers: { "Content-Type": undefined },
     });
   };

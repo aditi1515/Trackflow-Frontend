@@ -281,3 +281,16 @@ li.disabled a i {
 
 
 }
+
+.formerror-list{
+ color: red;
+ font-size: 12px;
+ margin-top: 0.5rem;
+
+}
+
+.formerror-list div{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
