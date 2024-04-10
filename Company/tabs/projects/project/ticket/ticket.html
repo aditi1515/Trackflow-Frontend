@@ -240,22 +240,52 @@
      ng-change="debounceSearch()"
     />
    </div>
+
+   <div
+   class="basic-filter"
+     ng-click="basicFilterSelected({ filterType : 'myTickets' , filterValue : 'My Tickets' , displayValue : 'My Tickets' })"
+     ng-class="{'active' : myTicketsFilter}"
+   >
+   My Tickets
+  </div>
+
+   <div class="select-filter-type">
+    <select
+    class="form-control"
+    id="filterType"
+    name="filterType"
+    ng-model="selectedFilterType"
+    ng-init="selectedFilterType = 'status'"
+  >
+    <option value="status" ng-selected="selectedFilterType === 'status'">Status</option>
+    <option value="ticketType" ng-selected="selectedFilterType === 'ticketType'">Ticket Type</option>
+    <option value="priority" ng-selected="selectedFilterType === 'priority'">Priority</option>
+   
+  </select>
+   </div>
+
    <div class="basic-filters">
     <div
      class="basic-filter"
      ng-click="basicFilterSelected(filterOption)"
      ng-class="{'active' : filterOption.filterValue === selectedBasicFilter.filterValue}"
+     ng-if="filterOption.filterType === selectedFilterType"
      ng-repeat="filterOption in [
     { filterType: 'status', filterValue: 'OPEN' , displayValue:'OPEN'},
+    { filterType: 'status', filterValue: 'IN PROGRESS' , displayValue:'IN PROGRESS' },
+    { filterType: 'status', filterValue: 'IN REVIEW' , displayValue:'IN REVIEW' },
+    { filterType: 'status', filterValue: 'CLOSED' , displayValue:'CLOSED' },
     { filterType: 'ticketType', filterValue: 'BUG' , displayValue:'BUG' },
     { filterType: 'ticketType', filterValue: 'FR' , displayValue:'FR' },
     { filterType: 'priority', filterValue: 'LOW' , displayValue:'LOW' },
     { filterType: 'priority', filterValue: 'MEDIUM' , displayValue:'MEDIUM' },
     { filterType: 'priority', filterValue: 'HIGH' , displayValue:'HIGH' },
-    { filterType : 'myTickets' , filterValue : 'My Tickets' , displayValue : 'My Tickets' }
+    
 ]"
     >
-     {{filterOption.displayValue}}
+    <span >
+      {{filterOption.displayValue}}
+    </span>
     </div>
     <!-- clear filter -->
     <div

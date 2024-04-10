@@ -11,6 +11,14 @@
  font-weight: 600;
 }
 
+.error{
+  color: red;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
 .companycount__card__title {
  font-size: 12px;
  font-weight: 600;

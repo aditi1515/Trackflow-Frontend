@@ -3,116 +3,251 @@
   rel="stylesheet"
   href="../../../../../admin/dashboard/tabs/stats/company/companyStat.css"
  />
- 
+
  <div class="chart-option-picker">
-
   <select
-  name="companyCountTrend-select"
-  ng-change="resetDate(); countTrendOptionChange()"
-  id="companyTrend-select"
-  ng-model="trendCountOption"
->
-  <option value="day">Day wise</option>
-  <option value="month">Monthly</option>
-  <option value="year">Yearly</option>
-</select>
+   name="companyCountTrend-select"
+   ng-change="resetDate(); countTrendOptionChange()"
+   id="companyTrend-select"
+   ng-model="trendCountOption"
+  >
+   <option value="day">Day wise</option>
+   <option value="month">Monthly</option>
+   <option value="year">Yearly</option>
+  </select>
 
-<form name="trendCountForm" class="trendCountForm">
-  <div class="input">
+  <form name="trendCountForm" class="trendCountForm">
+   <div class="input">
     <label for="">Start {{trendCountOption}}</label>
     <input
-      type="date"
-      name="startDate"
-      ng-if="trendCountOption === 'day'"
-      ng-model="trendCountFormData.startDate"
-      ng-init="trendCountFormData.startDate"
-      ng-change="countTrendOptionChange()"
-      max="{{trendCountFormData.endDate |  date:'yyyy-MM-dd'}}"
+     type="date"
+     name="startDate"
+     ng-if="trendCountOption === 'day'"
+     ng-model="trendCountFormData.startDate"
+     ng-init="trendCountFormData.startDate"
+     ng-change="countTrendOptionChange()"
+     max="{{trendCountFormData.endDate |  date:'yyyy-MM-dd'}}"
     />
     <select
-    ng-if="trendCountOption === 'month'"
-    ng-model="trendCountFormData.startMonth"
-    ng-change="countTrendOptionChange()"
-    ng-init="trendCountFormData.startMonth = formDataInit.startMonth"
-    name="month-select-start" id="">
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 1 <= trendCountFormData.endMonth" ng-value="1">January</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 2 <= trendCountFormData.endMonth" ng-value="2">February</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 3 <= trendCountFormData.endMonth" ng-value="3">March</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 4 <= trendCountFormData.endMonth" ng-value="4">April</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 5 <= trendCountFormData.endMonth" ng-value="5">May</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 6 <= trendCountFormData.endMonth" ng-value="6">June</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 7 <= trendCountFormData.endMonth" ng-value="7">July</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 8 <= trendCountFormData.endMonth" ng-value="8">August</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 9 <= trendCountFormData.endMonth" ng-value="9">September</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 10 <= trendCountFormData.endMonth" ng-value="10">October</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 11 <= trendCountFormData.endMonth" ng-value="11">November</option>
-    <option ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 12 <= trendCountFormData.endMonth" ng-value="12">December</option>
+     ng-if="trendCountOption === 'month'"
+     ng-model="trendCountFormData.startMonth"
+     ng-change="countTrendOptionChange()"
+     ng-init="trendCountFormData.startMonth = formDataInit.startMonth"
+     name="month-select-start"
+     id=""
+    >
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 1 <= trendCountFormData.endMonth"
+      ng-value="1"
+     >
+      January
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 2 <= trendCountFormData.endMonth"
+      ng-value="2"
+     >
+      February
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 3 <= trendCountFormData.endMonth"
+      ng-value="3"
+     >
+      March
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 4 <= trendCountFormData.endMonth"
+      ng-value="4"
+     >
+      April
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 5 <= trendCountFormData.endMonth"
+      ng-value="5"
+     >
+      May
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 6 <= trendCountFormData.endMonth"
+      ng-value="6"
+     >
+      June
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 7 <= trendCountFormData.endMonth"
+      ng-value="7"
+     >
+      July
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 8 <= trendCountFormData.endMonth"
+      ng-value="8"
+     >
+      August
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 9 <= trendCountFormData.endMonth"
+      ng-value="9"
+     >
+      September
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 10 <= trendCountFormData.endMonth"
+      ng-value="10"
+     >
+      October
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 11 <= trendCountFormData.endMonth"
+      ng-value="11"
+     >
+      November
+     </option>
+     <option
+      ng-if="trendCountFormData.startYear < trendCountFormData.endYear || 12 <= trendCountFormData.endMonth"
+      ng-value="12"
+     >
+      December
+     </option>
     </select>
-    
 
-
-    <input ng-if="trendCountOption === 'year' || trendCountOption === 'month'" 
-    ng-model="trendCountFormData.startYear"
-    ng-init="trendCountFormData.startYear = formDataInit.startYear"
-    ng-change="countTrendOptionChange()"
-    type="number" min="1900" max="{{trendCountFormData.endYear}}" step="1" />
-  </div>
-  <div class="input">
+    <input
+     ng-if="trendCountOption === 'year' || trendCountOption === 'month'"
+     ng-model="trendCountFormData.startYear"
+     ng-init="trendCountFormData.startYear = formDataInit.startYear"
+     ng-change="countTrendOptionChange()"
+     name="startYear"
+     type="number"
+     min="1900"
+     max="{{trendCountFormData.endYear}}"
+     step="1"
+    />
+   </div>
+   <div class="input">
     <label for="">End {{trendCountOption}}</label>
     <input
-      type="date"
-      name="endDate"
-      ng-model="trendCountFormData.endDate"
-      ng-if="trendCountOption === 'day'"
-      ng-init="trendCountFormData.endDate"
-      ng-change="countTrendOptionChange()"
-      min="{{trendCountFormData.startDate |  date:'yyyy-MM-dd'}}"
-      max="{{currentDate | date:'yyyy-MM-dd'}}"
-      id=""
+     type="date"
+     name="endDate"
+     ng-model="trendCountFormData.endDate"
+     ng-if="trendCountOption === 'day'"
+     ng-init="trendCountFormData.endDate"
+     ng-change="countTrendOptionChange()"
+     min="{{trendCountFormData.startDate |  date:'yyyy-MM-dd'}}"
+     max="{{currentDate | date:'yyyy-MM-dd'}}"
+     id=""
     />
 
     <select
-    ng-if="trendCountOption === 'month'"
-    ng-model="trendCountFormData.endMonth"
-    ng-change="countTrendOptionChange()"
-    ng-init="trendCountFormData.endMonth = formDataInit.endMonth"
-    name="month-select-end" id="">
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 1 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 1 <= currentMonth)" ng-value="1">January</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 2 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 2 <= currentMonth)" ng-value="2">February</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 3 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 3 <= currentMonth)" ng-value="3">March</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 4 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 4 <= currentMonth)" ng-value="4">April</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 5 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 5 <= currentMonth)" ng-value="5">May</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 6 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 6 <= currentMonth)" ng-value="6">June</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 7 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 7 <= currentMonth)" ng-value="7">July</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 8 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 8 <= currentMonth)" ng-value="8">August</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 9 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 9 <= currentMonth)" ng-value="9">September</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 10 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 10 <= currentMonth)" ng-value="10">October</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 11 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 11 <= currentMonth)" ng-value="11">November</option>
-    <option ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 12 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 12 <= currentMonth)" ng-value="12">December</option>
-    
+     ng-if="trendCountOption === 'month'"
+     ng-model="trendCountFormData.endMonth"
+     ng-change="countTrendOptionChange()"
+     ng-init="trendCountFormData.endMonth = formDataInit.endMonth"
+     name="month-select-end"
+     id=""
+    >
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 1 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 1 <= currentMonth)"
+      ng-value="1"
+     >
+      January
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 2 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 2 <= currentMonth)"
+      ng-value="2"
+     >
+      February
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 3 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 3 <= currentMonth)"
+      ng-value="3"
+     >
+      March
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 4 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 4 <= currentMonth)"
+      ng-value="4"
+     >
+      April
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 5 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 5 <= currentMonth)"
+      ng-value="5"
+     >
+      May
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 6 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 6 <= currentMonth)"
+      ng-value="6"
+     >
+      June
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 7 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 7 <= currentMonth)"
+      ng-value="7"
+     >
+      July
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 8 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 8 <= currentMonth)"
+      ng-value="8"
+     >
+      August
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 9 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 9 <= currentMonth)"
+      ng-value="9"
+     >
+      September
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 10 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 10 <= currentMonth)"
+      ng-value="10"
+     >
+      October
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 11 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 11 <= currentMonth)"
+      ng-value="11"
+     >
+      November
+     </option>
+     <option
+      ng-if="(trendCountFormData.startYear < trendCountFormData.endYear || 12 >= trendCountFormData.startMonth) && (trendCountFormData.endYear < currentYear || 12 <= currentMonth)"
+      ng-value="12"
+     >
+      December
+     </option>
     </select>
 
-    <input ng-if="trendCountOption === 'year' || trendCountOption === 'month'" 
-    ng-model="trendCountFormData.endYear"
-    ng-init="trendCountFormData.endYear = formDataInit.endYear"
-    ng-change=" countTrendOptionChange()"
-    
-    type="number" min="{{trendCountFormData.startYear}}" max="2099" step="1"  />
-  
+    <input
+     ng-if="trendCountOption === 'year' || trendCountOption === 'month'"
+     ng-model="trendCountFormData.endYear"
+     ng-init="trendCountFormData.endYear = formDataInit.endYear"
+     ng-change=" countTrendOptionChange()"
+     name="endYear"
+     type="number"
+     min="{{trendCountFormData.startYear}}"
+     max="{{currentYear}}"
+     step="1"
+    />
+   </div>
+  </form>
+  <div class="error">
+   <span ng-if="trendCountForm.startYear.$error.max"
+    >*Start year should be less than end year</span
+   >
+   <span ng-if="trendCountForm.endYear.$error.min"
+    >*End year should be greater than start year</span
+   >
+   <span ng-if="trendCountForm.endYear.$error.max">
+    *End year should be less than or equal to current year
+   </span>
   </div>
-
-</form>
-
-
-
  </div>
 
  <div class="trendsChart-wrapper">
- 
-   
   <div class="companyTrend-wrapp">
-    <h3>Company Registration Trend</h3>
-    <!-- <select
+   <h3>Company Registration Trend</h3>
+   <!-- <select
       name="companyCountTrend-select"
       ng-change="companyCountTrendOptionChange()"
       id="companyTrend-select"
@@ -121,37 +256,36 @@
       <option value="month">Monthly</option>
       <option value="year">Yearly</option>
     </select> -->
-    <div class="companyWiseTicketCountsChart-wrapper">
-      <canvas id="companyCountTrend-chart"></canvas>
+   <div class="companyWiseTicketCountsChart-wrapper">
+    <canvas id="companyCountTrend-chart"></canvas>
+   </div>
+
+   <div class="pagination">
+    <div class="pagination__pageCount">
+     <span>Page</span>
+     <span>{{companyTrendPage}}</span>
+     <span>of</span>
+     <span>{{totalPagesInCompanyTrend}}</span>
     </div>
 
-    <div class="pagination">
-      <div class="pagination__pageCount">
-        <span>Page</span>
-        <span>{{companyTrendPage}}</span>
-        <span>of</span>
-        <span>{{totalPagesInCompanyTrend}}</span>
-      </div>
-
-      <i
-        ng-disabled="companyTrendPage == 1"
-        ng-click="companyTrendPageChange(companyTrendPage - 1)"
-        class="bi-arrow-left-square-fill"
-        ng-class="{disabled:companyTrendPage===1}"
-      ></i>
-      <i
-        class="bi-arrow-right-square-fill"
-        ng-disabled="companyTrendPage >= totalPagesInCompanyTrend"
-        ng-click="companyTrendPageChange(companyTrendPage + 1)"
-        ng-class="{disabled:companyTrendPage>=totalPagesInCompanyTrend}"
-      ></i>
-    </div>
-
+    <i
+     ng-disabled="companyTrendPage == 1"
+     ng-click="companyTrendPageChange(companyTrendPage - 1)"
+     class="bi-arrow-left-square-fill"
+     ng-class="{disabled:companyTrendPage===1}"
+    ></i>
+    <i
+     class="bi-arrow-right-square-fill"
+     ng-disabled="companyTrendPage >= totalPagesInCompanyTrend"
+     ng-click="companyTrendPageChange(companyTrendPage + 1)"
+     ng-class="{disabled:companyTrendPage>=totalPagesInCompanyTrend}"
+    ></i>
+   </div>
   </div>
 
   <div class="projectTrend-wrapp">
-    <h3>Project Count Trend</h3>
-    <!-- <select
+   <h3>Project Count Trend</h3>
+   <!-- <select
       name="projectCountTrend-select"
       ng-change="projectCountTrendOptionChange()"
       id="projectTrend-select"
@@ -160,35 +294,35 @@
       <option value="month">Monthly</option>
       <option value="year">Yearly</option>
     </select> -->
-    <div class="companyWiseTicketCountsChart-wrapper">
-      <canvas id="projectCountTrend-chart"></canvas>
+   <div class="companyWiseTicketCountsChart-wrapper">
+    <canvas id="projectCountTrend-chart"></canvas>
+   </div>
+
+   <div class="pagination">
+    <div class="pagination__pageCount">
+     <span>Page</span>
+     <span>{{projectTrendPage}}</span>
+     <span>of</span>
+     <span>{{totalPagesInProjectTrend}}</span>
     </div>
 
-    <div class="pagination">
-      <div class="pagination__pageCount">
-        <span>Page</span>
-        <span>{{projectTrendPage}}</span>
-        <span>of</span>
-        <span>{{totalPagesInProjectTrend}}</span>
-      </div>
-
-      <i
-        ng-disabled="projectTrendPage == 1"
-        ng-click="projectTrendPageChange(projectTrendPage - 1)"
-        class="bi-arrow-left-square-fill"
-        ng-class="{disabled:projectTrendPage===1}"
-      ></i>
-      <i
-        class="bi-arrow-right-square-fill"
-        ng-disabled="projectTrendPage >= totalPagesInProjectTrend"
-        ng-click="projectTrendPageChange(projectTrendPage + 1)"
-        ng-class="{disabled:projectTrendPage>=totalPagesInProjectTrend}"
-      ></i>
-    </div>
+    <i
+     ng-disabled="projectTrendPage == 1"
+     ng-click="projectTrendPageChange(projectTrendPage - 1)"
+     class="bi-arrow-left-square-fill"
+     ng-class="{disabled:projectTrendPage===1}"
+    ></i>
+    <i
+     class="bi-arrow-right-square-fill"
+     ng-disabled="projectTrendPage >= totalPagesInProjectTrend"
+     ng-click="projectTrendPageChange(projectTrendPage + 1)"
+     ng-class="{disabled:projectTrendPage>=totalPagesInProjectTrend}"
+    ></i>
+   </div>
   </div>
   <div class="projectTrend-wrapp">
-    <h3>Ticket Count Trend</h3>
-    <!-- <select
+   <h3>Ticket Count Trend</h3>
+   <!-- <select
       name="ticketCountTrend-select"
       ng-change="ticketCountTrendOptionChange()"
       id="ticketTrend-select"
@@ -197,36 +331,33 @@
       <option value="month">Monthly</option>
       <option value="year">Yearly</option>
     </select> -->
-    <div class="companyWiseTicketCountsChart-wrapper">
-      <canvas id="ticketCountTrend-chart"></canvas>
+   <div class="companyWiseTicketCountsChart-wrapper">
+    <canvas id="ticketCountTrend-chart"></canvas>
+   </div>
+
+   <div class="pagination">
+    <div class="pagination__pageCount">
+     <span>Page</span>
+     <span>{{ticketTrendPage}}</span>
+     <span>of</span>
+     <span>{{totalPagesInTicketTrend}}</span>
     </div>
 
-    <div class="pagination">
-      <div class="pagination__pageCount">
-        <span>Page</span>
-        <span>{{ticketTrendPage}}</span>
-        <span>of</span>
-        <span>{{totalPagesInTicketTrend}}</span>
-      </div>
-
-      <i
-        ng-disabled="ticketTrendPage == 1"
-        ng-click="ticketTrendPageChange(ticketTrendPage - 1)"
-        class="bi-arrow-left-square-fill"
-        ng-class="{disabled:ticketTrendPage===1}"
-      ></i>
-      <i
-        class="bi-arrow-right-square-fill"
-        ng-disabled="ticketTrendPage >= totalPagesInTicketTrend"
-        ng-click="ticketTrendPageChange(ticketTrendPage + 1)"
-        ng-class="{disabled:ticketTrendPage>=totalPagesInTicketTrend}"
-      ></i>
-
-    </div>
-
+    <i
+     ng-disabled="ticketTrendPage == 1"
+     ng-click="ticketTrendPageChange(ticketTrendPage - 1)"
+     class="bi-arrow-left-square-fill"
+     ng-class="{disabled:ticketTrendPage===1}"
+    ></i>
+    <i
+     class="bi-arrow-right-square-fill"
+     ng-disabled="ticketTrendPage >= totalPagesInTicketTrend"
+     ng-click="ticketTrendPageChange(ticketTrendPage + 1)"
+     ng-class="{disabled:ticketTrendPage>=totalPagesInTicketTrend}"
+    ></i>
+   </div>
   </div>
-
-</div>
+ </div>
  <!--- <div class="graph-wrapper-comp-Analytics">
   <div class="companyWisepeople">
    <h3>Company Size Based on Users</h3>
@@ -279,5 +410,4 @@
    </div>
  </div>
  </div> --->
-
 </section>

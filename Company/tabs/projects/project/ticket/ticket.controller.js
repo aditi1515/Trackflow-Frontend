@@ -19,6 +19,8 @@ function ticketController(
   $scope.isEditing = false;
  }
 
+ $scope.myTicketsFilter = false;
+
  init();
 
  $scope.launchModal = function (modalId) {
@@ -117,6 +119,16 @@ function ticketController(
 
  //get all tickets
  function getAllTickets(pageNo = 1, pageSize = 10, query = {}) {
+
+
+  if($scope.myTicketsFilter){
+    query["myTickets"] = "My Tickets";
+  }
+
+  if($scope.selectedBasicFilter){
+    query[$scope.selectedBasicFilter.filterType] = $scope.selectedBasicFilter.filterValue;
+  }
+
   TicketService.getAllTickets({
    pageNo: pageNo,
    pageSize: pageSize,
@@ -144,6 +156,14 @@ function ticketController(
  $scope.basicFilterSelected = function (basicFilter) {
   $scope.selectedBasicFilter = basicFilter;
   console.log("Basic filter selected: ", basicFilter);
+
+  if (basicFilter.filterType === "myTickets") {
+   $scope.myTicketsFilter = !$scope.myTicketsFilter;
+   if (!$scope.myTicketsFilter) {
+    return;
+   }
+  }
+
   var query = {};
 
   // Assigning the filter value to the appropriate property in the query object
@@ -161,6 +181,7 @@ function ticketController(
 
  $scope.clearFilter = function () {
   $scope.selectedBasicFilter = null;
+  $scope.myTicketsFilter = false;
   getAllTickets();
   $scope.searchTicket = "";
  };
