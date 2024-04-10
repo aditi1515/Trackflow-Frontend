@@ -52,12 +52,10 @@ function dashboardCompanyController(
 
   var _company = angular.copy(company);
 
-
   var editCompanyData = _company;
   editCompanyData.previousData = company;
   editCompanyData.previewLogo = [{ url: company.logo }];
   editCompanyData.previousLogo = company.logo;
-  editCompanyData.admin.phoneNumber = parseInt(company.admin.phoneNumber);
 
   delete editCompanyData.logo;
 
