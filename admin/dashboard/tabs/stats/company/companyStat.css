@@ -216,3 +216,56 @@ canvas {
     display: flex;
     gap: 1rem;
   }
+
+
+  @media screen and (max-width:1350px) {
+    .admin-dashboard-company-wrapper{
+      padding: 1rem;
+    }
+
+    .projectTrend-wrapp,.companyTrend-wrapp{
+      width: 100%;
+      height: fit-content;
+    }
+  }
+
+  @media screen and (max-width:1100px) {
+  
+    .trendCountForm{
+      display: flex;
+      gap: 1rem;
+      padding: 0;
+    }
+    
+    .trendCountForm label{
+      font-size: 12px;
+    }
+
+    .trendCountForm input{
+      padding: 0.3rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 12px;
+    }
+
+    select{
+      width: 7rem;
+      font-size: 12px;
+    }
+  
+    .chart-option-picker{
+      display: flex;
+      gap: 1rem;
+    }
+
+    .admin-dashboard-company-wrapper{
+      padding: 1rem;
+    }
+     
+  }
+
+  @media screen and (max-width:920px) {
+    .chart-option-picker{
+      flex-direction: column;
+    }
+  }

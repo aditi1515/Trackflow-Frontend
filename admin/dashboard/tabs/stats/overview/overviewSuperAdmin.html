@@ -1,167 +1,151 @@
 <section class="admin-dashboard-company-wrapper">
-  <link
-    rel="stylesheet"
-    href="../../../../../admin/dashboard/tabs/stats/overview/overViewSuperAdmin.css"
-  />
-  <div class="companycount-data-map">
-    <div class="companycount-wrapper">
-      <h3>Companies Registered in System</h3>
-      <h6 class="manageCompanies-link">
-        <a ui-sref="superAdminDashboard.company"
-          >Manage Companies</a
-        >
-      </h6>
+ <link
+  rel="stylesheet"
+  href="../../../../../admin/dashboard/tabs/stats/overview/overViewSuperAdmin.css"
+ />
+ <div class="companycount-data-map">
+  <div class="companycount-wrapper">
+   <h3>Companies Registered in System</h3>
+   <h6 class="manageCompanies-link">
+    <a ui-sref="superAdminDashboard.company">Manage Companies</a>
+   </h6>
 
-      <div class="companycount">
-        <div class="companycount__card">
-          <div class="companycount__card__count">
-            {{companiesCount.totalCompanies}}
-          </div>
-          <div class="companycount__card__title">Total Companies</div>
-        </div>
-        <div class="companycount__card">
-          <div class="companycount__card__count">
-            {{companiesCount.enabledCompanies}}
-          </div>
-          <div class="companycount__card__title">Active Companies</div>
-        </div>
-        <div class="companycount__card">
-          <div class="companycount__card__count">
-            {{companiesCount.disabledCompanies}}
-          </div>
-          <div class="companycount__card__title">Inactive Companies</div>
-        </div>
-      </div>
+   <div class="companycount">
+    <div class="companycount__card">
+     <div class="companycount__card__count">
+      {{companiesCount.totalCompanies}}
+     </div>
+     <div class="companycount__card__title">Total Companies</div>
     </div>
-
-    <div class="companycountchart-wrapper">
-      <canvas id="companyCountChart"></canvas>
+    <div class="companycount__card">
+     <div class="companycount__card__count">
+      {{companiesCount.enabledCompanies}}
+     </div>
+     <div class="companycount__card__title">Active Companies</div>
     </div>
+    <div class="companycount__card">
+     <div class="companycount__card__count">
+      {{companiesCount.disabledCompanies}}
+     </div>
+     <div class="companycount__card__title">Inactive Companies</div>
+    </div>
+   </div>
   </div>
-  <div class="projectTickstStats-wrapper">
-    <div class="companyStatTabHeader">
-      <h3>Total Projects in System</h3>
 
-      <div class="header-cst">
-        <div class="dateSelector date-range-selector">
-          <div class="project-count">
-            <div class="project-count__card">
-              <div class="project-count__card__count">
-                {{projectCount.total}}
-              </div>
-              <div class="project-count__card__title">Total Projects</div>
-            </div>
+  <div class="companycountchart-wrapper">
+   <canvas id="companyCountChart"></canvas>
+  </div>
+ </div>
+ <div class="projectTickstStats-wrapper">
+  <div class="companyStatTabHeader">
+   <h3>Total Projects in System</h3>
 
-            <div class="project-count__card">
-              <div class="project-count__card__count">
-                {{projectCount.inProgress}}
-              </div>
-              <div class="project-count__card__title">Inprogress Projects</div>
-            </div>
-
-            <div class="project-count__card">
-              <div class="project-count__card__count">
-                {{projectCount.complete}}
-              </div>
-              <div class="project-count__card__title">Compeled Projects</div>
-            </div>
-          </div>
-        </div>
-
-        <div id="topCompanyProjectWiseChart-wrapper">
-          <canvas id="topCompanyProjectWiseChart"></canvas>
-        </div>
-      </div>
+   <div class="project-count">
+    <div class="project-count__card">
+     <div class="project-count__card__count">{{projectCount.total}}</div>
+     <div class="project-count__card__title">Total Projects</div>
     </div>
-    <div class="ticketStatTabHeader">
-      <div class="header-tst">
-        <div class="ticket-count">
-          <div class="ticket-count__card">
-            <h3>Total Tickets in System</h3>
 
-            <div class="ticket-count__card__count">{{totalTickets}}</div>
+    <div class="project-count__card">
+     <div class="project-count__card__count">{{projectCount.inProgress}}</div>
+     <div class="project-count__card__title">Inprogress Projects</div>
+    </div>
 
-            <!-- <div class="ticket-count__card__title">Total Tickets</div> -->
-          </div>
-        </div>
-        <!-- <div id="topTicketProjectWiseChart-wrapper">
+    <div class="project-count__card">
+     <div class="project-count__card__count">{{projectCount.complete}}</div>
+     <div class="project-count__card__title">Compeled Projects</div>
+    </div>
+   </div>
+  </div>
+  <div class="ticketStatTabHeader">
+   <div class="header-tst">
+    <div class="ticket-count">
+     <div class="ticket-count__card">
+      <h3>Total Tickets in System</h3>
+
+      <div class="ticket-count__card__count">{{totalTickets}}</div>
+
+      <!-- <div class="ticket-count__card__title">Total Tickets</div> -->
+     </div>
+    </div>
+    <!-- <div id="topTicketProjectWiseChart-wrapper">
         <canvas id="topTicketProjectWiseChart"></canvas>
        </div> -->
-      </div>
-    </div>
+   </div>
   </div>
+ </div>
 
-  <div class="graph-wrapper">
-    <div class="mostCount-wrapper">
-      <h3>New Partners</h3>
-      <h6>Current Month</h6>
-      <div class="usersWithMostProjects-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Company Name</th>
-              <th>Domain</th>
-              <th>Enrollment Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="company in recentlyEnrolledCompaniesData">
-              <td>
-                <div class="user-details">
-                  <img ng-src="{{company.logo}}" alt="" />
-                  <span>{{company.name}}</span>
-                  <span
-                    >{{user.details.user.lastname !== 'undefined' ?
-                    user.lastname : ""}}</span
-                  >
-                </div>
-              </td>
-              <td>{{company.domain}}</td>
-              <td>{{company.createdAt | date:'dd-MM-yyyy'}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="mostCount-wrapper">
-      <h3>Oldest Partners</h3>
-      <!-- <select name="loyalCompanyLimitOption" ng-change="loyalCompanyLimitChange()" id="" ng-model="loyalPartnerLimitSelectOption" >
+ <div class="graph-wrapper">
+  <div class="mostCount-wrapper">
+   <h3>New Partners</h3>
+   <h6>Current Month</h6>
+   <div class="usersWithMostProjects-table">
+    <table>
+     <thead>
+      <tr>
+       <th>Company Name</th>
+       <th>Domain</th>
+       <th>Enrollment Date</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr ng-repeat="company in recentlyEnrolledCompaniesData">
+       <td>
+        <div class="user-details">
+         <img ng-src="{{company.logo}}" alt="" />
+         <span>{{company.name}}</span>
+         <span
+          >{{user.details.user.lastname !== 'undefined' ? user.lastname :
+          ""}}</span
+         >
+        </div>
+       </td>
+       <td>{{company.domain}}</td>
+       <td>{{company.createdAt | date:'dd-MM-yyyy'}}</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <div class="mostCount-wrapper">
+   <h3>Oldest Partners</h3>
+   <!-- <select name="loyalCompanyLimitOption" ng-change="loyalCompanyLimitChange()" id="" ng-model="loyalPartnerLimitSelectOption" >
         <option  value="5">5</option>
         <option value="10">10</option>
        </select> -->
-      <div class="usersWithMostProjects-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Company Name</th>
-              <th>Domain</th>
-              <th>Enrollment Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="company in mostLoyalPartnersData">
-              <td>
-                <div class="user-details">
-                  <img ng-src="{{company.logo}}" alt="" />
-                  <span>{{company.name}}</span>
-                  <!-- <span
+   <div class="usersWithMostProjects-table">
+    <table>
+     <thead>
+      <tr>
+       <th>Company Name</th>
+       <th>Domain</th>
+       <th>Enrollment Date</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr ng-repeat="company in mostLoyalPartnersData">
+       <td>
+        <div class="user-details">
+         <img ng-src="{{company.logo}}" alt="" />
+         <span>{{company.name}}</span>
+         <!-- <span
                     >{{user.details.user.lastname !== 'undefined' ?
                     user.lastname : ""}}</span
                   > -->
-                </div>
-              </td>
-              <td>{{company.domain}}</td>
-              <td>{{company.createdAt | date:'dd-MM-yyyy'}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        </div>
+       </td>
+       <td>{{company.domain}}</td>
+       <td>{{company.createdAt | date:'dd-MM-yyyy'}}</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
   </div>
-  <div class="systemUsage-wrapper">
-    <h3>Peak Time of System Usage</h3>
-    <div class="systemUsageTime">
-      <canvas id="systemUsageTimeChart"></canvas>
-    </div>
+ </div>
+ <div class="systemUsage-wrapper">
+  <h3>Peak Time of System Usage</h3>
+  <div class="systemUsageTime">
+   <canvas id="systemUsageTimeChart"></canvas>
   </div>
+ </div>
 </section>

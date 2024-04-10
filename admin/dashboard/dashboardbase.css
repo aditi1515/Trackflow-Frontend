@@ -198,4 +198,12 @@
     border-radius: 50%;
    }
    
-   
+   @media screen and (max-width: 1400px) {
+    .analytics-sidebar{
+        min-width: 10rem;
+    }
+    .analytics-sidebar-option{
+        font-size: 11px;
+        align-items: center;
+    }
+   }

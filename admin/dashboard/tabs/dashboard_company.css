@@ -54,6 +54,17 @@ h4 {
  font-size: 12px;
 }
 
+.btn-add{
+ width: fit-content;
+ background-color: var(--dark-pink);
+ padding: 0.3rem;
+ border-radius: 4px;
+ outline: none;
+ border: none;
+ color: white;
+ font-size: 13px;
+}
+
 .btn.disabled {
  cursor: not-allowed;
 }
@@ -232,4 +243,37 @@ li.disabled a i {
 
 .edit-btn {
  cursor: pointer;
+}
+
+.table td {
+
+ width: fit-content;
+ white-space: nowrap;
+}
+
+
+@media screen and (max-width: 820px) {
+ .dashboard_company_wrapper {
+   padding: 0.5rem;
+ }
+
+ .logoPreview {
+   margin-top: 0.5rem;
+   height: 3rem;
+   width: 3rem;
+ }
+
+ .pagination li {
+   margin: 0 0.3rem;
+ }
+
+ .searchBox {
+   width: 15rem;
+ }
+
+ .content {
+   margin-top: 2rem;
+ }
+
+
 }
