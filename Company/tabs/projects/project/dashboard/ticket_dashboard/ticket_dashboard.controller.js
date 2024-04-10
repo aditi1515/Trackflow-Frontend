@@ -59,6 +59,7 @@ function TicketDashboardInProjectController($scope, $state, AnalyticsService) {
   var keys = data.map(function (d) {
    return d._id;
   });
+
   var values = data.map(function (d) {
    return d.statusWiseCount;
   });

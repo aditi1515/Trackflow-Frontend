@@ -131,8 +131,13 @@ function CompanyStatController($scope, AnalyticsService) {
       return data.companyCount;
     });
 
+
+    var keysAdjusted = labels.map(function (key){
+      return key.split(" ");
+    })
+
     var data = {
-      labels: labels,
+      labels: keysAdjusted,
       datasets: [
         {
           label: "Companies",
@@ -249,8 +254,12 @@ function CompanyStatController($scope, AnalyticsService) {
       return data.projectCount;
     });
 
+    var keysAdjusted = labels.map(function (key){
+      return key.split(" ");
+    })
+
     var data = {
-      labels: labels,
+      labels: keysAdjusted,
       datasets: [
         {
           label: "Projects",
@@ -278,11 +287,13 @@ function CompanyStatController($scope, AnalyticsService) {
           position: "bottom",
         },
         scales: {
+         
           x: {
             title: {
               display: true,
               text: $scope.projectTrendCountOption,
             },
+           
           },
           y: {
             beginAtZero: true,
@@ -368,8 +379,12 @@ function CompanyStatController($scope, AnalyticsService) {
       return data.ticketCount;
     });
 
+    var keysAdjusted = labels.map(function (key){
+      return key.split(" ");
+    })
+
     var data = {
-      labels: labels,
+      labels: keysAdjusted,
       datasets: [
         {
           label: "Tickets",
@@ -388,6 +403,7 @@ function CompanyStatController($scope, AnalyticsService) {
       existingChart.destroy();
     }
 
+
     new Chart(chartDiv, {
       type: "line",
       data: data,
@@ -402,6 +418,7 @@ function CompanyStatController($scope, AnalyticsService) {
               display: true,
               text: $scope.ticketTrendCountOption,
             },
+           
           },
           y: {
             beginAtZero: true,

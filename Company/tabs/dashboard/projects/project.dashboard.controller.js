@@ -301,12 +301,18 @@ function CompanyProjectsDashboardController($scope, AnalyticsService) {
 
   console.log("datadisplayProjectCompletionTimeChart ", data);
 
+  var keys =data.map(function (item) {
+    return item.name;
+   })
+  
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   new Chart(chartDiv, {
    type: "bar",
    data: {
-    labels: data.map(function (item) {
-     return item.name;
-    }),
+    labels: keysAdjusted,
     datasets: [
      {
       label: "Average Time(hrs)",

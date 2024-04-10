@@ -324,12 +324,12 @@ label {
 @media screen and (max-width:1300px) {
  .companyWisepeople, .companyWiseProjects, .companywisetickets,.locationWiseCompanyCount{
   width: 100%;
-  height: fit-content;
+  /* height: fit-content; */
  }
 
  
 .graph-wrapper-comp-Analytics ,.csw-bottom  {
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 1rem;
 }
 }

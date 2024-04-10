@@ -126,10 +126,15 @@ function PeopleDashboardInProjectController(
   if (existingChart) {
    existingChart.destroy();
   }
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: dataset,
    },
    options: {
@@ -238,10 +243,15 @@ function PeopleDashboardInProjectController(
   if (existingChart) {
    existingChart.destroy();
   }
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: dataset,
    },
    options: {
@@ -303,6 +313,14 @@ function PeopleDashboardInProjectController(
  getLeastTicketResolvers();
 
  function displayLeastTicketResolversChart() {
+
+
+
+    Chart.defaults.font.size = 10
+
+
+  
+
   var data = $scope.leastTicketResolvers;
 
   var pageSize = 10;
@@ -314,6 +332,11 @@ function PeopleDashboardInProjectController(
   var keys = data.map(function (d) {
    return d.firstname + " " + d.lastname;
   });
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var values = data.map(function (d) {
    return d.solvedTicketsCount;
   });
@@ -324,10 +347,11 @@ function PeopleDashboardInProjectController(
   if (existingChart) {
    existingChart.destroy();
   }
+
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: [
      {
       label: "Ticket Count",
@@ -346,6 +370,7 @@ function PeopleDashboardInProjectController(
     ticks: {
      stepSize: 1,
     },
+   
     plugins: {
      title: {
       display: true,
@@ -389,10 +414,15 @@ function PeopleDashboardInProjectController(
   if (existingChart) {
    existingChart.destroy();
   }
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: [
      {
       label: "Ticket Count",

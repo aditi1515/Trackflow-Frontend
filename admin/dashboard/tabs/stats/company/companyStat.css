@@ -232,7 +232,7 @@ canvas {
     }
 
     .projectTrend-wrapp,.companyTrend-wrapp{
-      width: 100%;
+      /* width: 100%; */
       height: fit-content;
     }
   }

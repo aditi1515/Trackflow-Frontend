@@ -70,8 +70,13 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   var data = $scope.usersWithMostProjects;
 
   var keys = data.map(function (d) {
-   return d.details.user.firstname;
+   return d.details.user.firstname + ' ' + d.details.user.lastname;
   });
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var values = data.map(function (d) {
    return d.totalProjects;
   });
@@ -85,7 +90,7 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: [
      {
       label: "ProjectCount",
@@ -200,6 +205,11 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   var keys = data.map(function (d) {
    return d._id.firstname + " " + d._id.lastname;
   });
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var values = data.map(function (d) {
    return d.totalTickets;
   });
@@ -213,7 +223,7 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: [
      {
       label: "Ticket Count",
@@ -264,6 +274,11 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   var keys = data.map(function (d) {
    return d.firstname + " " + d.lastname;
   });
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var values = data.map(function (d) {
    return d.solvedTicketsCount;
   });
@@ -277,7 +292,7 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: [
      {
       label: "Ticket Count",
@@ -337,6 +352,11 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   var keys = data.map(function (d) {
    return d.firstname + " " + d.lastname;
   });
+
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var values = data.map(function (d) {
    return d.solvedTicketsCount;
   });
@@ -350,7 +370,7 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: [
      {
       label: "Ticket Count",
@@ -418,6 +438,10 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
    return d.firstName + " " + d.lastName;
   });
 
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var dataset = [
    {
     label: "Avg Time Taken(hrs) per Ticket",
@@ -451,7 +475,7 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: dataset,
    },
    options: {
@@ -533,6 +557,10 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
    return d.firstName + " " + d.lastName;
   });
 
+  var keysAdjusted = keys.map(function (key){
+    return key.split(" ");
+  })
+
   var dataset = [
    {
     label: "Avg Time Taken(hrs) per Ticket",
@@ -566,7 +594,7 @@ function CompanyUserDashboardController($scope, AnalyticsService) {
   new Chart(ctx, {
    type: "bar",
    data: {
-    labels: keys,
+    labels: keysAdjusted,
     datasets: dataset,
    },
    options: {
