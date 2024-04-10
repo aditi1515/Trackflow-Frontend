@@ -4,6 +4,8 @@
 
 .sub-view {
  flex: 1;
+ max-height: 100vh;
+ overflow-y: auto;
 }
 
 .company-dashboard-sidebar {

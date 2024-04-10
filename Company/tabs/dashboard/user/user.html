@@ -26,6 +26,7 @@
     ng-init="peopleAnalyticsSearchData.endDate = formDataInit.endDate"
     ng-change="peopleAnalyticsSearchDataChanged()"
     min="{{peopleAnalyticsSearchData.startDate |  date:'yyyy-MM-dd'}}"
+    max="{{formDataInit.endDate | date:'yyyy-MM-dd'}}"
     id=""
    />
   </div>

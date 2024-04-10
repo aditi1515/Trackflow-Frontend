@@ -1,8 +1,10 @@
 function CompanyProjectsDashboardController($scope, AnalyticsService) {
- $scope.formDataInit = {
-  startDate: new Date("2023-01-01"),
-  endDate: new Date("2024-12-31"),
- };
+  $scope.formDataInit = {
+    startDate:new Date(new Date().getFullYear()-1, new Date().getMonth(), new Date().getDate()),
+    endDate: new Date(),
+   };
+
+  
 
  $scope.projectCountFormData = {};
  $scope.totalPagesInPWU = 0;

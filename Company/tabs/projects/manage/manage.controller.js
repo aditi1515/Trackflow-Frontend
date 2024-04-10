@@ -66,7 +66,6 @@ function companyProjectsManageController(
    firstname: $scope.profile.firstname,
    lastname: $scope.profile.lastname,
    email: $scope.profile.email,
-   image: $scope.profile.image,
   };
 
   console.log("Form data: ", $scope.addProjectFormData);
@@ -90,26 +89,6 @@ function companyProjectsManageController(
   console.log("Editing project: ", project);
 
   var _project = angular.copy(project);
-
-  // var editProjectFormData = {
-  //  name: project.name,
-  //  description: project.description,
-  //  inProgress: project.inProgress,
-  //  dueDate: new Date(project.dueDate),
-  //  people: project.people,
-  //  previewLogo: [{ url: project.logo }],
-  //  previousLogo: project.logo,
-  //  membersAlreadySelected: project.members,
-  //  companyDetails : project.companyDetails,
-  //  removedMembers: [],
-  //  members: [],
-  //  key: project.key,
-  //  previousData: angular.copy(project),
-  //  metaData: {
-  //   company: $scope.company,
-  //   user: $scope.profile,
-  //  },
-  // };
 
   var editProjectFormData = _project;
   editProjectFormData.previousData = project;

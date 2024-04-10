@@ -58,11 +58,27 @@ function companyProjectsController(
  $scope.addTicketFormSubmit = function (modalId, addGlobalTicketForm) {
   console.log("Add ticket form data: ", $scope.addGlobalTicketFormData);
 
-  $scope.addGlobalTicketFormData.metaData = {
-   companyDetails: $scope.company,
-   projectDetails: $scope.currentlySelectedProject,
-   user: $scope.profile,
-  };
+
+
+  $scope.addGlobalTicketFormData.projectDetails = {
+    _id: $scope.currentlySelectedProject._id,
+    name : $scope.currentlySelectedProject.name,
+    key : $scope.currentlySelectedProject.key
+  }
+
+  $scope.addGlobalTicketFormData.companyDetails = {
+    _id: $scope.company._id,
+    name : $scope.company.name,
+    domain : $scope.company.domain
+  }
+
+  $scope.addGlobalTicketFormData.assignedBy = {
+    _id: $scope.profile._id,
+    firstname: $scope.profile.firstname,
+    lastname: $scope.profile.lastname,
+    email: $scope.profile.email,
+    image: $scope.profile.image,
+  }
 
   TicketService.createTicket($scope.addGlobalTicketFormData)
    .then(function (response) {

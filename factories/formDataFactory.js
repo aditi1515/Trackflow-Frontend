@@ -16,8 +16,11 @@ function formDataFactory() {
     email: companyFormData.admin.email,
     phoneNumber: companyFormData.admin.phoneNumber,
    },
-   previousData: companyFormData.previousData,
   };
+
+  if (companyFormData.previousData) {
+   data.previousData = companyFormData.previousData;
+  }
 
   if (companyFormData.isEnabled !== undefined) {
    data.isEnabled = companyFormData.isEnabled;
@@ -75,7 +78,6 @@ function formDataFactory() {
    throw new Error("isEnabled must be a boolean.");
   }
 
-
   var formData = convertDataToFormData(data);
 
   return formData;
@@ -84,121 +86,289 @@ function formDataFactory() {
  //project
  factory.getProjectFormData = function (project) {
   //  console.log("Project data: ", project);
-  //  var data = {
-  //   name: project.name,
-  //   description: project.description,
-  //   dueDate: project.dueDate,
-  //   members: project.members,
-  //   removedMembers: project.removedMembers,
-  //   previousLogo: project.previousLogo,
-  //   inProgress: project.inProgress,
-  //   key: project.key,
-  //   previousData: project.previousData,
-  //   createdBy: {
-  //    _id: project.metaData.user._id,
-  //    firstname: project.metaData.user.firstname,
-  //    lastname: project.metaData.user.lastname,
-  //    email: project.metaData.user.email,
-  //    image: project.metaData.user.image,
-  //   },
-  //   companyDetails: {
-  //    _id: project.metaData.company._id,
-  //    name: project.metaData.company.name,
-  //    domain: project.metaData.company.domain,
-  //   },
-  //  };
-  //  console.log("project.logo", project.logo);
-  //  if (project.logo) {
-  //   data.logo = project.logo;
-  //  }
-  console.log("Data before form: ", project);
-  var formData = convertDataToFormData(project);
+  var data = {
+   name: project.name,
+   description: project.description,
+   dueDate: project.dueDate,
+   members: project.members,
+   inProgress: project.inProgress,
+   key: project.key,
+
+   createdBy: {
+    _id: project.createdBy._id,
+    firstname: project.createdBy.firstname,
+    lastname: project.createdBy.lastname,
+    email: project.createdBy.email,
+    image: project.createdBy.image,
+   },
+   companyDetails: {
+    _id: project.companyDetails._id,
+    name: project.companyDetails.name,
+    domain: project.companyDetails.domain,
+   },
+  };
+
+  if (project.logo) {
+   data.logo = project.logo;
+  }
+
+  if (project.previousLogo) {
+   data.previousLogo = project.previousLogo;
+  }
+
+  if (project.removedMembers) {
+   data.removedMembers = project.removedMembers;
+  }
+
+  if (project.previousData) {
+   data.previousData = project.previousData;
+  }
+
+  console.log("Project data: ", data);
+
+  // Validate name
+  if (typeof data.name !== "string") {
+   throw new Error("Name must be a string.");
+  }
+
+  // Validate description
+  if (typeof data.description !== "string") {
+   throw new Error("Description must be a string.");
+  }
+
+  // Validate dueDate
+  if (!(data.dueDate instanceof Date)) {
+   throw new Error("Due date must be a Date object.");
+  }
+
+  // Validate members (assuming it's an array or object)
+  if (!Array.isArray(data.members)) {
+   throw new Error("Members must be an array or object.");
+  }
+
+  // Validate inProgress
+  if (typeof data.inProgress !== "boolean") {
+   throw new Error("In Progress must be a boolean.");
+  }
+
+  // Validate key
+  if (typeof data.key !== "string") {
+   throw new Error("Key must be a string.");
+  }
+
+  // Validate createdBy object
+  if (typeof data.createdBy !== "object") {
+   throw new Error("Created By must be an object.");
+  } else {
+   // Validate createdBy properties
+   if (typeof data.createdBy._id !== "string") {
+    throw new Error("Created By _id must be a string.");
+   }
+   if (typeof data.createdBy.firstname !== "string") {
+    throw new Error("Created By First Name must be a string.");
+   }
+   if (typeof data.createdBy.lastname !== "string") {
+    throw new Error("Created By Last Name must be a string.");
+   }
+   if (typeof data.createdBy.email !== "string") {
+    throw new Error("Created By Email must be a string.");
+   }
+  }
+
+  // Validate companyDetails object
+  if (typeof data.companyDetails !== "object") {
+   throw new Error("Company Details must be an object.");
+  } else {
+   // Validate companyDetails properties
+   if (typeof data.companyDetails._id !== "string") {
+    throw new Error("Company Details _id must be a string.");
+   }
+   if (typeof data.companyDetails.name !== "string") {
+    throw new Error("Company Details Name must be a string.");
+   }
+   if (typeof data.companyDetails.domain !== "string") {
+    throw new Error("Company Details Domain must be a string.");
+   }
+  }
+
+  var formData = convertDataToFormData(data);
 
   return formData;
  };
 
  //ticket
- factory.getTicketFormData = function (ticketData) {
-  console.log("Ticket data: in getTicketFormData", ticketData);
+ factory.getTicketFormData = function (data) {
+  var ticketData = {
+   title: data.title,
+   description: data.description || "",
+   dueDate: data.dueDate,
+   status: data.status,
+   ticketType: data.ticketType,
+   priority: data.priority,
+   assignees: data.assignees ? data.assignees : [],
+   reporterClient: data.reporterClient,
+   attachments: data.attachments,
+
+   projectDetails: {
+    _id: data.projectDetails._id,
+    name: data.projectDetails.name,
+    key: data.projectDetails.key,
+   },
+   companyDetails: {
+    _id: data.companyDetails._id,
+    name: data.companyDetails.name,
+    domain: data.companyDetails.domain,
+   },
+   assignedBy: {
+    _id: data.assignedBy._id,
+    firstname: data.assignedBy.firstname,
+    lastname: data.assignedBy.lastname,
+    email: data.assignedBy.email,
+    image: data.assignedBy.image,
+   },
+  };
+
+  if (data.previousTicket) {
+   ticketData.previousTicket = data.previousTicket;
+  }
+
+  if (data.removedAttachments) {
+   ticketData.removedAttachments = data.removedAttachments;
+  }
+
+  if (data.previousAttachments) {
+   ticketData.previousAttachments = data.previousAttachments;
+  }
+
+  if (data.alreadyAssigned) {
+   ticketData.alreadyAssigned = data.alreadyAssigned;
+  }
+
+  if (data.removeAssignees) {
+   ticketData.removeAssignees = data.removeAssignees;
+  }
+
   // Validate title
   if (typeof ticketData.title !== "string") {
-   return new Error("Title must be a string.");
+   throw new Error("Title must be a string.");
   }
 
   // Validate description
-  if (ticketData.description && typeof ticketData.description !== "string") {
-   return new Error("Description must be a string.");
+  if (typeof ticketData.description !== "string") {
+   throw new Error("Description must be a string.");
   }
 
-  // Validate dueDate
+  // Validate dueDate (assuming it's a Date object)
   if (!(ticketData.dueDate instanceof Date)) {
-   return new Error("Due date must be a Date object.");
+   throw new Error("Due date must be a Date object.");
   }
 
   // Validate status
   if (typeof ticketData.status !== "string") {
-   return new Error("Status must be a string.");
+   throw new Error("Status must be a string.");
   }
 
   // Validate ticketType
   if (typeof ticketData.ticketType !== "string") {
-   return new Error("Ticket type must be a string.");
+   throw new Error("Ticket type must be a string.");
   }
 
   // Validate priority
   if (typeof ticketData.priority !== "string") {
-   return new Error("Priority must be a string.");
+   throw new Error("Priority must be a string.");
   }
 
-  // Validate projectDetails
+  // Validate assignees (assuming it's an array)
+  if (ticketData.assignees && !Array.isArray(ticketData.assignees)) {
+   throw new Error("Assignees must be an array.");
+  }
+
+  // Validate reporterClient
+  if (typeof ticketData.reporterClient !== "string") {
+   throw new Error("Reporter client must be a string.");
+  }
+
+  // Validate projectDetails object
+  if (typeof ticketData.projectDetails !== "object") {
+   throw new Error("Project details must be an object.");
+  } else {
+   // Validate projectDetails properties
+   if (typeof ticketData.projectDetails._id !== "string") {
+    throw new Error("Project Details _id must be a string.");
+   }
+   if (typeof ticketData.projectDetails.name !== "string") {
+    throw new Error("Project Details Name must be a string.");
+   }
+   if (typeof ticketData.projectDetails.key !== "string") {
+    throw new Error("Project Details Key must be a string.");
+   }
+  }
+
+  // Validate companyDetails object
+  if (typeof ticketData.companyDetails !== "object") {
+   throw new Error("Company details must be an object.");
+  } else {
+   // Validate companyDetails properties
+   if (typeof ticketData.companyDetails._id !== "string") {
+    throw new Error("Company Details _id must be a string.");
+   }
+   if (typeof ticketData.companyDetails.name !== "string") {
+    throw new Error("Company Details Name must be a string.");
+   }
+   if (typeof ticketData.companyDetails.domain !== "string") {
+    throw new Error("Company Details Domain must be a string.");
+   }
+  }
+
+  // Validate assignedBy object
+  if (typeof ticketData.assignedBy !== "object") {
+   throw new Error("Assigned By must be an object.");
+  } else {
+   // Validate assignedBy properties
+   if (typeof ticketData.assignedBy._id !== "string") {
+    throw new Error("Assigned By _id must be a string.");
+   }
+   if (typeof ticketData.assignedBy.firstname !== "string") {
+    throw new Error("Assigned By First Name must be a string.");
+   }
+   if (typeof ticketData.assignedBy.lastname !== "string") {
+    throw new Error("Assigned By Last Name must be a string.");
+   }
+   if (typeof ticketData.assignedBy.email !== "string") {
+    throw new Error("Assigned By Email must be a string.");
+   }
+   if (typeof ticketData.assignedBy.image !== "string") {
+    throw new Error("Assigned By Image must be a string.");
+   }
+  }
+
   if (
-   ticketData.projectDetails &&
-   typeof ticketData.projectDetails !== "object"
+   ticketData.removedAttachments &&
+   !Array.isArray(ticketData.removedAttachments)
   ) {
-   return new Error("Project details must be an object.");
+   throw new Error("Removed Attachments must be an array.");
   }
 
-  //  var data = {
-  //   title: ticketData.title,
-  //   description: ticketData.description || "",
-  //   dueDate: ticketData.dueDate,
-  //   status: ticketData.status,
-  //   ticketType: ticketData.ticketType,
-  //   priority: ticketData.priority,
-  //   assignees: ticketData.assignees ? ticketData.assignees : [],
-  //   alreadyAssigned: ticketData.alreadyAssigned,
-  //   reporterClient: ticketData.reporterClient,
-  //   removeAssignees: ticketData.removeAssignees,
-  //   previousAttachments: ticketData.previousAttachments,
-  //   removedAttachments: ticketData.removedAttachments,
-  //   attachments: ticketData.attachments,
-  //   previousTicket: ticketData.previousTicket,
-  //  };
+  if (
+   ticketData.previousAttachments &&
+   !Array.isArray(ticketData.previousAttachments)
+  ) {
+   throw new Error("Previous Attachments must be an array.");
+  }
 
-  //  if (ticketData.metaData.projectDetails !== null) {
-  //   data.projectDetails = {
-  //    _id: ticketData.metaData.projectDetails._id,
-  //    name: ticketData.metaData.projectDetails.name,
-  //    key: ticketData.metaData.projectDetails.key,
-  //   };
-  //  }
+  if (
+   ticketData.alreadyAssigned &&
+   !Array.isArray(ticketData.removeAssignees)
+  ) {
+   throw new Error("Already Assigned must be a array.");
+  }
 
-  //  if (ticketData.metaData.companyDetails !== null) {
-  //   data.companyDetails = {
-  //    _id: ticketData.metaData.companyDetails._id,
-  //    name: ticketData.metaData.companyDetails.name,
-  //    domain: ticketData.metaData.companyDetails.domain,
-  //   };
-  //  }
-  //  if (ticketData.metaData.user !== null) {
-  //   data.assignedBy = {
-  //    _id: ticketData.metaData.user._id,
-  //    firstname: ticketData.metaData.user.firstname,
-  //    lastname: ticketData.metaData.user.lastname,
-  //    email: ticketData.metaData.user.email,
-  //    image: ticketData.metaData.user.image,
-  //   };
-  //  }
+  if (
+   ticketData.removeAssignees &&
+   !Array.isArray(ticketData.removeAssignees)
+  ) {
+   throw new Error("Remove Assignees must be an array.");
+  }
 
   var formData = convertDataToFormData(ticketData);
 
