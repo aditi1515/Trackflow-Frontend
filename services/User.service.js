@@ -59,8 +59,17 @@ function UserService($q, $http, $state, BASE_URL, subdomainService) {
  };
 
  //get all users
- this.getAllUsers = function (queryObject) {
+ this.getAllUsers = function (queryObject,   dateRangeOption) {
   var queryString = QueryGenerator(queryObject);
+
+  if (dateRangeOption) {
+   if(dateRangeOption.startDate){
+    queryString += `&startDate=${dateRangeOption.startDate}`
+   }
+   if(dateRangeOption.endDate){
+    queryString += `&endDate=${dateRangeOption.endDate}`
+   }
+  }
 
   return $http.get(BASE_URL + `user/all?${queryString}`);
  };

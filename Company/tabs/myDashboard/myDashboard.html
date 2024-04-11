@@ -1,0 +1,117 @@
+<section class="myDashboard-wrapper">
+ <link
+  rel="stylesheet"
+  href="../../../Company/tabs/myDashboard/myDashboard.css"
+ />
+
+ <div class="myDashboard-header">
+  <h2>My Dashboard</h2>
+ </div>
+
+ <div class="ticket-counts">
+  <div class="ticket-count">
+   <span class="ticket-count-value">{{myTicketAnalytics.totalTickets}}</span>
+   <span class="ticket-count-title"> Total Tickets </span>
+  </div>
+  <div class="ticket-count">
+   <span class="ticket-count-value"
+    >{{myTicketAnalytics.statusCounts.OPEN || 0}}</span
+   >
+   <span class="ticket-count-title"> Open </span>
+  </div>
+
+  <div class="ticket-count">
+   <span class="ticket-count-value"
+    >{{myTicketAnalytics.statusCounts["IN PROGRESS"] || 0}}</span
+   >
+   <span class="ticket-count-title"> In Progress </span>
+  </div>
+
+  <div class="ticket-count">
+   <span class="ticket-count-value"
+    >{{myTicketAnalytics.statusCounts["IN REVIEW"] || 0}}</span
+   >
+   <span class="ticket-count-title"> In Review </span>
+  </div>
+
+  <div class="ticket-count">
+   <span class="ticket-count-value"
+    >{{myTicketAnalytics.statusCounts.CLOSED || 0}}</span
+   >
+   <span class="ticket-count-title"> Closed </span>
+  </div>
+ </div>
+
+ <div class="ticket-counts">
+  <div class="ticket-count bugs">
+   <span class="ticket-count-value">{{myTicketAnalytics.typeCounts.BUG || 0}}</span>
+   <span class="ticket-count-title"> Bugs </span>
+  </div>
+
+  <div class="ticket-count fr">
+   <span class="ticket-count-value">{{myTicketAnalytics.typeCounts.FR || 0}}</span>
+   <span class="ticket-count-title"> FR </span>
+  </div>
+ </div>
+
+ <div class="chart-row">
+  <div class="status-wise-chart">
+   <h3>Tickets Status Wise</h3>
+   <div class="status-wise-chart-wrapper">
+    <canvas
+     id="statusWiseChart"
+     class="status-wise-chart-canvas"
+     width="400"
+     height="400"
+    ></canvas>
+   </div>
+  </div>
+
+  <div class="priority-wise-chart">
+   <h3>Tickets Priority Wise</h3>
+   <div class="priority-wise-chart-wrapper">
+    <canvas
+     id="priorityWiseChart"
+     class="priority-wise-chart-canvas"
+     width="400"
+     height="400"
+    ></canvas>
+   </div>
+  </div>
+ </div>
+
+ <div class="project-wise-chart">
+  <h3>Project Wise Tickets</h3>
+  <div class="project-wise-chart-wrapper">
+   <canvas
+    id="projectWiseTicketsChart"
+    class="project-wise-chart-canvas"
+    width="400"
+    height="400"
+   ></canvas>
+  </div>
+
+  <div class="pagination">
+   <div class="pagination__pageCount">
+    <span>Page</span>
+    <span>{{pwtPage}}</span>
+    <span>of</span>
+    <span>{{totalPagesInPWT}}</span>
+   </div>
+
+   <i
+    ng-disabled="pwtPage <= 1"
+    ng-click="projectWiseTicketsPageChange(pwtPage - 1)"
+    class="bi-arrow-left-square-fill"
+    ng-class="{disabled:pwtPage <= 1}"
+   ></i>
+   <i
+    class="bi-arrow-right-square-fill"
+    ng-disabled="pwtPage >= totalPagesInPWT"
+    ng-click="projectWiseTicketsPageChange(pwtPage + 1)"
+    ng-class="{disabled:pwtPage>=totalPagesInPWT}"
+   ></i>
+  </div>
+ </div>
+
+</section>

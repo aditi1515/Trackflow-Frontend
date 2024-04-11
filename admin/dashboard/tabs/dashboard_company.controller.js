@@ -139,8 +139,6 @@ function dashboardCompanyController(
       endDate = new Date();
       break;
     default:
-      // Handle invalid or default case
-      console.log("Invalid date range option");
       break;
   }
 

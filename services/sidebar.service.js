@@ -37,6 +37,13 @@ function sideBarService() {
       icon: "bi-clipboard",
     });
 
+    sideBarOptions.push({
+      label:"My Dashboard",
+      state:"company.myDashboard",
+      icon:"bi-journals"
+    })
+
+
     if (userPermissions.ROLE.ACCESS) {
       sideBarOptions.push({
         label: "Role Management",

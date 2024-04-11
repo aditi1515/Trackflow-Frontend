@@ -6,13 +6,13 @@ function companyPeopleController(
  UserService,
  RoleService
 ) {
-
-
  $scope.peopleData = {};
  $scope.isEditing = false;
  $scope.currentEditingEmployee = null;
  $scope.formHolder = {};
  $scope.addEmployeeFormData = {};
+ $scope.dateRangeOption = null;
+
  //submit add employee form
  $scope.addEmployeeFormSubmit = function (modalId, addEmployeeForm) {
   console.log("Adding employee: ", $scope.addEmployeeFormData);
@@ -32,16 +32,51 @@ function companyPeopleController(
   // ModalService.hideModal(modalId);
  };
 
+ $scope.dateOptionChange = function (option) {
+  console.log("Option: ", option);
+  $scope.dateRangeOption = option;
+
+  getAllPeople();
+ };
+
  function getAllPeople(
   pageNo = 1,
   pageSize = 10,
   query = $scope.peopleData.query || ""
  ) {
+
+  var startDate = null;
+  var endDate = null;
+  console.log("Date range option: ", $scope.dateRangeOption);
+  switch ($scope.dateRangeOption) {
+    case "oneMonth":
+      startDate = new Date();
+      startDate.setMonth(startDate.getMonth() - 1);
+      endDate = new Date();
+      break;
+    case "sixMonths":
+      startDate = new Date();
+      startDate.setMonth(startDate.getMonth() - 6);
+      endDate = new Date();
+      break;
+    case "oneYear":
+      startDate = new Date();
+      startDate.setFullYear(startDate.getFullYear() - 1);
+      endDate = new Date();
+      break;
+    default:
+      break;
+  }
+
+
+  var dateRangeOption = {startDate: startDate, endDate: endDate}
+
+
   UserService.getAllUsers({
    pageNo,
    pageSize,
    query,
-  }).then(function (response) {
+  },   dateRangeOption).then(function (response) {
    console.log("All people: ", response);
    $scope.peopleData = response.data;
   });
@@ -103,9 +138,8 @@ function companyPeopleController(
    email: employee.email,
    role: employee.role,
    phoneNumber: employee.phoneNumber,
-   isCurrentMember : employee.isCurrentMember,
+   isCurrentMember: employee.isCurrentMember,
    previousData: $scope.currentEditingEmployee,
-
   };
 
   $scope.addEmployeeFormData = editEmployeeFormData;
