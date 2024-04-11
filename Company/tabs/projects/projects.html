@@ -311,6 +311,10 @@
      ng-show="formHolder.addGlobalTicketForm.$invalid && formHolder.addGlobalTicketForm.$submitted"
     >
      {{formHolder.addGlobalTicketForm.errorMessage}}
+     <div class="error-container" ng-repeat="err in errorMessages">
+      <span>{{err}}</span>
+     </div>
+     
     </div>
    </div>
 

@@ -21,6 +21,12 @@
  min-height: 100vh;
 }
 
+.error-container{
+ display: flex;
+ gap: 0.4rem;
+ flex-direction: column;
+}
+
 .project-sidebar h2 {
  margin-top: 1rem;
  font-size: 1.2rem;

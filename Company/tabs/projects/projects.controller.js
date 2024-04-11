@@ -7,7 +7,8 @@ function companyProjectsController(
  TicketService,
  ModalService,
  SnackbarService,
- FilePreviewFactory
+ FilePreviewFactory,
+ TicketFactory
 ) {
  $scope.allEmployeesInCompany = [];
  $scope.formHolder = {};
@@ -79,26 +80,56 @@ function companyProjectsController(
    image: $scope.profile.image,
   };
 
-  TicketService.createTicket($scope.addGlobalTicketFormData)
-   .then(function (response) {
-    console.log("Ticket created successfully: ", response);
-    ModalService.hideModal(modalId);
-    $scope.previewAttachments = [];
-    SnackbarService.showAlert("Ticket created successfully", 2000, "success");
+  // TicketService.createTicket($scope.addGlobalTicketFormData)
+  //  .then(function (response) {
+  //   console.log("Ticket created successfully: ", response);
+  //   ModalService.hideModal(modalId);
+  //   $scope.previewAttachments = [];
+  //   SnackbarService.showAlert("Ticket created successfully", 2000, "success");
 
-    $timeout(function () {
-     $state.go("company.projects.project.ticket", {
-      projectId: $scope.currentlySelectedProject._id,
-     });
-     $state.reload("company.projects.project.ticket", {
-      projectId: $scope.currentlySelectedProject._id,
-     });
-    }, 3000);
-   })
-   .catch(function (error) {
-    addTicketForm.errorMessage = error.message;
-    console.log("Error adding ticket: ", error);
-   });
+  //   $timeout(function () {
+  //    $state.go("company.projects.project.ticket", {
+  //     projectId: $scope.currentlySelectedProject._id,
+  //    });
+  //    $state.reload("company.projects.project.ticket", {
+  //     projectId: $scope.currentlySelectedProject._id,
+  //    });
+  //   }, 3000);
+  //  })
+  //  .catch(function (error) {
+  //   addTicketForm.errorMessage = error.message;
+  //   console.log("Error adding ticket: ", error);
+  //  });
+
+  var ticket = new TicketFactory.Ticket($scope.addGlobalTicketFormData);
+  var errors = ticket.validate();
+  console.log("Errors: ", errors);
+
+  if (errors.length) {
+   addGlobalTicketForm.errorMessages = errors;
+   console.log("Errors: ", errors);
+   return;
+  }
+  else{
+    console.log("Ticket created successfully");
+    ticket.save().then(function(response){
+      ModalService.hideModal(modalId);
+      $scope.previewAttachments = [];
+      SnackbarService.showAlert("Ticket created successfully", 2000, "success");
+      $timeout(function(){
+        $state.go("company.projects.project.ticket", {
+          projectId: $scope.currentlySelectedProject._id,
+         });
+         $state.reload("company.projects.project.ticket", {
+          projectId: $scope.currentlySelectedProject._id,
+         });
+      }, 3000);
+    }).catch(function(error){
+      addGlobalTicketForm.errorMessage = error.message;
+      console.log("Error adding ticket: ", error);
+    })
+  }
+
  };
 
  $scope.launchModal = function (modalId) {
@@ -129,5 +160,6 @@ trackflow.controller("companyProjectsController", [
  "ModalService",
  "SnackbarService",
  "FilePreviewFactory",
+ "TicketFactory",
  companyProjectsController,
 ]);
