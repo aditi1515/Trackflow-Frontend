@@ -106,3 +106,23 @@ gap: 4px;
 padding: 1rem;
  flex-direction: column;
 }
+
+.pagination {
+ display: flex;
+ justify-content: flex-end;
+ padding-right: 3rem;
+ align-items: center;
+ font-size: 12px;
+ gap: 1rem;
+}
+.pagination i {
+ padding: 0.2rem;
+ color: var(--pastel-pink);
+ font-size: 1rem;
+ cursor: pointer;
+}
+
+.pagination i.disabled {
+ color: grey;
+ pointer-events: none;
+}

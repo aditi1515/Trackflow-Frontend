@@ -267,7 +267,7 @@ function ticketController(
  //edit ticket
  $scope.editTicketToggle = function (modalId) {
   if ($scope.isEditing) {
-   init();
+  //  init();
    $scope.viewTicket(modalId, $scope.currentEditingTicket);
   } else {
    $scope.isEditing = true;

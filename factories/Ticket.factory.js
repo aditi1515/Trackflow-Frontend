@@ -62,7 +62,7 @@ function TicketFactory(TicketService) {
    };
   }
 
-  
+
  }
 
  Ticket.prototype.validate = function () {
@@ -147,11 +147,9 @@ function TicketFactory(TicketService) {
   return TicketService.updateTicket(ticketId, ticketFormData);
  };
 
- function prepareEditData(ticket) {}
 
  return {
   Ticket: Ticket,
-  prepareEditData: prepareEditData,
  };
 }
 
