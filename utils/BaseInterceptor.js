@@ -49,7 +49,7 @@ trackflow.service("BaseUrlInterceptor", [
   this.responseError = function (rejection) {
    // Handle errors
    console.log("Response Error: ", rejection);
-   if (rejection.status === 510) {
+   if (rejection.status === 510 || rejection.status === 401) {
     $state.go("login");
    } else if (rejection.status === 403) {
     console.log("Forbidden");
