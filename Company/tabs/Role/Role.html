@@ -129,11 +129,12 @@
      </div>
     </div>
     <div class="formerror">   
+      
      <div
       class="error"
-      ng-show="addRoleForm.$invalid && addRoleForm.$submitted"
+      ng-show="formHolder.addRoleForm.$invalid && formHolder.addRoleForm.$submitted"
      >
-      {{addRoleForm.errorMessage}}
+      {{formHolder.addRoleForm.errorMessage}}
      </div>
     </div>
 
@@ -246,9 +247,9 @@
       <div class="formerror">
        <div
         class="error"
-        ng-show="editRoleForm.$invalid && editRoleForm.$submitted"
+        ng-show="formHolder.editRoleForm.$invalid && formHolder.editRoleForm.$submitted"
        >
-        {{editRoleForm.errorMessage}}
+        {{formHolder.editRoleForm.errorMessage}}
        </div>
       </div>
       <div class="footer">

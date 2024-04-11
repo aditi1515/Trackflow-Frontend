@@ -10,7 +10,8 @@ function RoleManagementController(
  $scope.currentEditingRole = {};
  $scope.presetNameError = false;
  $scope.launchModal = function (modalId) {
-  $scope.presetNameError = false
+  $scope.presetNameError = false;
+
   ModalService.showModal(modalId);
  };
 
@@ -74,6 +75,8 @@ function RoleManagementController(
     getAllRoles();
    })
    .catch(function (err) {
+    $scope.formHolder.addRoleForm.errorMessage = err.data.message;
+    $scope.formHolder.addRoleForm.$invalid = true;
     console.log("Error saving role: ", err);
    });
  };
@@ -137,6 +140,8 @@ function RoleManagementController(
     getAllRoles();
    })
    .catch(function (err) {
+    $scope.formHolder.editRoleForm.errorMessage = err.data.message;
+    $scope.formHolder.editRoleForm.$invalid = true;
     console.log("Error updating role: ", err);
    });
  };

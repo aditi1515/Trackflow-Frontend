@@ -47,25 +47,6 @@ function dashboardCompanyController(
  //    });
  //  };
 
- $scope.addCompanyFormData = {
-  name: "ABC Corporation",
-  domain: "abccorp",
-  city: "New York",
-  state: "NY",
-  country: "USA",
-  logo: "abccorp_logo.png",
-  previewLogo: [
-   {
-    url: "https://example.com/abccorp_logo.png",
-   },
-  ],
-  admin: {
-   firstname: "Emily",
-   lastname: "Johnson",
-   email: "emily.johnson@abccorp.com",
-   phoneNumber: "1234567890",
-  },
- };
 
  $scope.addCompanyFormSubmit = function (modalId, addCompanyForm) {
   console.log("Form data: ", $scope.addCompanyFormData);
