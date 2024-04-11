@@ -222,6 +222,11 @@
      ng-show="addTicketForm.$invalid && addTicketForm.$submitted"
     >
      {{addTicketForm.errorMessage}}
+
+     <div class="error-container" ng-repeat="err in errorMessages">
+      <span>{{err}}</span>
+     </div>
+     
     </div>
    </div>
 

@@ -59,7 +59,6 @@ function ProjectFactory(ProjectService) {
   projectData.removedMembers = [];
   projectData.previousData = project;
   projectData.members = [];
-  delete projectData.logo;
   return projectData;
  }
 
@@ -99,6 +98,11 @@ function ProjectFactory(ProjectService) {
    errors.push("Description must be a string");
   }
 
+  if(!(this.dueDate instanceof Date)){
+   errors.push("Due date must be a date");
+  }
+
+  
   if (typeof this.key !== "string") {
    errors.push("Key must be a string");
   }
