@@ -294,3 +294,52 @@ li.disabled a i {
   flex-direction: column;
   gap: 0.5rem;
 }
+
+
+.date-filter{
+  background: transparent;
+  font-size: 12px;
+  display: flex;
+  width: fit-content;
+ border: 1px solid #ccc;
+ padding: 4px 10px;
+ height: fit-content;
+ border-radius: 5px;
+ cursor: pointer;
+}
+
+.date-filter:hover{
+  background: #f1f1f1;
+}
+
+.date-filter.active{
+  background: var(--dark-pink);
+  color: white;
+}
+
+.top-bar{
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.top-bar input{
+  width: 20%;
+
+}
+
+.clear-date-option{
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding:  4px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  color:red;
+}
+
+.clear-date-option:hover{
+  background: rgb(244, 206, 206);
+}

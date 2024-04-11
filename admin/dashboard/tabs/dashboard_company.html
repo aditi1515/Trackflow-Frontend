@@ -287,15 +287,20 @@
    <!-- list companies -->
 
    <div class="company-table">
-    <div class="searchBox">
-     <input
-      type="text"
-      class="form-control"
-      placeholder="Search by company name"
-      ng-model="companiesData.query"
-      ng-change="debounceSearch()"
-     />
-    </div>
+   <div class="top-bar">
+   
+      <input
+       type="text"
+       class="form-control"
+       placeholder="Search by company name"
+       ng-model="companiesData.query"
+       ng-change="debounceSearch()"
+      />
+     <span class="date-filter" ng-click="dateOptionChange('oneYear');" ng-class="{'active' : dateRangeOption=== 'oneYear'}">1 Year</span>
+     <span class="date-filter" ng-click="dateOptionChange('sixMonths');" ng-class="{'active' : dateRangeOption=== 'sixMonths'}">6 Months</span>
+     <span class="date-filter" ng-click="dateOptionChange('oneMonth');" ng-class="{'active' : dateRangeOption=== 'oneMonth'}">1 Month</span>
+
+     <span ng-click="dateOptionChange(null);" ng-if="dateRangeOption" class="clear-date-option bi-x"></span>
    </div>
    <div class="table-wrapper">
     <table class="table table-hover">

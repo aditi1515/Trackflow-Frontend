@@ -1,8 +1,26 @@
 function CompanyService($http, BASE_URL, FormDataFactory) {
-  this.getCompanies = function (pageNo, pageSize, query) {
+  this.getCompanies = function (pageNo, pageSize, query,dateRangeOption) {
+
+    var query = ""
+    query += `pageNo=${pageNo}&&pageSize=${pageSize}&&query=${query}`
+    console.log("dateRangeOption",dateRangeOption);
+    if (dateRangeOption) {
+     
+      
+      if (dateRangeOption.startDate) {
+        query += `&&startDate=${dateRangeOption.startDate}`
+      }
+
+      if (dateRangeOption.endDate) {
+        query += `&&endDate=${dateRangeOption.endDate}`
+      }
+
+    }
+
+
     return $http.get(
       BASE_URL +
-        `company?pageNo=${pageNo}&&pageSize=${pageSize}&&query=${query}`
+        `company?${query}`
     );
   };
 
@@ -13,16 +31,6 @@ function CompanyService($http, BASE_URL, FormDataFactory) {
       headers: { "Content-Type": undefined },
     });
   };
-
-  // this.changeCompanyStatus = function (companyId) {
-  //   return $http.patch(
-  //     BASE_URL + "company/" + companyId,
-  //     {},
-  //     {
-  //       headers: { "Content-Type": "application/json" },
-  //     }
-  //   );
-  // };
 
   this.editCompany = function (companyId, companyData) {
     // var formData = FormDataFactory.getCompanyFormData(companyData);

@@ -184,3 +184,8 @@ label {
  color: grey;
  pointer-events: none;
 }
+
+
+.not-time-based{
+ background: #eeeef8;
+}

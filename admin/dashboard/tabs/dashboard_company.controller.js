@@ -13,6 +13,8 @@ function dashboardCompanyController(
  $scope.companiesData = {};
  $scope.isEditing = false;
  $scope.currentEditingCompany = null;
+  $scope.dateRangeOption = null
+
 
  //for previewing logo in form
  function filePreviewCallback(filesUrls) {
@@ -21,33 +23,6 @@ function dashboardCompanyController(
  }
 
  FilePreviewFactory.initFileSelectionListener($scope, filePreviewCallback);
-
- //add company form data
- //  $scope.addCompanyFormSubmit = function (modalId, addCompanyForm) {
- //   console.log("Form data: ", $scope.addCompanyFormData);
- //   CompanyService.saveCompany($scope.addCompanyFormData)
- //    .then(function (response) {
- //     console.log("Company saved successfully: ", response);
- //     SnackbarService.showAlert(
- //      "Company and Admin saved successfully ",
- //      2000,
- //      "success"
- //     );
- //     $scope.addCompanyFormData = {}; // reset form data
- //     addCompanyForm.$setPristine();
- //     addCompanyForm.$setUntouched();
- //     getCompanies();
- //     ModalService.hideModal(modalId);
- //    })
- //    .catch(function (err) {
- //     console.error("Error saving company: ", err.data.message);
- //     console.log(addCompanyForm);
- //     addCompanyForm.$invalid = true;
- //     addCompanyForm.errorMessage = err.data.message;
- //    });
- //  };
-
-
  $scope.addCompanyFormSubmit = function (modalId, addCompanyForm) {
   console.log("Form data: ", $scope.addCompanyFormData);
 
@@ -83,27 +58,6 @@ function dashboardCompanyController(
      addCompanyForm.errorMessage = err.data.message;
     });
   }
-
-  // CompanyService.saveCompany($scope.addCompanyFormData)
-  //  .then(function (response) {
-  //   console.log("Company saved successfully: ", response);
-  //   SnackbarService.showAlert(
-  //    "Company and Admin saved successfully ",
-  //    2000,
-  //    "success"
-  //   );
-  //   $scope.addCompanyFormData = {}; // reset form data
-  //   addCompanyForm.$setPristine();
-  //   addCompanyForm.$setUntouched();
-  //   getCompanies();
-  //   ModalService.hideModal(modalId);
-  //  })
-  //  .catch(function (err) {
-  //   console.error("Error saving company: ", err.data.message);
-  //   console.log(addCompanyForm);
-  //   addCompanyForm.$invalid = true;
-  //   addCompanyForm.errorMessage = err.data.message;
-  //  });
  };
 
  //populate add company form with previous data
@@ -113,30 +67,6 @@ function dashboardCompanyController(
   $scope.isEditing = true;
   ModalService.showModal(modalId);
  };
-
- //edit company form submit
- //  $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
- //   console.log("Editing company: ", $scope.addCompanyFormData);
-
- //   CompanyService.editCompany(
- //    $scope.currentEditingCompany._id,
- //    $scope.addCompanyFormData
- //   )
- //    .then(function (response) {
- //     console.log("Company updated successfully: ", response);
- //     SnackbarService.showAlert("Company updated successfully ", 2000, "success");
- //     $scope.addCompanyFormData = {}; // reset form data
- //     editCompanyForm.$setPristine();
- //     editCompanyForm.$setUntouched();
- //     getCompanies();
- //     ModalService.hideModal(modalId);
- //    })
- //    .catch(function (err) {
- //     console.error("Error updating company: ", err.data.message);
- //     editCompanyForm.$invalid = true;
- //     editCompanyForm.errorMessage = err.data.message;
- //    });
- //  };
 
  $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
   console.log("Editing company: ", $scope.addCompanyFormData);
@@ -174,13 +104,49 @@ function dashboardCompanyController(
   }
  };
 
+
+ $scope.dateOptionChange = function (option) {
+  console.log("Option: ", option);
+  $scope.dateRangeOption = option;
+
+  getCompanies()
+ }
+
  //display all companies
  function getCompanies(
   pageNo = 1,
   pageSize = 10,
   query = $scope.companiesData.query || ""
  ) {
-  CompanyService.getCompanies(pageNo, pageSize, query)
+
+  var startDate = null;
+  var endDate = null;
+  console.log("Date range option: ", $scope.dateRangeOption);
+  switch ($scope.dateRangeOption) {
+    case "oneMonth":
+      startDate = new Date();
+      startDate.setMonth(startDate.getMonth() - 1);
+      endDate = new Date();
+      break;
+    case "sixMonths":
+      startDate = new Date();
+      startDate.setMonth(startDate.getMonth() - 6);
+      endDate = new Date();
+      break;
+    case "oneYear":
+      startDate = new Date();
+      startDate.setFullYear(startDate.getFullYear() - 1);
+      endDate = new Date();
+      break;
+    default:
+      // Handle invalid or default case
+      console.log("Invalid date range option");
+      break;
+  }
+
+
+  var dateRangeOption = {startDate: startDate, endDate: endDate}
+  CompanyService.getCompanies(pageNo, pageSize, query , dateRangeOption)
    .then(function (response) {
     $scope.companiesData = response.data;
 
