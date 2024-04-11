@@ -1,6 +1,5 @@
-function TicketFactory(TicketService){
-
- function Ticket(ticket){
+function TicketFactory(TicketService) {
+ function Ticket(ticket, project, company, user) {
   this.title = ticket.title;
   this.description = ticket.description || "";
   this.dueDate = ticket.dueDate;
@@ -10,129 +9,150 @@ function TicketFactory(TicketService){
   this.assignees = ticket.assignees ? ticket.assignees : [];
   this.reporterClient = ticket.reporterClient;
   this.attachments = ticket.attachments;
-  this.projectDetails = ticket.projectDetails;
-  this.companyDetails = ticket.companyDetails;
-  this.assignedBy = ticket.assignedBy;
 
-  if(ticket.previousTicket){
-    this.previousTicket = ticket.previousTicket;
+  if (ticket.previousTicket) {
+   this.previousTicket = ticket.previousTicket;
   }
 
-  if(ticket.removedAttachments){
-    this.removedAttachments = ticket.removedAttachments;
+  if (ticket.removedAttachments) {
+   this.removedAttachments = ticket.removedAttachments;
   }
 
-  if(ticket.previousAttachments){
-    this.previousAttachments = ticket.previousAttachments;
+  if (ticket.previousAttachments) {
+   this.previousAttachments = ticket.previousAttachments;
   }
 
-  if(ticket.alreadyAssigned){
-    this.alreadyAssigned = ticket.alreadyAssigned;
+  if (ticket.alreadyAssigned) {
+   this.alreadyAssigned = ticket.alreadyAssigned;
   }
 
-  if(ticket.removeAssignees){
-    this.removeAssignees = ticket.removeAssignees;
+  if (ticket.removeAssignees) {
+   this.removeAssignees = ticket.removeAssignees;
   }
 
+  if (ticket.assignedBy) {
+   this.assignedBy = ticket.assignedBy;
+  } else {
+   this.assignedBy = {
+    _id: user._id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    image: user.image,
+   };
+  }
 
+  if (ticket.companyDetails) {
+   this.companyDetails = ticket.companyDetails;
+  } else {
+   this.companyDetails = {
+    _id: company._id,
+    name: company.name,
+    domain: company.domain,
+   };
+  }
 
+  if (ticket.projectDetails) {
+   this.projectDetails = ticket.projectDetails;
+  } else {
+   this.projectDetails = {
+    _id: project._id,
+    name: project.name,
+    key: project.key,
+   };
+  }
+
+  
  }
 
- Ticket.prototype.validate = function(){
-
+ Ticket.prototype.validate = function () {
   var errors = [];
 
-  if(!this.title){
+  if (!this.title) {
    errors.push("Ticket title is required");
   }
 
-  if(!this.dueDate){
+  if (!this.dueDate) {
    errors.push("Due date is required");
   }
 
-  if(!this.status){
+  if (!this.status) {
    errors.push("Status is required");
   }
 
-  if(!this.priority){
+  if (!this.priority) {
    errors.push("Priority is required");
   }
 
-
-  if(!this.ticketType){
+  if (!this.ticketType) {
    errors.push("Ticket type is required");
   }
 
-  if(!this.reporterClient){
+  if (!this.reporterClient) {
    errors.push("Reporter client is required");
   }
 
-  if(!this.projectDetails){
+  if (!this.projectDetails) {
    errors.push("Project details are required");
   }
 
-  if(!this.companyDetails){
+  if (!this.companyDetails) {
    errors.push("Company details are required");
   }
 
-  if(!this.assignedBy){
+  if (!this.assignedBy) {
    errors.push("Assigned by is required");
   }
 
-  // type checks 
+  // type checks
 
-  if(typeof this.title !== "string"){
+  if (typeof this.title !== "string") {
    errors.push("Ticket title must be a string");
   }
 
-  if(this.description && typeof this.description !== "string"){
+  if (this.description && typeof this.description !== "string") {
    errors.push("Description must be a string");
   }
 
-  if(!(this.dueDate instanceof Date)){
+  if (!(this.dueDate instanceof Date)) {
    errors.push("Due date must be a date");
   }
 
-  if(typeof this.status !== "string"){
+  if (typeof this.status !== "string") {
    errors.push("Status must be a string");
   }
 
-  if(typeof this.priority !== "string"){
+  if (typeof this.priority !== "string") {
    errors.push("Priority must be a string");
   }
 
-  if(typeof this.ticketType !== "string"){
+  if (typeof this.ticketType !== "string") {
    errors.push("Ticket type must be a string");
   }
 
-  if(typeof this.reporterClient !== "string"){
+  if (typeof this.reporterClient !== "string") {
    errors.push("Reporter client must be an String");
   }
 
   return errors;
- }
+ };
 
- Ticket.prototype.save = function(){
+ Ticket.prototype.save = function () {
   var ticketFormData = convertDataToFormData(this);
   return TicketService.createTicket(ticketFormData);
- }
+ };
 
- Ticket.prototype.update = function(ticketId){
+ Ticket.prototype.update = function (ticketId) {
   var ticketFormData = convertDataToFormData(this);
   return TicketService.updateTicket(ticketId, ticketFormData);
- }
+ };
 
+ function prepareEditData(ticket) {}
 
- function prepareEditData(ticket){
-  
- }
- 
  return {
   Ticket: Ticket,
-  prepareEditData: prepareEditData
- }
-
-
+  prepareEditData: prepareEditData,
+ };
 }
 
-trackflow.factory("TicketFactory",["TicketService", TicketFactory])
+trackflow.factory("TicketFactory", ["TicketService", TicketFactory]);

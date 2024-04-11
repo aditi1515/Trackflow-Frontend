@@ -12,7 +12,7 @@ function companyProjectsController(
 ) {
  $scope.allEmployeesInCompany = [];
  $scope.formHolder = {};
-
+  $scope.ticketFormSubmitted = false;
  //blob url
  function filePreviewCallback(filesUrls) {
   console.log("Files here: ", filesUrls[0].url);
@@ -53,60 +53,22 @@ function companyProjectsController(
   $scope.currentlySelectedProject = $scope.projects.find(function (project) {
    return project._id === projectId;
   });
-
   console.log("Currently selected project: ", $scope.currentlySelectedProject);
  };
 
  $scope.addTicketFormSubmit = function (modalId, addGlobalTicketForm) {
   console.log("Add ticket form data: ", $scope.addGlobalTicketFormData);
 
-  $scope.addGlobalTicketFormData.projectDetails = {
-   _id: $scope.currentlySelectedProject._id,
-   name: $scope.currentlySelectedProject.name,
-   key: $scope.currentlySelectedProject.key,
-  };
-
-  $scope.addGlobalTicketFormData.companyDetails = {
-   _id: $scope.company._id,
-   name: $scope.company.name,
-   domain: $scope.company.domain,
-  };
-
-  $scope.addGlobalTicketFormData.assignedBy = {
-   _id: $scope.profile._id,
-   firstname: $scope.profile.firstname,
-   lastname: $scope.profile.lastname,
-   email: $scope.profile.email,
-   image: $scope.profile.image,
-  };
-
-  // TicketService.createTicket($scope.addGlobalTicketFormData)
-  //  .then(function (response) {
-  //   console.log("Ticket created successfully: ", response);
-  //   ModalService.hideModal(modalId);
-  //   $scope.previewAttachments = [];
-  //   SnackbarService.showAlert("Ticket created successfully", 2000, "success");
-
-  //   $timeout(function () {
-  //    $state.go("company.projects.project.ticket", {
-  //     projectId: $scope.currentlySelectedProject._id,
-  //    });
-  //    $state.reload("company.projects.project.ticket", {
-  //     projectId: $scope.currentlySelectedProject._id,
-  //    });
-  //   }, 3000);
-  //  })
-  //  .catch(function (error) {
-  //   addTicketForm.errorMessage = error.message;
-  //   console.log("Error adding ticket: ", error);
-  //  });
-
-  var ticket = new TicketFactory.Ticket($scope.addGlobalTicketFormData);
+  var ticket = new TicketFactory.Ticket($scope.addGlobalTicketFormData, $scope.currentlySelectedProject, $scope.company, $scope.profile);
   var errors = ticket.validate();
   console.log("Errors: ", errors);
 
+  if($scope.ticketFormSubmitted) return;
+  $scope.ticketFormSubmitted = true;
+
   if (errors.length) {
    addGlobalTicketForm.errorMessages = errors;
+   addGlobalTicketForm.$invalid = true;
    console.log("Errors: ", errors);
    return;
   }
@@ -126,6 +88,7 @@ function companyProjectsController(
       }, 3000);
     }).catch(function(error){
       addGlobalTicketForm.errorMessage = error.message;
+      addGlobalTicketForm.$invalid = true;
       console.log("Error adding ticket: ", error);
     })
   }

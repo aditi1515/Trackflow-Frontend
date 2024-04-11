@@ -29,84 +29,19 @@ function ticketController(
   init();
  };
 
- //add ticket
- //  $scope.addTicketFormSubmit = function (modalId, addTicketForm) {
- //   $scope.addTicketFormData.projectDetails = {
- //    _id: $scope.projectDetails._id,
- //    name: $scope.projectDetails.name,
- //    key: $scope.projectDetails.key,
- //   };
-
- //   $scope.addTicketFormData.companyDetails = {
- //    _id: $scope.company._id,
- //    name: $scope.company.name,
- //    domain: $scope.company.domain,
- //   };
-
- //   $scope.addTicketFormData.assignedBy = {
- //    _id: $scope.profile._id,
- //    firstname: $scope.profile.firstname,
- //    lastname: $scope.profile.lastname,
- //    email: $scope.profile.email,
- //    image: $scope.profile.image,
- //   };
-
- //   console.log("Add ticket form data: ", $scope.addTicketFormData);
-
- //   if ($scope.ticketFormSubmitted) return;
-
- //   $scope.ticketFormSubmitted = true;
-
- //   TicketService.createTicket($scope.addTicketFormData)
- //    .then(function (response) {
- //     console.log("Ticket created successfully: ", response);
- //     ModalService.hideModal(modalId);
- //     SnackbarService.showAlert("Ticket created successfully", 2000, "success");
-
- //     $scope.addTicketFormData = {};
- //     addTicketForm.$setPristine();
- //     addTicketForm.$setUntouched();
-
- //     // reload after 2 sec
-
- //     $timeout(function () {
- //      $state.reload("company.projects.project.ticket");
- //     }, 2000);
- //    })
- //    .catch(function (error) {
- //     addTicketForm.errorMessage = error.message;
- //     console.log("Error adding ticket: ", error);
- //    });
- //  };
-
  $scope.addTicketFormSubmit = function (modalId, addTicketForm) {
-  $scope.addTicketFormData.projectDetails = {
-   _id: $scope.projectDetails._id,
-   name: $scope.projectDetails.name,
-   key: $scope.projectDetails.key,
-  };
-
-  $scope.addTicketFormData.companyDetails = {
-   _id: $scope.company._id,
-   name: $scope.company.name,
-   domain: $scope.company.domain,
-  };
-
-  $scope.addTicketFormData.assignedBy = {
-   _id: $scope.profile._id,
-   firstname: $scope.profile.firstname,
-   lastname: $scope.profile.lastname,
-   email: $scope.profile.email,
-   image: $scope.profile.image,
-  };
-
   console.log("Add ticket form data: ", $scope.addTicketFormData);
 
   if ($scope.ticketFormSubmitted) return;
 
   $scope.ticketFormSubmitted = true;
 
-  var ticket = new TicketFactory.Ticket($scope.addTicketFormData);
+  var ticket = new TicketFactory.Ticket(
+   $scope.addTicketFormData,
+   $scope.projectDetails,
+   $scope.company,
+   $scope.profile
+  );
 
   var errors = ticket.validate();
   console.log("Errors: ", errors);
@@ -283,7 +218,6 @@ function ticketController(
 
   $scope.viewTicketDetails = angular.copy(ticket);
   $scope.viewTicketDetails.previousTicket = ticket;
-
   $scope.viewTicketDetails.removedAttachments = [];
   $scope.viewTicketDetails.previousAttachments = ticket.attachments;
   $scope.viewTicketDetails.alreadyAssigned = ticket.assignees;
@@ -291,12 +225,6 @@ function ticketController(
   $scope.viewTicketDetails.attachments = [];
   $scope.viewTicketDetails.removeAssignees = [];
   $scope.viewTicketDetails.dueDate = new Date(ticket.dueDate);
-
-  // $scope.viewTicketDetails.metaData = {
-  //  company: $scope.company,
-  //  project: $scope.projectDetails,
-  //  assignedBy: $scope.profile,
-  // };
   $scope.minDueDate = new Date(ticket.createdAt);
 
   ModalService.showModal(modalId);
@@ -348,37 +276,6 @@ function ticketController(
   console.log("Editing ticket: ", $scope.isEditing);
  };
 
- //  $scope.editTicketSubmit = function (modalId, editTicketForm) {
- //   console.log("Editing ticket: ", $scope.viewTicketDetails);
-
- //   $scope.viewTicketDetails.metaData = {
- //    companyDetails: $scope.company,
- //    projectDetails: $scope.projectDetails,
- //    user: $scope.profile,
- //   };
-
- //   TicketService.updateTicket(
- //    $scope.viewTicketDetails._id,
- //    $scope.viewTicketDetails
- //   )
- //    .then(function (response) {
- //     console.log("Ticket updated successfully: ", response);
-
- //     $scope.viewTicketDetails = {};
- //     editTicketForm.$setPristine();
- //     editTicketForm.$setUntouched();
-
- //     SnackbarService.showAlert("Ticket updated successfully", 2000, "success");
- //     ModalService.hideModal(modalId);
- //     getAllTickets();
- //    })
- //    .catch(function (error) {
- //     editTicketForm.errorMessage = error.data.message;
- //     editTicketForm.$invalid = true;
- //     console.error("Error updating ticket: ", error);
- //    });
- //  };
-
  $scope.editTicketSubmit = function (modalId, editTicketForm) {
   var ticket = new TicketFactory.Ticket($scope.viewTicketDetails);
 
@@ -409,8 +306,6 @@ function ticketController(
      console.error("Error updating ticket: ", error);
     });
   }
-
-
  };
 
  $scope.checkTicketEditAccess = function (isMetaInfo) {
