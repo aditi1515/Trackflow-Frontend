@@ -8,8 +8,9 @@ function RoleManagementController(
  $scope.editRoleFormData = {};
  $scope.formHolder = {};
  $scope.currentEditingRole = {};
-
+ $scope.presetNameError = false;
  $scope.launchModal = function (modalId) {
+  $scope.presetNameError = false
   ModalService.showModal(modalId);
  };
 
