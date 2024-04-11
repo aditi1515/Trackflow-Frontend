@@ -91,6 +91,17 @@ trackflow.config([
         url: "/manage",
         templateUrl: "./Company/tabs/projects/manage/manage.html",
         controller: "companyProjectsManageController",
+        resolve:{
+          authorize: function (auth, $state) {
+            var permissions = auth.role.permissionSet.permissions;
+            if (permissions.PROJECT.CREATE) {
+              return true;
+            } else {
+              $state.go("company");
+              return false;
+            }
+          },
+        }
       })
       .state("company.projects.project", {
         url: "/:projectId",
@@ -133,6 +144,7 @@ trackflow.config([
         templateUrl: "./Company/tabs/dashboard/dashboard.html",
         controller: "CompanyDashboardController",
         redirectTo: "company.dashboard.people",
+        
       })
       .state("company.dashboard.people", {
         url: "/people",
@@ -151,6 +163,17 @@ trackflow.config([
           "./Company/tabs/projects/project/dashboard/project.dashboard.html",
         controller: "CompanyProjectsBaseDashboardController",
         redirectTo: "company.projects.project.dashboard.people",
+        resolve:{
+          authorize: function (auth, $state) {
+            var permissions = auth.role.permissionSet.permissions;
+            if (permissions.PROJECT.CREATE) {
+              return true;
+            } else {
+              $state.go("company");
+              return false;
+            }
+          },
+        }
       })
       .state("company.projects.project.dashboard.people", {
         url: "/people",
@@ -162,6 +185,17 @@ trackflow.config([
         url: "/activity",
         templateUrl: "./Company/tabs/projects/project/activity/activity.html",
         controller: "ActivityInProjectController",
+        resolve:{
+          authorize: function (auth, $state) {
+            var permissions = auth.role.permissionSet.permissions;
+            if (permissions.PROJECT.CREATE) {
+              return true;
+            } else {
+              $state.go("company");
+              return false;
+            }
+          },
+        }
       })
       .state("company.projects.project.dashboard.tickets", {
         url: "/tickets",

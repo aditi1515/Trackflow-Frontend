@@ -226,7 +226,7 @@
      <div class="error-container" ng-repeat="err in errorMessages">
       <span>{{err}}</span>
      </div>
-     
+
     </div>
    </div>
 
@@ -393,7 +393,7 @@
 
      <li
       class="page-item"
-      ng-class="{'disabled':ticketsData.pageNo === ticketsData.totalPages}"
+      ng-class="{'disabled':ticketsData.pageNo >= ticketsData.totalPages}"
       ng-click="pageChange(ticketsData.pageNo + 1,ticketsData.pageSize)"
      >
       <a class="page-link"><i class="bi-caret-right-fill"></i></a>
