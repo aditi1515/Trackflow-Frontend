@@ -12,7 +12,7 @@ function companyProjectsController(
 ) {
  $scope.allEmployeesInCompany = [];
  $scope.formHolder = {};
-  $scope.ticketFormSubmitted = false;
+ $scope.ticketFormSubmitted = false;
  //blob url
  function filePreviewCallback(filesUrls) {
   console.log("Files here: ", filesUrls[0].url);
@@ -59,11 +59,16 @@ function companyProjectsController(
  $scope.addTicketFormSubmit = function (modalId, addGlobalTicketForm) {
   console.log("Add ticket form data: ", $scope.addGlobalTicketFormData);
 
-  var ticket = new TicketFactory.Ticket($scope.addGlobalTicketFormData, $scope.currentlySelectedProject, $scope.company, $scope.profile);
+  var ticket = new TicketFactory.Ticket(
+   $scope.addGlobalTicketFormData,
+   $scope.currentlySelectedProject,
+   $scope.company,
+   $scope.profile
+  );
   var errors = ticket.validate();
   console.log("Errors: ", errors);
 
-  if($scope.ticketFormSubmitted) return;
+  if ($scope.ticketFormSubmitted) return;
   $scope.ticketFormSubmitted = true;
 
   if (errors.length) {
@@ -71,36 +76,41 @@ function companyProjectsController(
    addGlobalTicketForm.$invalid = true;
    console.log("Errors: ", errors);
    return;
-  }
-  else{
-    console.log("Ticket created successfully");
-    ticket.save().then(function(response){
-      ModalService.hideModal(modalId);
-      $scope.previewAttachments = [];
-      SnackbarService.showAlert("Ticket created successfully", 2000, "success");
-      $timeout(function(){
-        $state.go("company.projects.project.ticket", {
-          projectId: $scope.currentlySelectedProject._id,
-         });
-         $state.reload("company.projects.project.ticket", {
-          projectId: $scope.currentlySelectedProject._id,
-         });
-      }, 3000);
-    }).catch(function(error){
-      addGlobalTicketForm.errorMessage = error.message;
-      addGlobalTicketForm.$invalid = true;
-      console.log("Error adding ticket: ", error);
-    })
-  }
+  } else {
+   console.log("Ticket created successfully");
+   ticket
+    .save()
+    .then(function (response) {
+     console.log("Ticket created successfully: ", response);
+     ModalService.hideModal(modalId);
+     $scope.previewAttachments = [];
+     SnackbarService.showAlert("Ticket created successfully", 2000, "success");
 
+     $state.go("company.projects.project.ticket", {
+      projectId: $scope.currentlySelectedProject._id,
+     });
+
+     $timeout(function () {
+      $state.reload("company.projects.project.ticket", {
+       projectId: $scope.currentlySelectedProject._id,
+      });
+     }, 2000);
+    })
+    .catch(function (error) {
+     addGlobalTicketForm.errorMessage = error.message;
+     addGlobalTicketForm.$invalid = true;
+     console.log("Error adding ticket: ", error);
+    });
+  }
  };
 
  $scope.launchModal = function (modalId) {
+  $scope.ticketFormSubmitted = false;
+
   $scope.addGlobalTicketFormData = {
    dueDate: new Date(new Date().setDate(new Date().getDate() + 1)),
    ticketType: "BUG",
    priority: "LOW",
-   // projectDetails: $scope.currentlySelectedProject,
    status: "OPEN",
   };
   $scope.minDueDate = new Date();
