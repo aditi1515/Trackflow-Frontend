@@ -37,6 +37,7 @@ function sideBarService() {
       icon: "bi-clipboard",
     });
 
+    if(role.name != "COMPANY_ADMIN")
     sideBarOptions.push({
       label:"My Dashboard",
       state:"company.myDashboard",

@@ -1,353 +1,357 @@
 <section>
- <link
-  rel="stylesheet"
-  href="../../../Company/tabs/projects/manage/manage.css"
- />
- <div class="wrapper">
-  <div class="head">
-   <h2>Manage Projects</h2>
+  <link
+    rel="stylesheet"
+    href="../../../Company/tabs/projects/manage/manage.css"
+  />
+  <div class="wrapper">
+    <div class="head">
+      <h2>Manage Projects</h2>
 
-   <button class="btn" ng-click="launchModal('addProjectModal',addProjectForm)">
-    Create Project
-   </button>
-  </div>
-
-  <my-modal
-   modal-size="lg"
-   modal-id="addProjectModal"
-   title="{{isEditingProject ? 'Edit Project' : 'Create Project'}}"
-  >
-   <form
-    name="addProjectForm"
-    ng-submit=" isEditingProject ? editProjectFormSubmit('addProjectModal',addProjectForm) :  addProjectFormSubmit('addProjectModal',addProjectForm)"
-    novalidate
-   >
-    <div class="form-row">
-     <div class="form-group col">
-      <label for="name">Name*</label>
-      <input
-       type="text"
-       class="form-control"
-       id="name"
-       name="name"
-       ng-model="addProjectFormData.name"
-       ng-required="true"
-       ng-disabled="isEditingProject"
-      />
-
-      <div
-       class="error"
-       ng-show="addProjectForm.name.$error.required && addProjectForm.name.$touched"
+      <button
+        class="btn"
+        ng-click="launchModal('addProjectModal',addProjectForm)"
       >
-       Project Name is required
-      </div>
-     </div>
-    </div>
-    <div class="form-row">
-     <div class="form-group col">
-      <label for="key">Key*</label>
-      <input
-       type="text"
-       class="form-control"
-       id="key"
-       name="key"
-       ng-model="addProjectFormData.key"
-       style="text-transform: uppercase"
-       ng-required="true"
-       ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase()"
-       ng-disabled="isEditingProject"
-      />
-
-      <div
-       class="error"
-       ng-show="addProjectForm.key.$error.required && addProjectForm.key.$touched"
-      >
-       Project key is required
-      </div>
-     </div>
-    </div>
-    <div class="form-row">
-     <div class="form-group col">
-      <label for="description">Description*</label>
-      <textarea
-       type="textarea"
-       class="form-control"
-       id="description"
-       name="description"
-       ng-model="addProjectFormData.description"
-       ng-required="true"
-      />
-
-      <div
-       class="error"
-       ng-show="addProjectForm.description.$error.required && addProjectForm.description.$touched"
-      >
-       Project description is required
-      </div>
-     </div>
+        Create Project
+      </button>
     </div>
 
-    <div class="form-group">
-     <label for="projectLogo"
-      >Project Logo {{isEditingProject ? "" : "*"}}
-     </label>
-     <input
-      type="file"
-      class="form-control"
-      id="projectLogo"
-      name="projectLogo"
-      ng-model="addProjectFormData.logo"
-      file-model="addProjectFormData.logo"
-      ng-required="!isEditingProject"
-      accept="image/*"
-     />
-     <div
-      class="error"
-      ng-show=" addProjectForm.projectLogo.$dirty && addProjectForm.projectLogo.$invalid"
-     >
-      Project Logo is required
-     </div>
-
-     <div class="logoPreview" ng-if="addProjectFormData.previewLogo">
-      <img ng-src="{{addProjectFormData.previewLogo[0].url}}" alt="" />
-     </div>
- 
-
-    </div>
-
-    <div class="form-row">
-     <div class="form-group col">
-      <label for="dueDate">Due Date*</label>
-      <input
-       type="date"
-       class="form-control"
-       id="dueDate"
-       name="dueDate"
-       ng-model="addProjectFormData.dueDate"
-       ng-required="true"
-       min="{{minDueDate | date:'yyyy-MM-dd'}}"
-      />
-      <div
-       class="error"
-       ng-show="addProjectForm.dueDate.$error.required && addProjectForm.dueDate.$touched"
-      >
-       Project due date is required
-      </div>
-     </div>
-     <div class="form-group col">
-      <label for="inProgress">Status*</label>
-      <select
-       type="date"
-       class="form-control"
-       id="inProgress"
-       name="inProgress"
-       ng-model="addProjectFormData.inProgress"
-       ng-required="true"
-      >
-       <option ng-value="true" selected>In Progress</option>
-       <option ng-value="false">Completed</option>
-      </select>
-
-      <div
-       class="error"
-       ng-show="addProjectForm.inProgress.$error.required && addProjectForm.inProgress.$touched"
-      >
-       Project status is required
-      </div>
-     </div>
-    </div>
-    <div class="form-row">
-     <div class="form-group col select-multiple-wrapper">
-      <div
-       ng-if="profile.role.permissionSet.permissions.PROJECT.UPDATE.FULL_ACCESS || profile.role.permissionSet.permissions.PROJECT.CREATE"
-      >
-       <label for="members"
-        >{{isEditingProject ? "Add New Members" : "Members"}}</label
-       >
-
-       <select
-        class="form-control"
-        id="members"
-        name="members"
-        ng-model="addProjectFormData.members"
-        multiple
-        select2-init
-        close-on-select="false"
-        style="width: 100%"
-        placeholder="Select Members"
-       >
-        <option
-         ng-value="{'_id': person._id, 'firstname': person.firstname, 'lastname' : person.lastname , 'email': person.email , 'image': person.image}"
-         data-image="{{person.image}}"
-         ng-repeat="person in allEmployeesInCompany"
-         ng-selected="person._id === profile._id"
-         ng-if="!isMemberSelected(person)"
-        >
-         {{person.firstname + " " + person.lastname }}
-        </option>
-       </select>
-      </div>
-      <!-- already selected members  -->
-      <div
-       ng-if="isEditingProject && addProjectFormData.membersAlreadySelected.length > 0"
-      >
-       <h6>Members Present</h6>
-       <div class="selected-members">
-        <span
-         class="badge"
-         ng-repeat="member in addProjectFormData.membersAlreadySelected"
-        >
-         <img ng-src="{{member.image}}" class="avatar" alt="" />
-         <span
-          >{{member.firstname + (member.lastname !== 'undefined'? ' ' +
-          member.lastname : '')}}</span
-         >
-         <i
-          class="bi-x-circle-fill"
-          ng-click="removeMember(member)"
-          ng-if="member._id !== profile._id && profile.role.permissionSet.permissions.PROJECT.UPDATE.FULL_ACCESS"
-         ></i>
-        </span>
-       </div>
-      </div>
-     </div>
-    </div>
-
-    <!-- edit members from list -->
-
-    <div class="form-row">
-     <div class="form-group"></div>
-    </div>
-
-    <div class="formerror">
-     <div
-      class="error"
-      ng-show="addProjectForm.$invalid && addProjectForm.$submitted"
-     >
-      {{addProjectForm.errorMessage}}
-
-      <div class="error-container" ng-repeat="err in errorMessages">
-       <span>{{err}}</span>
-      </div>
-     </div>
-    </div>
-    <button
-     type="submit"
-     class="btn"
-     ng-disabled="addProjectForm.$invalid"
-     ng-class="{'disabled': addProjectForm.$invalid}"
+    <my-modal
+      modal-size="lg"
+      modal-id="addProjectModal"
+      title="{{isEditingProject ? 'Edit Project' : 'Create Project'}}"
     >
-     submit
-    </button>
-   </form>
-  </my-modal>
+      <form
+        name="addProjectForm"
+        ng-submit=" isEditingProject ? editProjectFormSubmit('addProjectModal',addProjectForm) :  addProjectFormSubmit('addProjectModal',addProjectForm)"
+        novalidate
+      >
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="name">Name*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              ng-model="addProjectFormData.name"
+              ng-required="true"
+              ng-disabled="isEditingProject"
+            />
 
-  <div class="content">
-   <div class="searchBox">
-    <input
-     type="text"
-     class="form-control"
-     placeholder="Search By Name"
-     ng-model="projectData.query"
-     ng-change="debounceSearch()"
-    />
-   </div>
-   <div class="table-wrapper">
-    <table class="table table-hover">
-     <thead>
-      <tr>
-       <th scope="col">Name</th>
-       <th scope="col">Key</th>
-       <th scope="col">Due Date</th>
-       <th scope="col">Status</th>
-       <th scope="col">Start Date</th>
-       <th scope="col">Team Size</th>
-       <th scope="col">Members</th>
-       <th scope="col"></th>
-       <!-- admin details -->
-       <!-- <th scope="col">Admin Name</th>
+            <div
+              class="error"
+              ng-show="addProjectForm.name.$error.required && addProjectForm.name.$touched"
+            >
+              Project Name is required
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="key">Key*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="key"
+              name="key"
+              ng-model="addProjectFormData.key"
+              style="text-transform: uppercase"
+              ng-required="true"
+              ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase()"
+              ng-disabled="isEditingProject"
+            />
+
+            <div
+              class="error"
+              ng-show="addProjectForm.key.$error.required && addProjectForm.key.$touched"
+            >
+              Project key is required
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="description">Description*</label>
+            <textarea
+              type="textarea"
+              class="form-control"
+              id="description"
+              name="description"
+              ng-model="addProjectFormData.description"
+              ng-required="true"
+            />
+
+            <div
+              class="error"
+              ng-show="addProjectForm.description.$error.required && addProjectForm.description.$touched"
+            >
+              Project description is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="projectLogo"
+            >Project Logo {{isEditingProject ? "" : "*"}}
+          </label>
+          <input
+            type="file"
+            class="form-control"
+            id="projectLogo"
+            name="projectLogo"
+            ng-model="addProjectFormData.logo"
+            file-model="addProjectFormData.logo"
+            ng-required="!isEditingProject"
+            accept="image/*"
+          />
+          <div
+            class="error"
+            ng-show=" addProjectForm.projectLogo.$dirty && addProjectForm.projectLogo.$invalid"
+          >
+            Project Logo is required
+          </div>
+
+          <div class="logoPreview" ng-if="addProjectFormData.previewLogo">
+            <img ng-src="{{addProjectFormData.previewLogo[0].url}}" alt="" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="dueDate">Due Date*</label>
+            <input
+              type="date"
+              class="form-control"
+              id="dueDate"
+              name="dueDate"
+              ng-model="addProjectFormData.dueDate"
+              ng-required="true"
+              min="{{minDueDate | date:'yyyy-MM-dd'}}"
+            />
+            <div
+              class="error"
+              ng-show="addProjectForm.dueDate.$error.required && addProjectForm.dueDate.$touched"
+            >
+              Project due date is required
+            </div>
+          </div>
+          <div class="form-group col">
+            <label for="inProgress">Status*</label>
+            <select
+              type="date"
+              class="form-control"
+              id="inProgress"
+              name="inProgress"
+              ng-model="addProjectFormData.inProgress"
+              ng-required="true"
+            >
+              <option ng-value="true" selected>In Progress</option>
+              <option ng-value="false">Completed</option>
+            </select>
+
+            <div
+              class="error"
+              ng-show="addProjectForm.inProgress.$error.required && addProjectForm.inProgress.$touched"
+            >
+              Project status is required
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col select-multiple-wrapper">
+            <div
+              ng-if="profile.role.permissionSet.permissions.PROJECT.UPDATE.FULL_ACCESS || profile.role.permissionSet.permissions.PROJECT.CREATE"
+            >
+              <label for="members"
+                >{{isEditingProject ? "Add New Members" : "Members"}}</label
+              >
+
+              <select
+                class="form-control"
+                id="members"
+                name="members"
+                ng-model="addProjectFormData.members"
+                multiple
+                select2-init
+                close-on-select="false"
+                style="width: 100%"
+                placeholder="Select Members"
+              >
+                <option
+                  ng-value="{'_id': person._id, 'firstname': person.firstname, 'lastname' : person.lastname , 'email': person.email , 'image': person.image}"
+                  data-image="{{person.image}}"
+                  ng-repeat="person in allEmployeesInCompany"
+                  ng-selected="person._id === profile._id"
+                  ng-if="!isMemberSelected(person)"
+                >
+                  {{person.firstname + " " + person.lastname }}
+                </option>
+              </select>
+            </div>
+            <!-- already selected members  -->
+            <div
+              ng-if="isEditingProject && addProjectFormData.membersAlreadySelected.length > 0"
+            >
+              <h6>Members Present</h6>
+              <div class="selected-members">
+                <span
+                  class="badge"
+                  ng-repeat="member in addProjectFormData.membersAlreadySelected"
+                >
+                  <img ng-src="{{member.image}}" class="avatar" alt="" />
+                  <span
+                    >{{member.firstname + (member.lastname !== 'undefined'? ' '
+                    + member.lastname : '')}}</span
+                  >
+                  <i
+                    class="bi-x-circle-fill"
+                    ng-click="removeMember(member)"
+                    ng-if="member._id !== profile._id && profile.role.permissionSet.permissions.PROJECT.UPDATE.FULL_ACCESS"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- edit members from list -->
+
+        <div class="form-row">
+          <div class="form-group"></div>
+        </div>
+
+        <div class="formerror">
+          <div
+            class="error"
+            ng-show="addProjectForm.$invalid && addProjectForm.$submitted"
+          >
+            {{addProjectForm.errorMessage}}
+
+            <div class="error-container" ng-repeat="err in errorMessages">
+              <span>{{err}}</span>
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn"
+          ng-disabled="addProjectForm.$invalid"
+          ng-class="{'disabled': addProjectForm.$invalid}"
+        >
+          submit
+        </button>
+      </form>
+    </my-modal>
+
+    <div class="content">
+      <div class="searchBox">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search By Name"
+          ng-model="projectData.query"
+          ng-change="debounceSearch()"
+        />
+      </div>
+      <div class="table-wrapper">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Key</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">Team Size</th>
+              <th scope="col">Members</th>
+              <th scope="col"></th>
+              <!-- admin details -->
+              <!-- <th scope="col">Admin Name</th>
     <th scope="col">Admin Email</th>
     <th scope="col">Admin Phone No</th> -->
 
-       <!-- <th scope="col"></th>   -->
-      </tr>
-     </thead>
-     <tbody>
-      <tr ng-repeat="project in projectData.projects">
-       <td>
-        <img
-         ng-src="{{ project.logo }}"
-         alt="project logo"
-         style="width: 30px; height: 30px; margin-right: 10px"
-        />
+              <!-- <th scope="col"></th>   -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="project in projectData.projects">
+              <td>
+                <img
+                  ng-src="{{ project.logo }}"
+                  alt="project logo"
+                  style="width: 30px; height: 30px; margin-right: 10px"
+                />
 
-        {{ project.name }}
-       </td>
-       <td>{{ project.key }}</td>
+                {{ project.name }}
+              </td>
+              <td>{{ project.key }}</td>
 
-       <td>{{project.dueDate | date : 'MM/dd/yyyy' }}</td>
-       <td>
-        <span
-         class="badge"
-         ng-class="{'badge-primary': project.inProgress === true, 'badge-success': project.inProgress === false}"
-         >{{project.inProgress ? "In Progress" : "Completed"}}</span
-        >
-       </td>
-       <td>{{project.createdAt | date : 'MM/dd/yyyy'}}</td>
-       <td>{{project.members.length}}</td>
-       <td class="member-avatar-container">
-        <span
-         class="badge"
-         ng-repeat="member in project.members"
-         ng-if="$index < 4"
-        >
-         <img ng-src="{{member.image}}" class="avatar" alt="" />
-        </span>
-        <span class="extra-member" ng-show="project.members.length > 4">
-         +{{ project.members.length - 4 }}
-        </span>
-       </td>
+              <td>{{project.dueDate | date : 'MM/dd/yyyy' }}</td>
+              <td>
+                <span
+                  class="badge"
+                  ng-class="{'badge-primary': project.inProgress === true, 'badge-success': project.inProgress === false}"
+                  >{{project.inProgress ? "In Progress" : "Completed"}}</span
+                >
+              </td>
+              <td>{{project.createdAt | date : 'MM/dd/yyyy'}}</td>
+              <td>{{project.members.length}}</td>
+              <td class="member-avatar-container">
+                <span
+                  class="badge"
+                  ng-repeat="member in project.members"
+                  ng-if="$index < 4"
+                >
+                  <img ng-src="{{member.image}}" class="avatar" alt="" />
+                </span>
+                <span class="extra-member" ng-show="project.members.length > 4">
+                  +{{ project.members.length - 4 }}
+                </span>
+              </td>
 
-       <!-- <td>{{ company.admin.firstname + " " + company.admin.lastname }}</td>
+              <!-- <td>{{ company.admin.firstname + " " + company.admin.lastname }}</td>
                <td>{{ company.admin.email }}</td>
                <td>{{ company.admin.phoneNumber }}</td> -->
 
-       <td class="action" ng-click="editProject(project,'addProjectModal')">
-        <i class="bi-pencil-fill"> </i>
-       </td>
-      </tr>
-     </tbody>
-    </table>
-    <!-- pagination -->
-    <div class="pagination-wrapper">
-     <div class="row-count-wrapper">
-      <span>Rows per page:</span>
-      <select
-       ng-model="projectData.pageSize"
-       ng-options="size for size in [5,10,15,20]"
-       ng-change="pageChange(1,projectData.pageSize)"
-      ></select>
-     </div>
-     <ul class="pagination">
-      <li
-       class="page-item"
-       ng-class="{'disabled':peopleData.pageNo === 1}"
-       ng-click="pageChange(peopleData.pageNo - 1)"
-      >
-       <a class="page-link"> <i class="bi-caret-left-fill"></i></a>
-      </li>
-      <span>{{projectData.pageNo}}/{{projectData.totalPages}}</span>
+              <td
+                class="action"
+                ng-click="editProject(project,'addProjectModal')"
+              >
+                <i class="bi-pencil-fill"> </i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- pagination -->
+        <div class="pagination-wrapper">
+          <div class="row-count-wrapper">
+            <span>Rows per page:</span>
+            <select
+              ng-model="projectData.pageSize"
+              ng-options="size for size in [5,10,15,20]"
+              ng-change="pageChange(1,projectData.pageSize)"
+            ></select>
+          </div>
+          <ul class="pagination">
+            <li
+              class="page-item"
+              ng-class="{'disabled':peopleData.pageNo === 1}"
+              ng-click="pageChange(peopleData.pageNo - 1)"
+            >
+              <a class="page-link"> <i class="bi-caret-left-fill"></i></a>
+            </li>
+            <span>{{projectData.pageNo}}/{{projectData.totalPages}}</span>
 
-      <li
-       class="page-item"
-       ng-class="{'disabled':peopleData.pageNo === peopleData.totalPages}"
-       ng-click="pageChange(peopleData.pageNo + 1)"
-      >
-       <a class="page-link"><i class="bi-caret-right-fill"></i></a>
-      </li>
-     </ul>
+            <li
+              class="page-item"
+              ng-class="{'disabled':peopleData.pageNo === peopleData.totalPages}"
+              ng-click="pageChange(peopleData.pageNo + 1)"
+            >
+              <a class="page-link"><i class="bi-caret-right-fill"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-   </div>
   </div>
- </div>
 </section>

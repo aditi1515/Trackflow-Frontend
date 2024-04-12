@@ -1,8 +1,8 @@
 function CompanyService($http, BASE_URL, FormDataFactory) {
-  this.getCompanies = function (pageNo, pageSize, query,dateRangeOption) {
+  this.getCompanies = function (pageNo, pageSize, queryOnName,dateRangeOption) {
 
     var query = ""
-    query += `pageNo=${pageNo}&&pageSize=${pageSize}&&query=${query}`
+    query += `pageNo=${pageNo}&&pageSize=${pageSize}&&query=${queryOnName}`
     console.log("dateRangeOption",dateRangeOption);
     if (dateRangeOption) {
      
@@ -17,7 +17,7 @@ function CompanyService($http, BASE_URL, FormDataFactory) {
 
     }
 
-
+    console.log("query: " + query);
     return $http.get(
       BASE_URL +
         `company?${query}`
