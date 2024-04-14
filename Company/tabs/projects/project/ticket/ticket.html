@@ -130,7 +130,6 @@
       id="assignees"
       name="assignees"
       ng-model="addTicketFormData.assignees"
-      ng-required="true"
       multiple
       select2-init
       close-on-select="false"
@@ -228,9 +227,9 @@
      </div>
 
     </div>
-   </div>
+   </div> 
 
-   <button type="submit" ng-disabled="ticketFormSubmitted" class="btn btn-primary">Submit</button>
+   <button type="submit"  ng-disabled="ticketFormSubmitted || addTicketForm.$invalid" ng-class="{disabled :ticketFormSubmitted || addTicketForm.$invalid}" class="btn btn-primary">Submit</button>
   </form>
  </my-modal>
 

@@ -1,6 +1,6 @@
 function projectController($scope, $state, ProjectService, UserService) {
  $scope.projectDetails = {};
-
+ $scope.showFullDescription = false;
 
  function getProjectById() {
   var projectId = $state.params.projectId;

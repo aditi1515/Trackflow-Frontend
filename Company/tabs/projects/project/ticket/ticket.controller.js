@@ -217,7 +217,7 @@ function ticketController(
   $scope.isEditing = false;
 
   $scope.viewTicketDetails = angular.copy(ticket);
-  $scope.viewTicketDetails.previousTicket = ticket;
+  $scope.viewTicketDetails.previousTicket = JSON.parse(angular.toJson(ticket));
   $scope.viewTicketDetails.removedAttachments = [];
   $scope.viewTicketDetails.previousAttachments = ticket.attachments;
   $scope.viewTicketDetails.alreadyAssigned = ticket.assignees;

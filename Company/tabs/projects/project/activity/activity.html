@@ -69,7 +69,7 @@
        <span class="bold-log">{{tlc.change.new}}</span>
       </div>
 
-      <div class="membersAdded" ng-if="['assignees'].includes(tlc.key)">
+      <div class="membersAdded" ng-if="['assignees'].includes(tlc.key) && tlc.change.added.length > 0">
        <span class="bi-arrow-return-right"></span>
        <span>Added</span>
        <span>{{tlc.key}}</span>
@@ -82,7 +82,7 @@
       </div>
      </div>
 
-     <div class="membersAdded" ng-if="['assignees'].includes(tlc.key)">
+     <div class="membersAdded" ng-if="['assignees'].includes(tlc.key) && tlc.change.removed.length > 0" >
       <span class="bi-arrow-return-right"></span>
       <span>Removed</span>
       <span>{{tlc.key}}</span>

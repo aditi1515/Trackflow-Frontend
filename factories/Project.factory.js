@@ -57,7 +57,7 @@ function ProjectFactory(ProjectService) {
   projectData.previewLogo = [{ url: project.logo }];
   projectData.previousLogo = project.logo;
   projectData.removedMembers = [];
-  projectData.previousData = project;
+  projectData.previousData = JSON.parse(angular.toJson(project));
   projectData.members = [];
   return projectData;
  }
@@ -98,11 +98,10 @@ function ProjectFactory(ProjectService) {
    errors.push("Description must be a string");
   }
 
-  if(!(this.dueDate instanceof Date)){
+  if (!(this.dueDate instanceof Date)) {
    errors.push("Due date must be a date");
   }
 
-  
   if (typeof this.key !== "string") {
    errors.push("Key must be a string");
   }

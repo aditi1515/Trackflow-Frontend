@@ -122,7 +122,7 @@ function CompanyFactory(CompanyService) {
   var _company = angular.copy(company);
   _company.previewLogo = [{ url: company.logo }];
   _company.previousLogo = company.logo;
-  _company.previousData = company;
+  _company.previousData = JSON.parse(angular.toJson(company));
   delete _company.logo;
   return _company;
  }

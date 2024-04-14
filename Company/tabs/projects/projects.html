@@ -218,7 +218,6 @@
        id="assigneesGlobalTicket"
        name="assignees"
        ng-model="addGlobalTicketFormData.assignees"
-       ng-required="true"
        multiple
        select2-init
         close-on-select="false"
@@ -317,8 +316,7 @@
      
     </div>
    </div>
-
-   <button type="submit" ng-disabled="ticketFormSubmitted"  class="">Submit</button>
+   <button type="submit"  ng-class="{disabled : ticketFormSubmitted || formHolder.addGlobalTicketForm.$invalid}" ng-disabled="ticketFormSubmitted || formHolder.addGlobalTicketForm.$invalid"  class="btn">Submit</button>
   </form >
  </my-modal >
 
