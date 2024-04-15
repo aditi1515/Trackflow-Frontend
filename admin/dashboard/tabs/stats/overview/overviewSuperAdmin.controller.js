@@ -100,21 +100,21 @@ function overviewSuperAdminController($scope, AnalyticsService) {
   }
 
   function recentlyEnrolledCompanies() {
-    AnalyticsService.getRecentlyEnrolledCompanies().then(function (response) {
-      $scope.recentlyEnrolledCompaniesData = response.data;
-    });
+    AnalyticsService.getOldestOrRecentlyEnrolledCompanies("recent").then(
+      function (response) {
+        $scope.recentlyEnrolledCompaniesData = response.data;
+      }
+    );
   }
   recentlyEnrolledCompanies();
 
   function mostLoyalPartners() {
-    var limitOption = $scope.loyalPartnerLimitSelectOption;
-
-    AnalyticsService.getMostLoyalPartners(limitOption).then(function (
-      response
-    ) {
-      $scope.mostLoyalPartnersData = response.data;
-      displayLoyalPartnerChart();
-    });
+    AnalyticsService.getOldestOrRecentlyEnrolledCompanies("oldest").then(
+      function (response) {
+        $scope.mostLoyalPartnersData = response.data;
+        displayLoyalPartnerChart();
+      }
+    );
   }
   mostLoyalPartners();
 
@@ -134,19 +134,39 @@ function overviewSuperAdminController($scope, AnalyticsService) {
 
   getTotalTickets();
 
+  // function convertTo12Hours(hours) {
+  //   // Example hour in 24-hour format
+  //   var converted = [];
+  //   for (var hour24 of hours) {
+  //     // Convert to 12-hour format
+  //     var hour12 = hour24 % 12 || 12; // Takes care of converting "0" to "12"
+  //     var amPm = hour24 < 12 ? "AM" : "PM";
+  //     var finalHour = `${hour12} ${amPm}`;
+  //     converted.push(finalHour);
+  //   }
+
+  //   return converted;
+  // }
+
   function convertTo12Hours(hours) {
     // Example hour in 24-hour format
     var converted = [];
-    for (var hour24 of hours) {
-      // Convert to 12-hour format
-      var hour12 = hour24 % 12 || 12; // Takes care of converting "0" to "12"
-      var amPm = hour24 < 12 ? "AM" : "PM";
-      var finalHour = `${hour12} ${amPm}`;
-      converted.push(finalHour);
+    for (var i = 0; i < hours.length; i++) {
+      var startHour24 = hours[i] % 24; // Ensure hour is within 24-hour range
+      var startHour12 = startHour24 % 12 || 12; // Convert to 12-hour format
+      var startAmPm = startHour24 < 12 ? "AM" : "PM";
+
+      var endHour24 = (startHour24 + 1) % 24; // Calculate end hour of slot
+      var endHour12 = endHour24 % 12 || 12; // Convert to 12-hour format
+      var endAmPm = endHour24 < 12 ? "AM" : "PM";
+
+      var slotLabel = `${startHour12} ${startAmPm}-${endHour12} ${endAmPm}`;
+      converted.push(slotLabel);
     }
 
     return converted;
   }
+
   function systemUsageTime() {
     AnalyticsService.getSystemUsageTime().then(function (response) {
       $scope.systemUsageTimeData = response.data;
