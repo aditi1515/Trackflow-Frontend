@@ -8,7 +8,7 @@
    <h2>Companies</h2>
    <button
     class="btn btn-add"
-    ng-click="launchModal('addCompanyModal',addCompanyForm)"
+    ng-click="launchModal('addCompanyModal',formHolder.addCompanyForm)"
    >
     Add Company
    </button>
@@ -21,8 +21,8 @@
     title="{{isEditing ? 'Edit Company' : 'Add Company'}}"
    >
     <form
-     ng-submit="isEditing ?editCompanyFormSubmit('addCompanyModal' , addCompanyForm):addCompanyFormSubmit('addCompanyModal',addCompanyForm)"
-     name="addCompanyForm"
+     ng-submit="isEditing ?editCompanyFormSubmit('addCompanyModal' , formHolder.addCompanyForm):addCompanyFormSubmit('addCompanyModal',formHolder.addCompanyForm)"
+     name="formHolder.addCompanyForm"
      novalidate
     >
      <h4>Company</h4>
@@ -35,12 +35,12 @@
        name="companyName"
        ng-model="addCompanyFormData.name"
        required
-       ng-disabled="isEditing"
+      
       />
 
       <div
        class="error"
-       ng-show="addCompanyForm.companyName.$error.required && addCompanyForm.companyName.$touched"
+       ng-show="formHolder.addCompanyForm.companyName.$error.required && formHolder.addCompanyForm.companyName.$touched"
       >
        Company Name is required
       </div>
@@ -57,15 +57,15 @@
        ng-model="addCompanyFormData.domain"
        required
        ng-pattern="/^[a-z0-9]+$/i"
-       ng-disabled="isEditing"
+     
       />
       <div
        class="error"
-       ng-show="addCompanyForm.companyDomain.$error.required && addCompanyForm.companyDomain.$touched"
+       ng-show="formHolder.addCompanyForm.companyDomain.$error.required && formHolder.addCompanyForm.companyDomain.$touched"
       >
        Company Domain is required
       </div>
-      <div class="error" ng-show="addCompanyForm.companyDomain.$error.pattern">
+      <div class="error" ng-show="formHolder.addCompanyForm.companyDomain.$error.pattern">
        only lowercase letters allowed
       </div>
      </div>
@@ -74,60 +74,106 @@
       <!-- compamy city state country -->
 
       <div class="form-group col">
-       <label for="companyCity">City*</label>
-       <input
-        type="text"
-        name="companyCity"
-        class="form-control"
-        id="companyCity"
-        ng-model="addCompanyFormData.city"
-        required
-       />
-       <div
-        class="error"
-        ng-show="addCompanyForm.companyCity.$invalid && addCompanyForm.companyCity.$touched"
-       >
-        City is required
+        <label for="companyCountry">Country*</label>
+        <!-- <input
+         type="text"
+         class="form-control"
+         id="companyCountry"
+         name="companyCountry"
+         ng-model="addCompanyFormData.country"
+         required
+        /> -->
+
+        <select
+         class="form-control"
+         id="companyCountry"
+         name="companyCountry"
+         ng-model="addCompanyFormData.country"
+         ng-change="countryChange(addCompanyFormData.country)"
+         required
+    
+         >
+         <option value="">Select a country</option>
+         <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
+        </select>
+
+        <div
+         class="error"
+         ng-show="formHolder.addCompanyForm.companyCountry.$invalid && formHolder.addCompanyForm.companyCountry.$touched"
+        >
+         Country is required
+        </div>
        </div>
-      </div>
+
+    
       <div class="form-group col">
        <label for="companyState">State*</label>
-       <input
+       <!-- <input
         type="text"
         class="form-control"
         name="companyState"
         id="companyState"
         ng-model="addCompanyFormData.state"
         required
-       />
+       /> -->
+
+        <select
+          class="form-control"
+          id="companyState"
+          name="companyState"
+          ng-model="addCompanyFormData.state"
+          ng-change=""
+          required
+          ng-disabled="!addCompanyFormData.country"
+        >
+          <option value="">Select a state</option>
+          <option ng-repeat="state in statesToShow" value="{{state.name}}">{{state.name}}</option>
+
+        </select>
        <div
         class="error"
-        ng-show="addCompanyForm.companyState.$invalid && addCompanyForm.companyState.$touched"
+        ng-show="formHolder.addCompanyForm.companyState.$invalid && formHolder.addCompanyForm.companyState.$touched"
        >
         State is required
        </div>
       </div>
-      <div class="form-group col">
-       <label for="companyCountry">Country*</label>
-       <input
-        type="text"
-        class="form-control"
-        id="companyCountry"
-        name="companyCountry"
-        ng-model="addCompanyFormData.country"
-        required
-       />
-       <div
-        class="error"
-        ng-show="addCompanyForm.companyCountry.$invalid && addCompanyForm.companyCountry.$touched"
-       >
-        Country is required
-       </div>
-      </div>
+
+      <!-- <div class="form-group col">
+       {{addCompanyFormData.city}}
+        <label for="companyCity">City*</label>
+        <!-- <input
+         type="text"
+         name="companyCity"
+         class="form-control"
+         id="companyCity"
+         ng-model="addCompanyFormData.city"
+         required
+        /> -->
+
+        <!-- <select
+         class="form-control"
+         id="companyCity"
+         name="companyCity"
+         ng-model="addCompanyFormData.city"
+         ng-disabled="!addCompanyFormData.country || !addCompanyFormData.state"
+         required
+        >
+          <option value="">Select a city</option>
+          <option ng-repeat="city in cities" value="{{city.name}}">{{city.name}}</option>
+        </select>
+
+        <div
+         class="error"
+         ng-show="formHolder.addCompanyForm.companyCity.$invalid && formHolder.addCompanyForm.companyCity.$touched && formHolder.addCompanyForm.$submitted"
+        >
+         City is required
+        </div> -->
+       <!-- </div> --> 
+      
      </div>
      <!-- company logo -->
      <div class="form-group">
-      <label for="companyLogo">Company Logo {{isEditing ? "" : "*"}} </label>
+      <label for="companyLogo">Company Logo</label>
       <input
        type="file"
        class="form-control"
@@ -135,18 +181,24 @@
        name="companyLogo"
        ng-model="addCompanyFormData.logo"
        file-model="addCompanyFormData.logo"
-       ng-required="isEditing ? false : true"
        accept="image/*"
       />
 
+
+
       <div
        class="error"
-       ng-show="addCompanyForm.companyLogo.$dirty && addCompanyForm.companyLogo.$invalid"
+       ng-show="formHolder.addCompanyForm.companyLogo.$dirty && formHolder.addCompanyForm.companyLogo.$invalid"
       >
        Company Logo is required
       </div>
-      <div class="logoPreview" ng-if="addCompanyFormData.previewLogo">
-       <img ng-src="{{addCompanyFormData.previewLogo[0].url}}" alt="" />
+      <div class="logopreview-wrapper">
+        <div class="logoPreview" ng-show="addCompanyFormData.previewLogo[0].url">
+          <img ng-src="{{addCompanyFormData.previewLogo[0].url}}" alt="" />
+          
+         </div>
+
+         <button type="button" ng-click="removeLogo()"   ng-class="{'disabled': !addCompanyFormData.previewLogo[0].url}"  ng-disabled="!addCompanyFormData.previewLogo[0].url">Remove</button>
       </div>
      </div>
 
@@ -162,11 +214,11 @@
         name="adminFirstName"
         ng-model="addCompanyFormData.admin.firstname"
         ng-required="true"
-        ng-disabled="isEditing"
+      
        />
        <div
         class="error"
-        ng-show="addCompanyForm.adminFirstName.$error.required && addCompanyForm.adminFirstName.$touched"
+        ng-show="formHolder.addCompanyForm.adminFirstName.$error.required && formHolder.addCompanyForm.adminFirstName.$touched"
        >
         First Name is required
        </div>
@@ -179,11 +231,11 @@
         id="adminLastName"
         name="adminLastName"
         ng-model="addCompanyFormData.admin.lastname"
-        ng-disabled="isEditing"
+        
        />
        <!-- <div
                 class="error"
-                ng-show="addCompanyForm.adminLastName.$error.required && addCompanyForm.adminLastName.$touched"
+                ng-show="formHolder.addCompanyForm.adminLastName.$error.required && formHolder.addCompanyForm.adminLastName.$touched"
               >
                 Last Name is required
               </div> -->
@@ -203,17 +255,17 @@
         name="adminEmail"
         ng-model="addCompanyFormData.admin.email"
         ng-required="true"
-        ng-disabled="isEditing"
+        
        />
        <div
         class="error"
-        ng-show="addCompanyForm.adminEmail.$error.required && addCompanyForm.adminEmail.$touched"
+        ng-show="formHolder.addCompanyForm.adminEmail.$error.required && formHolder.addCompanyForm.adminEmail.$touched"
        >
         Email is required
        </div>
        <div
         class="error"
-        ng-show="addCompanyForm.adminEmail.$error.email && addCompanyForm.adminEmail.$touched"
+        ng-show="formHolder.addCompanyForm.adminEmail.$error.email && formHolder.addCompanyForm.adminEmail.$touched"
        >
         Invalid email format
        </div>
@@ -225,24 +277,24 @@
        <div class="form-group col">
         <label for="adminPhoneNo">Phone No*</label>
         <input
-         type="text"
+         type="number"
          class="form-control"
          id="adminPhoneNo"
          name="adminPhoneNo"
          ng-model="addCompanyFormData.admin.phoneNumber"
          ng-pattern="/^\d{10}$/"
          ng-required="true"
-         ng-disabled="isEditing"
+        
         />
         <div
          class="error"
-         ng-show="addCompanyForm.adminPhoneNo.$error.required && addCompanyForm.adminPhoneNo.$touched"
+         ng-show="formHolder.addCompanyForm.adminPhoneNo.$error.required && formHolder.addCompanyForm.adminPhoneNo.$touched"
         >
          Phone No is required
         </div>
         <div
          class="error"
-         ng-show="addCompanyForm.adminPhoneNo.$error.pattern && addCompanyForm.adminPhoneNo.$touched"
+         ng-show="formHolder.addCompanyForm.adminPhoneNo.$error.pattern && formHolder.addCompanyForm.adminPhoneNo.$touched"
         >
          Invalid Phone No.
         </div>
@@ -254,9 +306,9 @@
      <div class="formerror">
       <div
        class="error"
-       ng-show="addCompanyForm.$invalid && addCompanyForm.$submitted"
+       ng-show="formHolder.addCompanyForm.$invalid && formHolder.addCompanyForm.$submitted"
       >
-       {{addCompanyForm.errorMessage}}
+       {{formHolder.addCompanyForm.errorMessage}}
       </div>
      </div>
 
@@ -265,7 +317,7 @@
      <div class="formerror-list">
       <div
        class="error"
-       ng-show="addCompanyFormErrors.length > 0 && addCompanyForm.$submitted && addCompanyForm.$invalid"
+       ng-show="addCompanyFormErrors.length > 0 && formHolder.addCompanyForm.$submitted && formHolder.addCompanyForm.$invalid"
       >
        <div>
         <span ng-repeat="error in addCompanyFormErrors">{{ error }}</div>
@@ -273,11 +325,13 @@
       </div>
      </div>
 
+  
+
      <button
       type="submit"
       class="btn"
-      ng-disabled="addCompanyForm.$invalid"
-      ng-class="{'disabled': addCompanyForm.$invalid}"
+      ng-disabled="formHolder.addCompanyForm.$invalid"
+      ng-class="{'disabled': formHolder.addCompanyForm.$invalid}"
      >
       submit
      </button>
@@ -309,7 +363,7 @@
        <th scope="col">Company Name</th>
 
        <th scope="col">Domain</th>
-       <th scope="col">City</th>
+       <!-- <th scope="col">City</th> -->
        <th scope="col">State</th>
        <th scope="col">Country</th>
        <th scope="col">Joining Date</th>
@@ -328,7 +382,7 @@
        <td>
         <img
          ng-src="{{ company.logo }}"
-         alt="company logo"
+         alt=""
          style="width: 30px; height: 30px; margin-right: 10px"
         />
 
@@ -336,7 +390,7 @@
        </td>
 
        <td>{{ company.domain }}</td>
-       <td>{{ company.city }}</td>
+       <!-- <td>{{ company.city }}</td> -->
        <td>{{ company.state }}</td>
        <td>{{ company.country }}</td>
        <td>{{ company.createdAt | date : 'dd/MM/yyyy' }}</td>

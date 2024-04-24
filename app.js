@@ -55,6 +55,10 @@ trackflow.config([
     url: "/company",
     templateUrl: "./admin/dashboard/tabs/dashboard_company.html",
     controller: "dashboardCompanyController",
+    resolve: {
+     countries: getCountries,
+     states: getStates,
+    },
    })
    .state("superAdminDashboard.base", {
     url: "/base",
@@ -262,5 +266,25 @@ function isCompanyExists($q, CompanyService, subdomainService, $state) {
     $state.go("companyNotExists");
    }
    return $q.reject();
+  });
+}
+
+function getStates(LocationService) {
+ return LocationService.getAllStates()
+  .then(function (response) {
+   return response;
+  })
+  .catch(function (err) {
+   console.error("Error getting states: ", err);
+  });
+}
+
+function getCountries(LocationService) {
+ return LocationService.getCoutries()
+  .then(function (response) {
+   return response;
+  })
+  .catch(function (err) {
+   console.error("Error getting countries: ", err);
   });
 }

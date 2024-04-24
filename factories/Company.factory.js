@@ -38,9 +38,9 @@ function CompanyFactory(CompanyService) {
    errors.push("Company name is required");
   }
 
-  if (!this.city) {
-   errors.push("City is required");
-  }
+  // if (!this.city) {
+  //  errors.push("City is required");
+  // }
 
   if (!this.state) {
    errors.push("State is required");
@@ -58,10 +58,7 @@ function CompanyFactory(CompanyService) {
    errors.push("First name is required");
   }
 
-  if (!this.admin.lastname) {
-   errors.push("Last name is required");
-  }
-
+ 
   if (!this.admin.email) {
    errors.push("Email is required");
   }
@@ -76,9 +73,9 @@ function CompanyFactory(CompanyService) {
    errors.push("Company name must be a string");
   }
 
-  if (typeof this.city !== "string") {
-   errors.push("City must be a string");
-  }
+  // if (typeof this.city !== "string") {
+  //  errors.push("City must be a string");
+  // }
 
   if (typeof this.state !== "string") {
    errors.push("State must be a string");
@@ -96,7 +93,7 @@ function CompanyFactory(CompanyService) {
    errors.push("First name must be a string");
   }
 
-  if (typeof this.admin.lastname !== "string") {
+  if (this.admin.lastname &&  typeof this.admin.lastname !== "string") {
    errors.push("Last name must be a string");
   }
 
@@ -104,7 +101,7 @@ function CompanyFactory(CompanyService) {
    errors.push("Email must be a string");
   }
 
-  if (typeof this.admin.phoneNumber !== "string") {
+  if (typeof this.admin.phoneNumber !== "number") {
    errors.push("Phone number must be a string");
   }
 
@@ -112,6 +109,7 @@ function CompanyFactory(CompanyService) {
  };
 
  Company.prototype.save = function () {
+  this.admin.lastname = this.admin.lastname || "";
   var formData = convertDataToFormData(this);
   console.log("this", this);
   console.log("formData", ...formData);
@@ -123,6 +121,7 @@ function CompanyFactory(CompanyService) {
   _company.previewLogo = [{ url: company.logo }];
   _company.previousLogo = company.logo;
   _company.previousData = JSON.parse(angular.toJson(company));
+  _company.admin.phoneNumber = Number(_company.admin.phoneNumber);
   delete _company.logo;
   return _company;
  }

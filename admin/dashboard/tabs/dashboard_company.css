@@ -85,6 +85,25 @@ form .btn {
  border: 1px solid var(--dark-purple);
 }
 
+.logopreview-wrapper{
+  display: flex;
+  gap: 1rem;
+  align-items: center; 
+  margin: 1rem 0;
+}
+
+.logopreview-wrapper > button{
+  height: fit-content;
+  cursor: pointer;
+  border : none;
+  outline: none;
+}
+
+.logopreview-wrapper > button.disabled{
+  cursor: not-allowed;
+  color: pink;
+}
+
 .logoPreview img {
  width: 100%;
  height: 100%;

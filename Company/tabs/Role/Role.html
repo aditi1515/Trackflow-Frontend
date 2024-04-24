@@ -62,7 +62,7 @@
         ng-change="changePermissionSet(addRoleFormData.permissions)"
        >
         <option
-         ng-value="permissionSet"
+         ng-value="permissionSet.name"
          ng-repeat="permissionSet in permissionSets"
          ng-if="permissionSet.name !== 'Base Permission Set'"
         >

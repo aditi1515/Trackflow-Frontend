@@ -306,3 +306,23 @@ button {
  gap: 0.4rem;
  flex-direction: column;
 }
+
+.logopreview-wrapper{
+ display: flex;
+ gap: 1rem;
+ align-items: center; 
+ margin: 1rem 0;
+}
+
+.logopreview-wrapper > button{
+ height: fit-content;
+ cursor: pointer;
+ border : none;
+ outline: none;
+ width: fit-content;
+}
+
+.logopreview-wrapper > button.disabled{
+ cursor: not-allowed;
+ color: pink;
+}

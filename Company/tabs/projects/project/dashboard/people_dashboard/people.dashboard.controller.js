@@ -402,7 +402,7 @@ function PeopleDashboardInProjectController(
   console.log("displayUsersWithMostTciketsChart", data);
 
   var keys = data.map(function (d) {
-   return d._id.firstname + " " + d._id.lastname;
+   return d.assignee.firstname + " " + d.assignee.lastname;
   });
   var values = data.map(function (d) {
    return d.totalTickets;

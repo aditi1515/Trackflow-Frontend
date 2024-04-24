@@ -182,7 +182,12 @@ $scope.editProject = function (project, modalId) {
 
  //to check if member is already present in the project
  
- 
+ $scope.removeLogo = function () {
+  $scope.addProjectFormData.previewLogo = null;
+  $scope.addProjectFormData.logo = null;
+  $scope.addProjectFormData.previousLogo = null;
+ };
+
  $scope.editProjectFormSubmit = function (modalId, editProjectForm) {
   console.log("Editing project: ", $scope.addProjectFormData);
  var project = new ProjectFactory.Project($scope.addProjectFormData, $scope.profile, $scope.company);

@@ -2,7 +2,8 @@ function RoleManagementController(
  $scope,
  ModalService,
  RoleService,
- SnackbarService
+ SnackbarService,
+ $state
 ) {
  $scope.addRoleFormData = {};
  $scope.editRoleFormData = {};
@@ -11,16 +12,25 @@ function RoleManagementController(
  $scope.presetNameError = false;
  $scope.launchModal = function (modalId) {
   $scope.presetNameError = false;
+  $scope.addRoleFormData = {};
 
+  $scope.currentPermissionSet = angular.copy(
+   $scope.permissionSets.find((set) => set.name === "Company Admin")
+  );
+
+  $scope.addRoleFormData.permissions = $scope.currentPermissionSet.name;
   ModalService.showModal(modalId);
  };
 
  function loadPermissionSet() {
   RoleService.getPermissionSets().then(function (permissionSets) {
    $scope.permissionSets = permissionSets;
+
    $scope.currentPermissionSet = angular.copy(
-    permissionSets.find((set) => set.name === "Base Permission Set")
+    permissionSets.find((set) => set.name === "Company Admin")
    );
+
+   $scope.addRoleFormData.permissions = $scope.currentPermissionSet.name;
   });
  }
 
@@ -30,17 +40,23 @@ function RoleManagementController(
   return typeof value === "object";
  };
 
- $scope.changePermissionSet = function (permissionSet) {
+ $scope.changePermissionSet = function (permissionSetName) {
   console.log("Changing permission set: ", permissionSet);
+
+  var permissionSet = $scope.permissionSets.find(function (set) {
+   return set.name === permissionSetName;
+  });
+
   $scope.currentPermissionSet = angular.copy(permissionSet);
  };
 
  $scope.setBasePreset = function () {
   console.log($scope);
   $scope.currentPermissionSet = angular.copy(
-   $scope.permissionSets.find((set) => set.name === "Base Permission Set")
+   $scope.permissionSets.find((set) => set.name === "Company Admin")
   );
-  $scope.addRoleFormData.permissions = $scope.currentPermissionSet;
+
+  $scope.addRoleFormData.permissions = $scope.currentPermissionSet.name;
  };
 
  $scope.saveRole = function (modalId) {
@@ -73,6 +89,7 @@ function RoleManagementController(
     $scope.formHolder.addRoleForm.$setUntouched();
     SnackbarService.showAlert("Role saved successfully", 2000, "success");
     getAllRoles();
+    $state.reload();
    })
    .catch(function (err) {
     $scope.formHolder.addRoleForm.errorMessage = err.data.message;
@@ -114,6 +131,7 @@ function RoleManagementController(
      2000,
      "success"
     );
+    $state.reload();
    })
    .catch(function (err) {
     console.log("Error saving template: ", err);
@@ -137,6 +155,7 @@ function RoleManagementController(
     ModalService.hideModal(modalId);
     SnackbarService.showAlert("Role updated successfully", 2000, "success");
     $scope.editRoleFormData = {};
+    $state.reload();
     getAllRoles();
    })
    .catch(function (err) {
@@ -152,5 +171,6 @@ trackflow.controller("RoleManagementController", [
  "ModalService",
  "RoleService",
  "SnackbarService",
+ "$state",
  RoleManagementController,
 ]);

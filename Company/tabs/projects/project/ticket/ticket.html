@@ -314,7 +314,7 @@
     <div class="ticket-header">
 
      <div class="ticket-title">
-      <span>{{ticket.name}}</span>
+      <span>{{ticket.projectDetails.key + "-" + ticket.number}}</span>
       <!-- ticket assignees -->
 
       <div class="assignees" ng-if="ticket.assignees.length<4">
@@ -405,7 +405,7 @@
   modal-size="md"
   class="ticketmodel"
   modal-id="viewTicketModal"
-  title="{{viewTicketDetails.name}}"
+  title="{{viewTicketDetails.projectDetails.key + '-' + viewTicketDetails.number}}"
  >
   <form
    name="editTicketForm"

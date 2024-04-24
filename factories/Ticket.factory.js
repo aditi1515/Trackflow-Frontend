@@ -8,7 +8,10 @@ function TicketFactory(TicketService) {
   this.ticketType = ticket.ticketType;
   this.assignees = ticket.assignees ? ticket.assignees : [];
   this.reporterClient = ticket.reporterClient;
-  this.attachments = ticket.attachments;
+ 
+  if(ticket.attachments){
+   this.attachments = ticket.attachments;
+  }
 
   if (ticket.previousTicket) {
    this.previousTicket = ticket.previousTicket;

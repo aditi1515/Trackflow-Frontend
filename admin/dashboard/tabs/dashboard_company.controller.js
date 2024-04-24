@@ -6,16 +6,96 @@ function dashboardCompanyController(
  ModalService,
  SnackbarService,
  FilePreviewFactory,
- CompanyFactory
+ CompanyFactory,
+ LocationService,
+ countries,
+ states
 ) {
  $scope.addCompanyFormData = {};
-
+ $scope.formHolder = {};
  $scope.companiesData = {};
  $scope.isEditing = false;
  $scope.currentEditingCompany = null;
-  $scope.dateRangeOption = null
+ $scope.dateRangeOption = null;
+ $scope.countries = countries;
+ $scope.states = states;
 
+ $scope.countryChange = function (countryName) {
+  console.log("Country name: ", countryName);
+  var country = countries.filter(function (country) {
+   if (country.name === countryName) {
+    return true;
+   }
+  });
+  filterStatesToShow(country[0]);
+ };
 
+ function filterStatesToShow(country) {
+  if (!country) return;
+
+  var statesTemp = states.filter(function (state) {
+   if (state.country_id === country.id) {
+    return true;
+   }
+  });
+
+  $scope.statesToShow = statesTemp;
+ }
+
+ function getStates() {
+  return LocationService.getAllStates()
+   .then(function (response) {
+    $scope.allStates = response;
+    console.log("States: ", response);
+    return ($scope.states = response);
+   })
+   .catch(function (err) {
+    console.error("Error getting states: ", err);
+   });
+ }
+
+ function getCountries() {
+  if ($scope.countries) return Promise.resolve($scope.countries);
+
+  return LocationService.getCoutries()
+   .then(function (response) {
+    return ($scope.countries = response);
+   })
+   .catch(function (err) {
+    console.error("Error getting countries: ", err);
+   });
+ }
+
+ function getCities() {
+  console.log($scope.addCompanyFormData.city);
+  var country = $scope.countries.filter(function (country) {
+   if (country.name === $scope.addCompanyFormData.country) {
+    return true;
+   }
+  });
+
+  var state = $scope.statesToShow.filter(function (state) {
+   if (state.name === $scope.addCompanyFormData.state) {
+    return true;
+   }
+  });
+
+  if (country.length === 0 || state.length === 0) {
+   return;
+  }
+
+  console.log("Country iso name: ", country[0].iso2);
+  console.log("State iso name: ", state[0].iso2);
+  return LocationService.getCities(country[0].iso2, state[0].iso2)
+   .then(function (response) {
+    return ($scope.cities = response);
+   })
+   .catch(function (err) {
+    console.error("Error getting cities: ", err);
+   });
+ }
+
+ //  getCountries();
  //for previewing logo in form
  function filePreviewCallback(filesUrls) {
   console.log("Files here: ", filesUrls[0].url);
@@ -62,9 +142,14 @@ function dashboardCompanyController(
 
  //populate add company form with previous data
  $scope.editCompany = function (company, modalId) {
-  $scope.currentEditingCompany = company;
-  $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
   $scope.isEditing = true;
+
+  $scope.currentEditingCompany = company;
+
+  $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
+  angular.element("#companyLogo").val(null);
+  $scope.countryChange(company.country);
+
   ModalService.showModal(modalId);
  };
 
@@ -104,13 +189,12 @@ function dashboardCompanyController(
   }
  };
 
-
  $scope.dateOptionChange = function (option) {
   console.log("Option: ", option);
   $scope.dateRangeOption = option;
 
-  getCompanies()
- }
+  getCompanies();
+ };
 
  //display all companies
  function getCompanies(
@@ -118,33 +202,31 @@ function dashboardCompanyController(
   pageSize = 10,
   query = $scope.companiesData.query || ""
  ) {
-
   var startDate = null;
   var endDate = null;
   console.log("Date range option: ", $scope.dateRangeOption);
   switch ($scope.dateRangeOption) {
-    case "oneMonth":
-      startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 1);
-      endDate = new Date();
-      break;
-    case "sixMonths":
-      startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 6);
-      endDate = new Date();
-      break;
-    case "oneYear":
-      startDate = new Date();
-      startDate.setFullYear(startDate.getFullYear() - 1);
-      endDate = new Date();
-      break;
-    default:
-      break;
+   case "oneMonth":
+    startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    endDate = new Date();
+    break;
+   case "sixMonths":
+    startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 6);
+    endDate = new Date();
+    break;
+   case "oneYear":
+    startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 1);
+    endDate = new Date();
+    break;
+   default:
+    break;
   }
 
-
-  var dateRangeOption = {startDate: startDate, endDate: endDate}
-  CompanyService.getCompanies(pageNo, pageSize, query , dateRangeOption)
+  var dateRangeOption = { startDate: startDate, endDate: endDate };
+  CompanyService.getCompanies(pageNo, pageSize, query, dateRangeOption)
    .then(function (response) {
     $scope.companiesData = response.data;
 
@@ -186,12 +268,19 @@ function dashboardCompanyController(
  $scope.launchModal = function (modalId, addCompanyForm) {
   if ($scope.isEditing) {
    $scope.isEditing = false;
-   $scope.addCompanyFormData = {};
-   addCompanyForm?.$setPristine();
-   addCompanyForm?.$setUntouched();
-   angular.element("#companyLogo").val(null);
   }
+  $scope.addCompanyFormData = {};
+  console.log("Form: ", addCompanyForm);
+  addCompanyForm?.$setPristine();
+  addCompanyForm?.$setUntouched();
+  angular.element("#companyLogo").val(null);
   ModalService.showModal(modalId);
+ };
+
+ $scope.removeLogo = function () {
+  $scope.addCompanyFormData.previewLogo = null;
+  $scope.addCompanyFormData.logo = null;
+  $scope.addCompanyFormData.previousLogo = null;
  };
 
  //change company status
@@ -208,10 +297,11 @@ function dashboardCompanyController(
 
   if (errors.length) {
    console.log("Errors: ", errors);
-   return
+   return;
   }
 
-  company.edit(companyId)
+  company
+   .edit(companyId)
    .then(function (response) {
     console.log("Company status changed", response);
     getCompanies(
@@ -234,5 +324,8 @@ trackflow.controller("dashboardCompanyController", [
  "SnackbarService",
  "FilePreviewFactory",
  "CompanyFactory",
+ "LocationService",
+ "countries",
+ "states",
  dashboardCompanyController,
 ]);

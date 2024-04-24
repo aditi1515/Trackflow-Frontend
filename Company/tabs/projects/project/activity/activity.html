@@ -8,98 +8,40 @@
  <div class="ticketLogsContainer">
 
 
-  <div class="ticketLog" ng-repeat="ticketLog in displayedTicketsLogs">
-   <div class="ticket-create-log" ng-if="ticketLog.action === 'CREATE'">
-    <div class="doneBy">
-     <img src="{{ticketLog.doneBy.image}}" alt="" />
-     <span
-      >{{ticketLog.doneBy.firstname + " " + (ticketLog.doneBy.lastname !==
-      'undefined' ? ticketLog.doneBy.lastname : '' ) }}</span
-     >
-     <div class="log-body">
-      <span>Created Ticket </span>
-     </div>
-     <div class="ticket-name">{{ticketLog.changes[0].next.name}}</div>
-    </div>
-
-    <div class="log-time">
-     <span>{{ticketLog.createdAt | date: 'dd/MM/yyyy hh:mm a'}}</span>
-    </div>
-   </div>
-
-   <div class="ticket-edit-log" ng-if="ticketLog.action === 'UPDATE'" >
-    <div class="doneBy">
-     <img src="{{ticketLog.doneBy.image}}" alt="" />
-     <span
-      >{{ticketLog.doneBy.firstname + " " + (ticketLog.doneBy.lastname !==
-      'undefined' ? ticketLog.doneBy.lastname : '' ) }}</span
-     >
-     <div class="log-body">
-      <span>Updated Ticket </span>
-     </div>
-     <div class="ticket-name">{{ticketLog.metaData.ticketName}}</div>
-    </div>
-
-    <div class="log-time">
-     <button
-      class="edit-log-info bi-eye"
-      type="button"
-      data-toggle="collapse"
-      data-target="{{'#' + ticketLog._id}}"
-      aria-expanded="false"
-      aria-controls="collapseExample"
-     ></button>
-
-     <span>{{ticketLog.createdAt | date: 'dd/MM/yyyy hh:mm a'}}</span>
-    </div>
-   </div>
-   <div class="collapse" id="{{ticketLog._id}}">
-    <div class="card card-body">
-     <div class="log-change" ng-repeat="tlc in ticketLog.changes">
-      <div
-       class="plain-values"
-       ng-if="['status','dueDate','priority','ticketType','title','description','ticketClosedAt'].includes(tlc.key)"
-      >
-       <span class="bi-arrow-return-right"></span>
-       <span>Changed</span>
-       <span>{{tlc.key}}</span>
-       <span>from</span>
-       <span class="bold-log">{{tlc.change.prev}}</span>
-       <span>to</span>
-       <span class="bold-log">{{tlc.change.new}}</span>
-      </div>
-
-      <div class="membersAdded" ng-if="['assignees'].includes(tlc.key) && tlc.change.added.length > 0">
-       <span class="bi-arrow-return-right"></span>
-       <span>Added</span>
-       <span>{{tlc.key}}</span>
-       <div class="members">
-        <div class="member" ng-repeat="member in tlc.change.added">
-         <img class="member-img-log" src="{{member.image}}" alt="" />
-         <span>{{member.firstname + " " + (member.lastname !== 'undefined' ? member.lastname : '')}}</span>
-        </div>
-       
-      </div>
-     </div>
-
-     <div class="membersAdded" ng-if="['assignees'].includes(tlc.key) && tlc.change.removed.length > 0" >
-      <span class="bi-arrow-return-right"></span>
-      <span>Removed</span>
-      <span>{{tlc.key}}</span>
-      <div class="members">
-       <div class="member" ng-repeat="member in tlc.change.removed">
-        <img class="member-img-log" src="{{member.image}}" alt="" />
-        <span>{{member.firstname + " " + (member.lastname !== 'undefined' ? member.lastname : '')}}</span>
-       </div>
-      
-     </div>
-    </div>
-
-    </div>
-   </div>
-  </div>
+   <table class="log-table">
+    <thead>
+      <tr>
+        <th>Entity</th>
+        <th>Activity</th>
+        <th>Time</th>
+        <th>Done By</th>
+      </tr>
+    </thead>
   
- </div>
+    <tbody>
+      <tr ng-repeat ="ticketLog in displayedTicketsLogs" ng-click="openTicketLogDialog(ticketLog,'ticket-log-view')">
+        <td>
+          <div>
+            <a href="">{{ticketLog.model.name + "-" + ticketLog.model.id}}</a>
+            <div>       
+              <span>{{ticketLog.changes.name}}</span>
+            </div>
+          </div>
+
+        </td>
+        <td>{{ticketLog.action}}</td>
+        <td>{{ ticketLog.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td>
+          <div class="doneBy">
+            <img ng-src="{{ticketLog.doneBy.image}}" alt="" />
+            <span>{{ticketLog.doneBy.firstname + " " + ticketLog.doneBy.lastname}}</span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+   </table>
+
+
  <div class="pagination">
   <div class="pagination__pageCount">
    <span>Page</span>
@@ -121,4 +63,167 @@
    ng-class="{disabled:paPage>=totalPagesInPA}"
   ></i>
  </div>
+
+ <my-modal
+ modal-size="lg"
+ modal-id="ticket-log-view"
+ title="Ticket Log"
+>
+ <div class="ticket-log">
+
+  <div class="log-meta-details">
+   <div class="left">
+    <div class="log-meta-detail">
+      <span>Entity : </span>
+      <span>{{ticketLog.model.name}}</span>
+    </div>
+    <div class="log-meta-detail">
+      <span>Activity : </span>
+      <span>{{ticketLog.action}}</span>
+      </div>
+      <div class="log-meta-detail">
+        <span>Time : </span>
+        <span>{{ticketLog.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+      </div>
+   </div>
+
+   <div class="right">
+    <div class="history" ng-click="setShowTicketHistory(true)">
+      <i class="bi bi-clock-history"></i>
+    </div>
+   </div>
+    
+  </div>
+
+  <div class="ticket-details" ng-show="!showTicketHistory">
+    <div class="log-row">
+      <div class="ticket-detail">
+        <span>Ticket ID : </span>
+        <span>{{ticketLog.changes._id}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span> Name : </span>
+        <span>{{ticketLog.changes.projectDetails.key + "-" + ticketLog.changes.number}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span> Description : </span>
+        <span>{{ticketLog.changes.description}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span> Type : </span>
+        <span>{{ticketLog.changes.ticketType}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span> Priority: </span>
+        <span>{{ticketLog.changes.priority}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span>Status : </span>
+        <span>{{ticketLog.changes.status}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span>Due Date : </span>
+        <span>{{ticketLog.changes.dueDate}}</span>
+      </div>
+      <div class="ticket-detail">
+        <span>Created By : </span>
+        <span><div class="assignedBy-details">
+          <div class="assignedBy-detail">
+            <span>Id :</span>
+            <span>{{ticketLog.changes.assignedBy._id}}</span>
+          </div>
+          <div class="assignedBy-detail">
+            <span>Name :</span>
+            <span>{{ticketLog.changes.assignedBy.firstname + " " + ticketLog.changes.assignedBy.lastname}}</span>
+          </div>
+          <div class="assignedBy-detail">
+            <span>Image :</span>
+            <img ng-src="{{ticketLog.changes.assignedBy.image}}" alt="" />
+          </div>
+        </div></span>
+      </div>
+      <div class="ticket-detail">
+        <span>Reporter Client : </span>
+        <span>{{ticketLog.changes.reporterClient}}</span>
+      </div>
+  
+      <div class="ticket-detail">
+        <span>Assignees : </span>
+        <span>
+          <table class="assignees-table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Date Joined</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="assignee in ticketLog.changes.assignees">
+                <td>{{assignee._id}}</td>
+                <td>{{assignee.firstname}}</td>
+                <td>{{assignee.lastname}}</td>
+                <td><img ng-src="{{assignee.image}}" alt="" /></td>
+                <td>{{assignee.assignmentDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
+       </div> 
+
+
+       <div class="ticket-detail">
+        <span>Attachments</span>
+        <div class="attachments">
+          <div class="attachment" ng-repeat="attachment in ticketLog.changes.attachments">
+         
+        <div ng-if="isImage(attachment)">
+         <img ng-src="{{attachment}}" alt="attachments-preview" />
+        </div>
+        <div ng-if="!isImage(attachment)">
+         <a class="file-link" ng-href="{{attachment}}" target="_blank">
+          <i class="bi-file-earmark-check"></i>
+         </a>
+       
+       </div>
+          </div>
+        </div>
+       </div>
+    </div>
+  
+  </div>
+
+  <div class="ticket-history" ng-show="showTicketHistory">
+    <table class="ticket-history-table log-table">
+      <thead>
+        <tr>
+          <th>Entity</th>
+          <th>Activity</th>
+          <th>Time</th>
+          <th>Done By</th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        <tr ng-repeat ="ticketLog in ticketHistory" ng-click="openTicketLogDialog(ticketLog,'ticket-log-view')">
+          <td><a href="">{{ticketLog.model.name + "-" + ticketLog.model.id}}</a></td>
+          <td>{{ticketLog.action}}</td>
+          <td>{{ ticketLog.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>
+            <div class="doneBy">
+              <img ng-src="{{ticketLog.doneBy.image}}" alt="" />
+              <span>{{ticketLog.doneBy.firstname + " " + ticketLog.doneBy.lastname}}</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+     </table>
+  </div>
+
+
+ </div>
+</my-modal>
+
 </section>

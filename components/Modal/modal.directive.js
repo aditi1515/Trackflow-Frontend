@@ -34,15 +34,15 @@ trackflow.directive("myModal", function (ModalService) {
     scope.closeModal();
    };
 
-   element.on("click", function (event) {
-    console.log("Modal clicked", element[0], event.target.id);
-    if (
-     event.target.classList.contains("modal") ||
-     event.target.classList.contains("modal-dialog")
-    ) {
-     scope.$apply(scope.closeModal);
-    }
-   });
+   // element.on("click", function (event) {
+   //  console.log("Modal clicked", element[0], event.target.id);
+   //  if (
+   //   event.target.classList.contains("modal") ||
+   //   event.target.classList.contains("modal-dialog")
+   //  ) {
+   //   scope.$apply(scope.closeModal);
+   //  }
+   // });
   },
  };
 });
