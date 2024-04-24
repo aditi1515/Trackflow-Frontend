@@ -2,6 +2,7 @@ function dashboardCompanyController(
  $scope,
  $timeout,
  $element,
+ $state,
  CompanyService,
  ModalService,
  SnackbarService,
@@ -19,7 +20,7 @@ function dashboardCompanyController(
  $scope.dateRangeOption = null;
  $scope.countries = countries;
  $scope.states = states;
-
+ $scope.cities = [];
  $scope.countryChange = function (countryName) {
   console.log("Country name: ", countryName);
   var country = countries.filter(function (country) {
@@ -66,20 +67,29 @@ function dashboardCompanyController(
    });
  }
 
- function getCities() {
-  console.log($scope.addCompanyFormData.city);
-  var country = $scope.countries.filter(function (country) {
-   if (country.name === $scope.addCompanyFormData.country) {
+ function getCities(company) {
+  console.log("Company: ", company);
+  console.log("Current editing company: ", $scope.currentEditingCompany);
+  if (company._id === $scope.currentEditingCompany?._id) {
+   return Promise.resolve();
+  }
+  return $scope.getCities(company.country, company.state);
+ }
+
+ $scope.getCities = function (countryName, stateName) {
+  var country = countries.filter(function (country) {
+   if (country.name === countryName) {
     return true;
    }
   });
 
-  var state = $scope.statesToShow.filter(function (state) {
-   if (state.name === $scope.addCompanyFormData.state) {
+  var state = states.filter(function (state) {
+   if (state.name === stateName) {
     return true;
    }
   });
-
+  console.log("Country: ", country);
+  console.log("State: ", state);
   if (country.length === 0 || state.length === 0) {
    return;
   }
@@ -93,7 +103,7 @@ function dashboardCompanyController(
    .catch(function (err) {
     console.error("Error getting cities: ", err);
    });
- }
+ };
 
  //  getCountries();
  //for previewing logo in form
@@ -143,14 +153,17 @@ function dashboardCompanyController(
  //populate add company form with previous data
  $scope.editCompany = function (company, modalId) {
   $scope.isEditing = true;
+  if ($scope.loadingCities) return;
+  $scope.loadingCities = true;
 
-  $scope.currentEditingCompany = company;
-
-  $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
-  angular.element("#companyLogo").val(null);
-  $scope.countryChange(company.country);
-
-  ModalService.showModal(modalId);
+  getCities(company).then(function () {
+    $scope.loadingCities = false;
+   $scope.currentEditingCompany = company;
+   $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
+   angular.element("#companyLogo").val(null);
+   $scope.countryChange(company.country);
+   ModalService.showModal(modalId);
+  });
  };
 
  $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {
@@ -179,6 +192,7 @@ function dashboardCompanyController(
      editCompanyForm.$setPristine();
      editCompanyForm.$setUntouched();
      getCompanies();
+     $state.reload()
      ModalService.hideModal(modalId);
     })
     .catch(function (error) {
@@ -319,6 +333,7 @@ trackflow.controller("dashboardCompanyController", [
  "$scope",
  "$timeout",
  "$element",
+ "$state",
  "CompanyService",
  "ModalService",
  "SnackbarService",

@@ -101,10 +101,6 @@ function CompanyFactory(CompanyService) {
    errors.push("Email must be a string");
   }
 
-  if (typeof this.admin.phoneNumber !== "number") {
-   errors.push("Phone number must be a string");
-  }
-
   return errors;
  };
 
