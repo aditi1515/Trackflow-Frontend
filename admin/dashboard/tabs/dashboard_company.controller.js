@@ -155,12 +155,15 @@ function dashboardCompanyController(
   $scope.isEditing = true;
   if ($scope.loadingCities) return;
   $scope.loadingCities = true;
-
+  $scope.formHolder.addCompanyForm.$setPristine()
+  $scope.formHolder.addCompanyForm.$setUntouched()
+  // $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
   getCities(company).then(function () {
     $scope.loadingCities = false;
    $scope.currentEditingCompany = company;
    $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
    angular.element("#companyLogo").val(null);
+   console.log("cities added");
    $scope.countryChange(company.country);
    ModalService.showModal(modalId);
   });

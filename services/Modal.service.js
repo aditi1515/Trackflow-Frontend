@@ -1,4 +1,4 @@
-trackflow.service('ModalService', function() {
+trackflow.service('ModalService', function($state) {
     this.showModal = function(modalId) {
         var modalElement = document.getElementById(modalId);
         if (modalElement) {
@@ -14,6 +14,7 @@ trackflow.service('ModalService', function() {
             modalElement.classList.remove('show');
             modalElement.style.display = 'none';
             modalElement.removeAttribute('aria-modal');
+            $state.reload()
         }
     };
 });

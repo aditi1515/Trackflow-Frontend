@@ -131,6 +131,12 @@ function ticketController(
     }
   };
 
+  $scope.isCurrentlyInProject = function (assigneee) {
+    return $scope.membersInProject.some(function (member) {
+      return member._id === assigneee._id
+    })
+  }
+
   $scope.checkIfTicketIsPending = function (ticket) {
     // based on status and duedate
     return (
@@ -200,6 +206,7 @@ function ticketController(
     }).then(function (response) {
       console.log("All members: ", response);
       $scope.membersInProject = response.data.users;
+
     });
   }
 

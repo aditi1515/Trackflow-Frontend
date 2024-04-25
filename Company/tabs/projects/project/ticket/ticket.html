@@ -321,6 +321,7 @@
        <img
         ng-src="{{assignee.image}}"
         ng-repeat="assignee in ticket.assignees"
+        ng-show="isCurrentlyInProject(assignee)"
         alt=""
        />
       </div> 
@@ -676,7 +677,7 @@
          ng-value="{'_id': person._id, 'firstname': person.firstname, 'lastname' : person.lastname , 'email': person.email , 'image': person.image}"
          data-image="{{person.image}}"
          ng-repeat="person in membersInProject"
-         ng-if="!isAssigneeSelected(person)"
+         ng-show="!isAssigneeSelected(person)"
         >
          {{person.firstname + " " + (person.lastname !== 'undefined' ? person.lastname : '')}}
         </option>
@@ -690,6 +691,30 @@
        <div
         class="assignee"
         ng-repeat="assignee in viewTicketDetails.alreadyAssigned"
+        ng-show="isCurrentlyInProject(assignee)"
+       >
+        <img ng-src="{{assignee.image}}" alt="" />
+        <span>{{assignee.firstname + " " + (assignee.lastname !== 'undefined'  ? assignee.lastname : '' )}}</span>
+
+        <!-- reomove -->
+        <div
+         class="remove-btn"
+         ng-if="isEditing && checkTicketEditAccess(false)"
+         ng-click="removeAssignee(assignee)"
+        >
+         <i class="bi bi-x"></i>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <div class="assignees-preview">
+      <label for="assignees">Past Assignees</label>
+      <div class="assignees-preview-wrapper">
+       <div
+        class="assignee"
+        ng-repeat="assignee in viewTicketDetails.alreadyAssigned"
+        ng-show="!isCurrentlyInProject(assignee)"
        >
         <img ng-src="{{assignee.image}}" alt="" />
         <span>{{assignee.firstname + " " + (assignee.lastname !== 'undefined'  ? assignee.lastname : '' )}}</span>
