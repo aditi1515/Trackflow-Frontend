@@ -282,6 +282,28 @@ $scope.editProject = function (project, modalId) {
   }, 1000);
  };
 
+ var debounceKeyCheckTimeout;
+
+ $scope.debounceKeyCheck = function () {
+  console.log("Debouncing...");
+  $timeout.cancel(debounceKeyCheckTimeout);
+  debounceKeyCheckTimeout = $timeout(function () {
+    checkKeyUnique();
+  }, 1000);
+ };
+
+ function checkKeyUnique(){
+  ProjectService.checkKeyInProject($scope.addProjectFormData.key, $scope.currentEditingProjectId).then(function (response) {
+    console.log("Key check: ", response);
+    if (response.data.exists) {
+     $scope.keyError = "Key already exists";
+    } else {
+     $scope.keyError = "";
+    }
+   });
+ }
+
+
  $scope.launchModal = function (modalId, addProjectForm) {
   if ($scope.isEditingProject) {
    init();

@@ -356,7 +356,7 @@ function ticketController(
     }
 
     if (updateAccess.ONLY_ENROLLED) {
-      var isUserExistsInTicket = $scope.currentEditingTicket.members.some(
+      var isUserExistsInTicket = $scope.currentEditingTicket.assignees.some(
         function (member) {
           return member._id === $scope.profile._id;
         }
