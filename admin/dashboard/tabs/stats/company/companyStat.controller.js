@@ -132,9 +132,14 @@ function CompanyStatController($scope, AnalyticsService) {
     });
 
 
-    var keysAdjusted = labels.map(function (key){
-      return key.split(" ");
-    })
+    if($scope.trendCountOption !== "year"){
+      var keysAdjusted = labels.map(function (key){
+        return key.split(" ");
+      })
+    }
+    else{
+      var keysAdjusted = labels;
+    }
 
     var data = {
       labels: keysAdjusted,
@@ -254,9 +259,14 @@ function CompanyStatController($scope, AnalyticsService) {
       return data.projectCount;
     });
 
-    var keysAdjusted = labels.map(function (key){
-      return key.split(" ");
-    })
+    if($scope.trendCountOption !== "year"){
+      var keysAdjusted = labels.map(function (key){
+        return key.split(" ");
+      })
+    }
+    else{
+      var keysAdjusted = labels;
+    }
 
     var data = {
       labels: keysAdjusted,
@@ -379,9 +389,14 @@ function CompanyStatController($scope, AnalyticsService) {
       return data.ticketCount;
     });
 
-    var keysAdjusted = labels.map(function (key){
-      return key.split(" ");
-    })
+    if($scope.trendCountOption !== "year"){
+      var keysAdjusted = labels.map(function (key){
+        return key.split(" ");
+      })
+    }
+    else{
+      var keysAdjusted = labels;
+    }
 
     var data = {
       labels: keysAdjusted,
@@ -403,7 +418,7 @@ function CompanyStatController($scope, AnalyticsService) {
       existingChart.destroy();
     }
 
-
+console.log("Data" , data);
     new Chart(chartDiv, {
       type: "line",
       data: data,
