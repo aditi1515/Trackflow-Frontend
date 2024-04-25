@@ -465,7 +465,7 @@
        ng-class="{'active-edit bi-eraser-fill': isEditing , 
          'bi-pencil-square': !isEditing
      }"
-       ng-click="editTicketToggle('viewTicketModal')"
+       ng-click="editTicketToggle('viewTicketModal',editTicketForm)"
       ></i>
      </div>
     </div>
@@ -512,7 +512,7 @@
                'status-in-progress': viewTicketDetails.status === 'IN PROGRESS',
                'status-in-review': viewTicketDetails.status === 'IN REVIEW',
                'status-closed': viewTicketDetails.status === 'CLOSED',
-               'disabled': !isEditing || !checkTicketEditAccess(false)
+               'disabled': !isEditing || !checkTicketEditAccess(true)
               }"
        >
         <option
@@ -638,7 +638,7 @@
 
         <div
          class="remove-btn"
-         ng-if="isEditing"
+          ng-if="isEditing && checkTicketEditAccess(true)"
          ng-click="removeAttachment(preview)"
         >
          <i class="bi bi-x"></i>
@@ -733,7 +733,7 @@
        </div>
       </div>
      </div>
-     {{editTicketForm.errorMessage}}
+
      <div ng-if="isEditing" class="formerror">
       <div
        class="error"
@@ -742,7 +742,6 @@
        {{editTicketForm.errorMessage}}
       </div>
      </div>
-     {{editTicketForm.$error}}
      <div ng-if="isEditing" class="footer">
       <button ng-disabled="editTicketForm.$invalid && editTicketForm.$submitted" ng-class="{'disabled':editTicketForm.$invalid && editTicketForm.$submitted}" type="submit">
        Update

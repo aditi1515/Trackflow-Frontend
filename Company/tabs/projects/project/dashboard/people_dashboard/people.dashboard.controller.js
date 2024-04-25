@@ -402,7 +402,7 @@ function PeopleDashboardInProjectController(
   console.log("displayUsersWithMostTciketsChart", data);
 
   var keys = data.map(function (d) {
-   return d.assignee.firstname + " " + d.assignee.lastname;
+   return d._id.firstname + " " + d._id.lastname;
   });
   var values = data.map(function (d) {
    return d.totalTickets;
@@ -418,7 +418,7 @@ function PeopleDashboardInProjectController(
   var keysAdjusted = keys.map(function (key){
     return key.split(" ");
   })
-
+  console.log("keysAdjusted", keysAdjusted);
   new Chart(ctx, {
    type: "bar",
    data: {

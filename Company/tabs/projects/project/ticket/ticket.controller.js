@@ -82,15 +82,16 @@ function ticketController(
   };
 
   //edit ticket
-  $scope.editTicketToggle = function (modalId) {
+  $scope.editTicketToggle = function (modalId,editTicketForm) {
     if ($scope.isEditing) {
       //  init();
       $scope.viewTicket(modalId, $scope.currentEditingTicket);
     } else {
       $scope.isEditing = true;
     }
-
-    console.log("Editing ticket: ", $scope.isEditing);
+    editTicketForm.$setPristine();
+    editTicketForm.$setUntouched();
+    console.log("Editing ticket: ", $scope.isEditing , editTicketForm) ;
   };
 
   $scope.editTicketSubmit = function (modalId, editTicketForm) {
@@ -124,8 +125,9 @@ function ticketController(
           getAllTickets();
         })
         .catch(function (error) {
-          editTicketForm.errorMessage = error.message;
+          editTicketForm.errorMessage = error.data.message;
           editTicketForm.$invalid = true;
+          $scope.ticketEditFormSubmitted = false
           console.error("Error updating ticket: ", error);
         });
     }
@@ -329,24 +331,23 @@ function ticketController(
   };
 
   $scope.checkTicketEditAccess = function (isMetaInfo) {
-    console.log("Profile: ", $scope.profile);
 
     var updateAccess =
       $scope.profile.role.permissionSet.permissions.TICKET.UPDATE;
 
-    console.log("Update access: ", updateAccess);
+
 
     if (
       updateAccess.FULL_ACCESS &&
       !updateAccess.ONLY_ENROLLED &&
       !updateAccess.MANAGE_ACCESS
     ) {
-      console.log("return access: ", updateAccess.FULL_ACCESS);
+
       return true;
     }
 
     if (updateAccess.MANAGE_ACCESS) {
-      console.log("Project details: ", $scope.projectDetails);
+ 
       var isUserExistsInProject = $scope.projectDetails.members.some(function (
         member
       ) {

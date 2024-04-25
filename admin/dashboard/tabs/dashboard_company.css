@@ -362,3 +362,32 @@ li.disabled a i {
 .clear-date-option:hover{
   background: rgb(244, 206, 206);
 }
+
+.company-view{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.7rem;
+}
+
+.company-view img{
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.company-view__details__row
+{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.company-view__details__row span{
+  font-size: 12px;
+  color: #000000;
+}
+
+.company-view__details__row span:first-child{
+  font-weight: 600;
+}

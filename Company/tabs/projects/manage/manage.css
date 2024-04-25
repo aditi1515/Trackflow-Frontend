@@ -340,3 +340,75 @@ button {
     -webkit-text-stroke: 1px;
 }
 
+
+
+.project-view{
+    padding: 0.5rem;
+}
+
+.project-view-header{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--dark-purple);
+}
+
+.project-view-header img{
+    width: 60px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.project-view-body-row{
+    display: flex;
+    gap: 0.2rem;
+   
+    flex-direction: column;
+}
+
+
+.project-view-body-row-item{
+    display: flex;
+    gap: 0.5rem;
+  
+}
+
+.project-view-body-row-item h6{
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.project-view-body-row-item span{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.project-view-body{
+    display: flex;
+    gap: 0rem;
+    margin-top: 1rem;
+    flex-direction: column;
+;
+}
+
+.member-avatar-container{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.member-avatar-container .badge{
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+
+}
+
+.member-avatar-container .badge img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}

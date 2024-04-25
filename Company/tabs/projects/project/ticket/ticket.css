@@ -235,6 +235,12 @@ li.disabled a i {
  /* border: 1px solid rgb(229, 229, 229); */
 }
 
+.btn.disabled {
+ cursor: not-allowed;
+ pointer-events: none;
+ background-color: #ababab;
+}
+
 .badge {
  width: fit-content;
  padding: 0.2rem 0.5rem;
@@ -358,10 +364,9 @@ select.form-control:not([size]):not([multiple]) {
  width: 20rem;
  background: white;
  cursor: pointer;
-
 }
 
-.ticket.pending{
+.ticket.pending {
  border-top: 5px solid red;
  background-color: rgb(240, 209, 209);
 }
@@ -886,7 +891,7 @@ option {
  width: auto;
 }
 
-.error-container{
+.error-container {
  display: flex;
  gap: 0.4rem;
  flex-direction: column;

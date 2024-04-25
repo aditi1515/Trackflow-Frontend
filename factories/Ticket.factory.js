@@ -147,7 +147,7 @@ function TicketFactory(TicketService) {
 
  Ticket.prototype.update = function (ticketId) {
   var ticketFormData = convertDataToFormData(this);
-  return TicketService.updateTicket(ticketId, ticketFormData);
+  return TicketService.updateTicket(ticketId, ticketFormData)
  };
 
 

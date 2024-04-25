@@ -32,7 +32,6 @@
        name="name"
        ng-model="addProjectFormData.name"
        ng-required="true"
-    
       />
 
       <div
@@ -47,20 +46,19 @@
      <div class="form-group col">
       <label for="key">Key*</label>
       <div class="key-input">
-        <input
-       type="text"
-       class="form-control"
-       id="key"
-       name="key"
-       ng-model="addProjectFormData.key"
-       style="text-transform: uppercase"
-       ng-required="true"
-       ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase(); debounceKeyCheck()"
-    
-      />
-        <div class="tick-wrapper" ng-show="keySuccess && addProjectFormData.key">
-                <i class="bi-check-circle"></i>
-        </div>
+       <input
+        type="text"
+        class="form-control"
+        id="key"
+        name="key"
+        ng-model="addProjectFormData.key"
+        style="text-transform: uppercase"
+        ng-required="true"
+        ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase(); debounceKeyCheck()"
+       />
+       <div class="tick-wrapper" ng-show="keySuccess && addProjectFormData.key">
+        <i class="bi-check-circle"></i>
+       </div>
       </div>
       <div
        class="error"
@@ -68,10 +66,7 @@
       >
        Project key is required
       </div>
-      <div
-       class="error"
-       ng-show="keyError && addProjectForm.key.$touched"
-      >
+      <div class="error" ng-show="keyError && addProjectForm.key.$touched">
        {{keyError}}
       </div>
      </div>
@@ -115,12 +110,10 @@
       Project Logo is required
      </div>
 
-     
-
      <div class="logopreview-wrapper">
       <div class="logoPreview" ng-show="addProjectFormData.previewLogo[0].url">
-        <img ng-src="{{addProjectFormData.previewLogo[0].url}}" alt="" />
-       </div>
+       <img ng-src="{{addProjectFormData.previewLogo[0].url}}" alt="" />
+      </div>
 
       <button
        type="button"
@@ -282,6 +275,7 @@
        <th scope="col">Team Size</th>
        <th scope="col">Members</th>
        <th scope="col"></th>
+       <th scope="col"></th>
        <!-- admin details -->
        <!-- <th scope="col">Admin Name</th>
     <th scope="col">Admin Email</th>
@@ -295,7 +289,6 @@
        <td>
         <img
          ng-src="{{ project.logo }}"
-       
          style="width: 30px; height: 30px; margin-right: 10px"
         />
 
@@ -329,7 +322,9 @@
        <!-- <td>{{ company.admin.firstname + " " + company.admin.lastname }}</td>
                <td>{{ company.admin.email }}</td>
                <td>{{ company.admin.phoneNumber }}</td> -->
-
+       <td class="action" ng-click="viewProject(project,'projectviewModal')">
+        <i class="bi-eye"> </i>
+       </td>
        <td class="action" ng-click="editProject(project,'addProjectModal')">
         <i class="bi-pencil-fill"> </i>
        </td>
@@ -368,4 +363,59 @@
    </div>
   </div>
  </div>
+
+ <my-modal
+  modal-size="lg"
+  modal-id="projectviewModal"
+  title="{{currentlyViewingProject.name}}"
+ >
+  <div class="project-view">
+   <div class="project-view-header">
+    <img ng-src="{{currentlyViewingProject.logo}}" alt="" />
+    <h3>{{currentlyViewingProject.name}}</h3>
+    <span
+     class="badge"
+     ng-class="{'badge-primary': currentlyViewingProject.inProgress === true, 'badge-success': currentlyViewingProject.inProgress === false}"
+     >{{currentlyViewingProject.inProgress ? "In Progress" : "Completed"}}</span
+    >
+   </div>
+   <div class="project-view-body">
+    <div class="project-view-body-row">
+     <div class="project-view-body-row-item">
+      <h6>Key</h6>
+      <span>{{currentlyViewingProject.key}}</span>
+     </div>
+    
+     <div class="project-view-body-row-item">
+      <h6>Start Date</h6>
+      <span>{{currentlyViewingProject.createdAt | date : 'MM/dd/yyyy'}}</span>
+     </div>
+    </div>
+    <div class="project-view-body-row">
+     <div class="project-view-body-row-item">
+      <h6>Description</h6>
+      <span>{{currentlyViewingProject.description}}</span>
+     </div>
+    </div>
+    <div class="project-view-body-row">
+     <div class="project-view-body-row-item">
+      <h6>Members</h6>
+      <div class="member-avatar-container">
+        <span
+        class="badge"
+        ng-repeat="member in currentlyViewingProject.members"
+        >
+      
+        <img ng-src="{{member.image}}" class="avatar" alt="" />
+        <span
+         >{{member.firstname + " " + (member.lastname !== 'undefined'?
+         member.lastname : "")}}
+        </span>
+       </span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </my-modal>
 </section>

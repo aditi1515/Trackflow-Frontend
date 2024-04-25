@@ -21,6 +21,14 @@ function dashboardCompanyController(
  $scope.countries = countries;
  $scope.states = states;
  $scope.cities = [];
+ $scope.currentViewCompany = {}
+
+
+  $scope.viewCompany = function (company, modalId) {
+    $scope.currentViewCompany = company
+    ModalService.showModal(modalId);
+  }
+
  $scope.countryChange = function (countryName) {
   console.log("Country name: ", countryName);
   var country = countries.filter(function (country) {

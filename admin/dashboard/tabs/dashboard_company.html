@@ -368,6 +368,7 @@
        <th scope="col">Joining Date</th>
        <th scope="col">Status</th>
        <th scope="col"></th>
+       <th scope="col"></th>
        <!-- admin details -->
        <!-- <th scope="col">Admin Name</th>
        <th scope="col">Admin Email</th>
@@ -401,6 +402,9 @@
         >
          {{ company.isEnabled ? 'active' : 'inactive'}}
         </span>
+       </td>
+       <td ng-click="viewCompany(company , 'companyViewModal')">
+        <i class="bi bi-eye edit-btn"></i>
        </td>
        <td ng-click="editCompany(company , 'addCompanyModal')">
         <i class="bi bi-pencil-square edit-btn"></i>
@@ -443,4 +447,72 @@
    </div>
   </div>
  </div>
+
+ <my-modal
+ modal-size="lg"
+ modal-id="companyViewModal"
+ title="{{currentViewCompany.name}}"
+>
+
+
+  <div class="company-view">
+    <div class="company-view__logo">
+    <img ng-if="currentViewCompany.logo" ng-src="{{currentViewCompany.logo}}" alt="" />
+    </div>
+    <div class="company-view__details">
+    <div class="company-view__details__row">
+      <span>Company Name:</span>
+      <span>{{currentViewCompany.name}}</span>
+    </div>
+    <div class="company-view__details__row">
+      <span>Domain:</span>
+      <span>{{currentViewCompany.domain}}</span>
+    </div>
+    <div class="company-view__details__row">
+      <span>Country:</span>
+      <span>{{currentViewCompany.country}}</span>
+    </div>
+    <div class="company-view__details__row">
+      <span>State:</span>
+      <span>{{currentViewCompany.state}}</span>
+    </div>
+   
+    <div class="company-view__details__row">
+      <span>Joining Date:</span>
+      <span>{{currentViewCompany.createdAt | date : 'dd/MM/yyyy'}}</span>
+    </div>
+    <div class="company-view__details__row">
+      <span>Status:</span>
+      <span
+      class="badge"
+      ng-class="{'badge-success': currentViewCompany.isEnabled, 'badge-danger': !currentViewCompany.isEnabled}"
+      >
+      {{currentViewCompany.isEnabled ? 'active' : 'inactive'}}
+      </span>
+    </div>
+    <div class="company-view__details__row">
+      <span>Joined At:</span>
+      <span>{{currentViewCompany.createdAt}}</span>
+    </div>
+    <br>
+    <div class="company-view__details__row">
+      <span>Admin Name:</span>
+      <span>{{currentViewCompany.admin.firstname + " " + currentViewCompany.admin.lastname}}</span>
+    </div>
+    <div class="company-view__details__row">
+      <span>Admin Email:</span>
+      <span>{{currentViewCompany.admin.email}}</span>
+    </div>
+    <div class="company-view__details__row">
+      <span>Admin Phone No:</span>
+      <span>{{currentViewCompany.admin.phoneNumber}}</span>
+    </div>
+   
+    </div>
+  </div>
+
+
+
+</my-modal>
+
 </section>

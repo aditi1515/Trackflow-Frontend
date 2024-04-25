@@ -33,6 +33,7 @@ function companyProjectsManageController(
 
  $scope.projectData = {};
  $scope.keySuccess = false;
+ $scope.currentlyViewingProject = {}
  //add project form data
 //  $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
 //   // check if user role is not company admin and not present in addProjectFormData.members then add it
@@ -291,6 +292,11 @@ $scope.editProject = function (project, modalId) {
     checkKeyUnique();
   }, 1000);
  };
+
+ $scope.viewProject = function(project,modalId){
+  $scope.currentlyViewingProject = angular.copy(project);
+  ModalService.showModal(modalId);
+ }
 
  function checkKeyUnique(){
   ProjectService.checkKeyInProject($scope.addProjectFormData.key, $scope.currentEditingProjectId).then(function (response) {
