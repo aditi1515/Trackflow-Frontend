@@ -327,3 +327,16 @@ button {
  cursor: not-allowed;
  color: pink;
 }
+
+
+.key-input{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.tick-wrapper i{
+    color: rgb(96, 216, 96);
+    -webkit-text-stroke: 1px;
+}
+

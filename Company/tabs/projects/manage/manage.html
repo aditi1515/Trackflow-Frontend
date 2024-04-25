@@ -46,7 +46,8 @@
     <div class="form-row">
      <div class="form-group col">
       <label for="key">Key*</label>
-      <input
+      <div class="key-input">
+        <input
        type="text"
        class="form-control"
        id="key"
@@ -57,7 +58,10 @@
        ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase(); debounceKeyCheck()"
     
       />
-
+        <div class="tick-wrapper" ng-show="keySuccess && addProjectFormData.key">
+                <i class="bi-check-circle"></i>
+        </div>
+      </div>
       <div
        class="error"
        ng-show="addProjectForm.key.$error.required && addProjectForm.key.$touched"

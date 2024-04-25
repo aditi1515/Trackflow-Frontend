@@ -680,6 +680,7 @@
          data-image="{{person.image}}"
          ng-repeat="person in membersInProject"
          ng-show="!isAssigneeSelected(person)"
+         ng-if="!isAssigneeSelected(person)"
         >
          {{person.firstname + " " + (person.lastname !== 'undefined' ? person.lastname : '')}}
         </option>
@@ -741,9 +742,9 @@
        {{editTicketForm.errorMessage}}
       </div>
      </div>
-
+     {{editTicketForm.$error}}
      <div ng-if="isEditing" class="footer">
-      <button ng-disabled="editTicketForm.$invalid" type="submit">
+      <button ng-disabled="editTicketForm.$invalid && editTicketForm.$submitted" ng-class="{'disabled':editTicketForm.$invalid && editTicketForm.$submitted}" type="submit">
        Update
       </button>
      </div>

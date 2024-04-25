@@ -313,6 +313,7 @@ function ticketController(
   //check if the employee is already assigned ticket or not
   $scope.isAssigneeSelected = function (member) {
     return $scope.viewTicketDetails.alreadyAssigned?.some(function (m) {
+      console.log("assign " ,m._id ,member._id);
       return m._id === member._id;
     });
   };

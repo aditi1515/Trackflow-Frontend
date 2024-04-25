@@ -32,7 +32,7 @@ function companyProjectsManageController(
  init();
 
  $scope.projectData = {};
-
+ $scope.keySuccess = false;
  //add project form data
 //  $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
 //   // check if user role is not company admin and not present in addProjectFormData.members then add it
@@ -297,8 +297,10 @@ $scope.editProject = function (project, modalId) {
     console.log("Key check: ", response);
     if (response.data.exists) {
      $scope.keyError = "Key already exists";
+     $scope.keySuccess = false;
     } else {
      $scope.keyError = "";
+     $scope.keySuccess = true;
     }
    });
  }
