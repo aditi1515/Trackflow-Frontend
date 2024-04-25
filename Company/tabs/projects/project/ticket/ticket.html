@@ -431,7 +431,9 @@
         ng-class="{ 'status-open': viewTicketDetails.status ===
                    'OPEN', 'status-in-progress': viewTicketDetails.status === 'IN PROGRESS',
                    'status-in-review': viewTicketDetails.status === 'IN REVIEW', 'status-closed':
-                   viewTicketDetails.status === 'CLOSED'}"
+                   viewTicketDetails.status === 'CLOSED',
+                
+                  }"
        >
         <span class="status" ng-class="ticket.status"
          >{{viewTicketDetails.status}}</span
@@ -510,7 +512,7 @@
                'status-in-progress': viewTicketDetails.status === 'IN PROGRESS',
                'status-in-review': viewTicketDetails.status === 'IN REVIEW',
                'status-closed': viewTicketDetails.status === 'CLOSED',
-               'disabled': !isEditing
+               'disabled': !isEditing || !checkTicketEditAccess(false)
               }"
        >
         <option
@@ -730,7 +732,7 @@
        </div>
       </div>
      </div>
-
+     {{editTicketForm.errorMessage}}
      <div ng-if="isEditing" class="formerror">
       <div
        class="error"

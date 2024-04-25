@@ -54,8 +54,8 @@
        ng-model="addProjectFormData.key"
        style="text-transform: uppercase"
        ng-required="true"
-       ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase()"
-      
+       ng-change="addProjectFormData.key = addProjectFormData.key.toUpperCase(); debounceKeyCheck()"
+    
       />
 
       <div
@@ -63,6 +63,12 @@
        ng-show="addProjectForm.key.$error.required && addProjectForm.key.$touched"
       >
        Project key is required
+      </div>
+      <div
+       class="error"
+       ng-show="keyError && addProjectForm.key.$touched"
+      >
+       {{keyError}}
       </div>
      </div>
     </div>
@@ -242,8 +248,8 @@
     <button
      type="submit"
      class="btn"
-     ng-disabled="addProjectForm.$invalid"
-     ng-class="{'disabled': addProjectForm.$invalid}"
+     ng-disabled="addProjectForm.$invalid || keyError"
+     ng-class="{'disabled': addProjectForm.$invalid || keyError}"
     >
      submit
     </button>

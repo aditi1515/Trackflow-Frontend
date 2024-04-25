@@ -13,7 +13,6 @@ function ProjectService($http, BASE_URL, FormDataFactory) {
   return $http.get(BASE_URL + "project/all?" + queryString);
  };
 
- 
  this.updateProject = function (projectId, project) {
   // var projectFormData = FormDataFactory.getProjectFormData(project);
   return $http.patch(BASE_URL + "project/" + projectId, project, {
@@ -25,6 +24,12 @@ function ProjectService($http, BASE_URL, FormDataFactory) {
  };
  this.getProjectById = function (projectId) {
   return $http.get(BASE_URL + "project/" + projectId);
+ };
+
+ this.checkKeyInProject = function (key, projectId) {
+  return $http.get(
+   BASE_URL + "project/check/checkKeyInProject?key=" + key + "&projectId=" + projectId
+  );
  };
 }
 
