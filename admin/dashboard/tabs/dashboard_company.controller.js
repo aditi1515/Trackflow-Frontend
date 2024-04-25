@@ -70,9 +70,9 @@ function dashboardCompanyController(
  function getCities(company) {
   console.log("Company: ", company);
   console.log("Current editing company: ", $scope.currentEditingCompany);
-  if (company._id === $scope.currentEditingCompany?._id) {
-   return Promise.resolve();
-  }
+  // if (company._id === $scope.currentEditingCompany?._id) {
+  //  return Promise.resolve();
+  // }
   return $scope.getCities(company.country, company.state);
  }
 
@@ -157,16 +157,22 @@ function dashboardCompanyController(
   $scope.loadingCities = true;
   $scope.formHolder.addCompanyForm.$setPristine()
   $scope.formHolder.addCompanyForm.$setUntouched()
+  var companyData = angular.copy(company)
+
   // $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
-  getCities(company).then(function () {
-    $scope.loadingCities = false;
-   $scope.currentEditingCompany = company;
-   $scope.addCompanyFormData = CompanyFactory.prepareEditData(company);
+  $scope.addCompanyFormData = {}
+  $scope.loadingCities = false;
+   
    angular.element("#companyLogo").val(null);
-   console.log("cities added");
    $scope.countryChange(company.country);
    ModalService.showModal(modalId);
-  });
+   $scope.currentEditingCompany = angular.copy(companyData);
+   $scope.addCompanyFormData = CompanyFactory.prepareEditData(angular.copy(company));
+   console.log("company in edit" , $scope.addCompanyFormData , company);
+  // getCities(companyData).then(function () {
+    
+  // });
+
  };
 
  $scope.editCompanyFormSubmit = function (modalId, editCompanyForm) {

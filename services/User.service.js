@@ -32,7 +32,7 @@ function UserService($q, $http, $state, BASE_URL, subdomainService) {
    var user = response.data.user;
 
    if (user.role.name === "SUPER_ADMIN") {
-    $state.go("superAdminDashboard");
+    $state.go("superAdminDashboard.base");
    } else {
     $state.go("company");
    }

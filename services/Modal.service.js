@@ -14,7 +14,7 @@ trackflow.service('ModalService', function($state) {
             modalElement.classList.remove('show');
             modalElement.style.display = 'none';
             modalElement.removeAttribute('aria-modal');
-            $state.reload()
+            // $state.reload()
         }
     };
 });
