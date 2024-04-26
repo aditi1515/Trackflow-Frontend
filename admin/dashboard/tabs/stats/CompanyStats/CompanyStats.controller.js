@@ -18,6 +18,9 @@ function companyStatsController($scope, AnalyticsService) {
  $scope.projectTrendCountOption = "month";
  $scope.ticketTrendCountOption = "month";
 
+ $scope.currLWCPage = 1;
+ $scope.totalPagesInLWC = 0;
+
  $scope.locationWiseCompanyFormData = {
   locationOption: "country",
  };
@@ -327,6 +330,16 @@ function companyStatsController($scope, AnalyticsService) {
  }
 
  function displayLocationWiseCompanyCountChart(chartData) {
+
+
+  
+  var pageSize = 2;
+  var totalPages = Math.ceil(chartData.length / pageSize);
+  $scope.totalPagesInLWC = totalPages;
+  var startIndex = ($scope.currLWCPage - 1) * pageSize;
+  chartData = chartData.slice(startIndex, Math.min(startIndex + pageSize, chartData.length));
+
+
   var lables = chartData.map(function (data) {
    return data._id;
   });

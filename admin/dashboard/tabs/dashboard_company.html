@@ -49,21 +49,34 @@
      <!-- company domain -->
      <div class="form-group">
       <label for="companyDomain">Domain*</label>
-      <input
+      <div class="domain-input">
+        <input
        type="text"
        class="form-control"
        id="companyDomain"
        name="companyDomain"
        ng-model="addCompanyFormData.domain"
+       ng-change="debounceCheckDomain()"
        required
        ng-pattern="/^[a-z0-9]+$/i"
      
       />
+    
+      <div class="tick-wrapper" ng-show="domainSuccess && addCompanyFormData.domain">
+        <i class="bi-check-circle"></i>
+       </div>
+      </div>
       <div
        class="error"
        ng-show="formHolder.addCompanyForm.companyDomain.$error.required && formHolder.addCompanyForm.companyDomain.$touched"
       >
        Company Domain is required
+      </div>
+      <div
+       class="error"
+       ng-show="domainError && formHolder.addCompanyForm.companyDomain.$dirty"
+      >
+       {{domainError}}
       </div>
       <div class="error" ng-show="formHolder.addCompanyForm.companyDomain.$error.pattern">
        only lowercase letters allowed
@@ -329,8 +342,8 @@
      <button
       type="submit"
       class="btn"
-      ng-disabled="formHolder.addCompanyForm.$invalid"
-      ng-class="{'disabled': formHolder.addCompanyForm.$invalid}"
+      ng-disabled="formHolder.addCompanyForm.$invalid || domainError"
+      ng-class="{'disabled': formHolder.addCompanyForm.$invalid || domainError}"
      >
       submit
      </button>

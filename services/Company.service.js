@@ -44,6 +44,10 @@ function CompanyService($http, BASE_URL, FormDataFactory) {
       BASE_URL + `company/getSiteDetails?domain=${companyDomain}`
     );
   };
+
+  this.checkDomain = function (companyDomain) {
+    return $http.get(BASE_URL + `company/checkDomain?domain=${companyDomain}`);
+  }
 }
 
 trackflow.service("CompanyService", [

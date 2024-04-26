@@ -391,3 +391,17 @@ li.disabled a i {
 .company-view__details__row span:first-child{
   font-weight: 600;
 }
+
+.domain-input{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+.tick-wrapper i{
+  color: rgb(96, 216, 96);
+  -webkit-text-stroke: 1px;
+}
+
+

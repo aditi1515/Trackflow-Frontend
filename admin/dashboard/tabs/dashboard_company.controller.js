@@ -22,7 +22,7 @@ function dashboardCompanyController(
  $scope.states = states;
  $scope.cities = [];
  $scope.currentViewCompany = {}
-
+  $scope.domainSuccess = false;
 
   $scope.viewCompany = function (company, modalId) {
     $scope.currentViewCompany = company
@@ -344,6 +344,32 @@ function dashboardCompanyController(
     console.log("Error while changing company status", error.message);
    });
  };
+
+ var debounceTimeoutCheckDomain;
+
+ $scope.debounceCheckDomain = function () {
+  console.log("Debouncing...");
+  $timeout.cancel(debounceTimeoutCheckDomain);
+  debounceTimeoutCheckDomain = $timeout(function () {
+    checkDomain($scope.addCompanyFormData.domain);
+  }, 1000);
+ };
+
+
+function checkDomain(domain) {
+  
+  CompanyService.checkDomain(domain)
+   .then(function (response) {
+    console.log("Domain response: ", response);
+    $scope.domainSuccess = response.data.success;
+    $scope.domainError = null;
+   })
+   .catch(function (err) {
+    $scope.domainSuccess = false;
+    $scope.domainError = err.data.message;
+    console.error("Error checking domain: ", err);
+   });
+ }
 }
 
 trackflow.controller("dashboardCompanyController", [

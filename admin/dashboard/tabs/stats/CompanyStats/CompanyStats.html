@@ -95,6 +95,7 @@
      </div>
     </div>
    
+
     <div class="locationWiseCompanyCount">
      <h3>Location Wise Companies</h3>
    
@@ -103,16 +104,38 @@
        name="locationWiseCompanyForm"
        class="locationWiseCompanyForm date-range-selector"
       >
-       <select name="locationOption" ng-change="locationWiseCompanyDateChanged()" id="" ng-model="locationWiseCompanyFormData.locationOption" >
+       <!-- <select name="locationOption" ng-change="locationWiseCompanyDateChanged()" id="" ng-model="locationWiseCompanyFormData.locationOption" >
         <option  value="country">Country</option>
         <option value="state">State</option>
         <!-- <option value="city">City</option> -->
-       </select>
+       <!-- </select> --> 
        </div>
       </form>
       <div class="locationWiseCompanyCount__map__chart">
        <canvas id="locationWiseCompanyCountChart"></canvas>
       </div>
+      <div class="pagination">
+        <div class="pagination__pageCount">
+         <span>Page</span>
+         <span>{{currLWCPage}}</span>
+         <span>of</span>
+         <span>{{totalPagesInLWC}}</span>
+        </div>
+     
+        <i
+         ng-disabled="currLWCPage == 1"
+         ng-click="locationWiseCompanyChange(currLWCPage - 1)"
+         class="bi-arrow-left-square-fill"
+         ng-class="{disabled:currLWCPage===1}"
+        ></i>
+        <i
+         class="bi-arrow-right-square-fill"
+         ng-disabled="currLWCPage >= totalPagesInLWC"
+         ng-click="locationWiseCompanyChange(currLWCPage + 1)"
+         ng-class="{disabled:currLWCPage>=totalPagesInLWC}"
+        ></i>
+       </div>
      </div>
+     
    </div>
 </section>
