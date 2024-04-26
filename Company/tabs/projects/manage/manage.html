@@ -7,7 +7,7 @@
   <div class="head">
    <h2>Manage Projects</h2>
 
-   <button class="btn" ng-click="launchModal('addProjectModal',addProjectForm)">
+   <button class="btn" ng-click="launchModal('addProjectModal',formHolder.addProjectForm)">
     Create Project
    </button>
   </div>
@@ -18,8 +18,8 @@
    title="{{isEditingProject ? 'Edit Project' : 'Create Project'}}"
   >
    <form
-    name="addProjectForm"
-    ng-submit=" isEditingProject ? editProjectFormSubmit('addProjectModal',addProjectForm) :  addProjectFormSubmit('addProjectModal',addProjectForm)"
+    name="formHolder.addProjectForm"
+    ng-submit=" isEditingProject ? editProjectFormSubmit('addProjectModal',formHolder.addProjectForm) :  addProjectFormSubmit('addProjectModal',formHolder.addProjectForm)"
     novalidate
    >
     <div class="form-row">
@@ -36,7 +36,7 @@
 
       <div
        class="error"
-       ng-show="addProjectForm.name.$error.required && addProjectForm.name.$touched"
+       ng-show="formHolder.addProjectForm.name.$error.required && formHolder.addProjectForm.name.$touched"
       >
        Project Name is required
       </div>
@@ -62,11 +62,11 @@
       </div>
       <div
        class="error"
-       ng-show="addProjectForm.key.$error.required && addProjectForm.key.$touched"
+       ng-show="formHolder.addProjectForm.key.$error.required && formHolder.addProjectForm.key.$touched"
       >
        Project key is required
       </div>
-      <div class="error" ng-show="keyError && addProjectForm.key.$touched">
+      <div class="error" ng-show="keyError && formHolder.addProjectForm.key.$touched">
        {{keyError}}
       </div>
      </div>
@@ -85,7 +85,7 @@
 
       <div
        class="error"
-       ng-show="addProjectForm.description.$error.required && addProjectForm.description.$touched"
+       ng-show="formHolder.addProjectForm.description.$error.required && formHolder.addProjectForm.description.$touched"
       >
        Project description is required
       </div>
@@ -105,7 +105,7 @@
      />
      <div
       class="error"
-      ng-show=" addProjectForm.projectLogo.$dirty && addProjectForm.projectLogo.$invalid"
+      ng-show=" formHolder.addProjectForm.projectLogo.$dirty && formHolder.addProjectForm.projectLogo.$invalid"
      >
       Project Logo is required
      </div>
@@ -140,7 +140,7 @@
       />
       <div
        class="error"
-       ng-show="addProjectForm.dueDate.$error.required && addProjectForm.dueDate.$touched"
+       ng-show="formHolder.addProjectForm.dueDate.$error.required && formHolder.addProjectForm.dueDate.$touched"
       >
        Project due date is required
       </div>
@@ -161,7 +161,7 @@
 
       <div
        class="error"
-       ng-show="addProjectForm.inProgress.$error.required && addProjectForm.inProgress.$touched"
+       ng-show="formHolder.addProjectForm.inProgress.$error.required && formHolder.addProjectForm.inProgress.$touched"
       >
        Project status is required
       </div>
@@ -192,11 +192,12 @@
          data-image="{{person.image}}"
          ng-repeat="person in allEmployeesInCompany"
          ng-selected="person._id === profile._id"
-         ng-if="!isMemberSelected(person)"
+         ng-if="!isMemberSelected(person) && person.role.name !== 'COMPANY_ADMIN'"
         >
          {{person.firstname + " " + person.lastname }}
         </option>
        </select>
+    
       </div>
       <!-- already selected members  -->
       <div
@@ -233,9 +234,9 @@
     <div class="formerror">
      <div
       class="error"
-      ng-show="addProjectForm.$invalid && addProjectForm.$submitted"
+      ng-show="formHolder.addProjectForm.$invalid && formHolder.addProjectForm.$submitted"
      >
-      {{addProjectForm.errorMessage}}
+      {{formHolder.addProjectForm.errorMessage}}
 
       <div class="error-container" ng-repeat="err in errorMessages">
        <span>{{err}}</span>
@@ -245,8 +246,8 @@
     <button
      type="submit"
      class="btn"
-     ng-disabled="addProjectForm.$invalid || keyError"
-     ng-class="{'disabled': addProjectForm.$invalid || keyError}"
+     ng-disabled="formHolder.addProjectForm.$invalid || keyError"
+     ng-class="{'disabled': formHolder.addProjectForm.$invalid || keyError}"
     >
      submit
     </button>

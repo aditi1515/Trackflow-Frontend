@@ -34,8 +34,9 @@ function companyProjectsManageController(
  $scope.projectData = {};
  $scope.keySuccess = false;
  $scope.currentlyViewingProject = {}
+ $scope.formHolder={}
  //add project form data
-//  $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
+//  $scope.addProjectFormSubmit = function (modalId, $scope.formHolder.addProjectForm) {
 //   // check if user role is not company admin and not present in addProjectFormData.members then add it
 
 //   if ($scope.profile.role !== "COMPANY_ADMIN") {
@@ -78,7 +79,7 @@ function companyProjectsManageController(
 //    })
 //    .catch(function (error) {
 //     console.log("Error adding employee: ", error);
-//     addProjectForm.errorMessage = error.data.message;
+//     $scope.formHolder.addProjectForm.errorMessage = error.data.message;
 //    });
 //  };
 
@@ -110,9 +111,9 @@ $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
   var errors = project.validate();
 
   if (errors.length > 0) {
-   addProjectForm.errorMessages = errors;
+   $scope.formHolder.addProjectForm.errorMessages = errors;
 
-   addProjectForm.$invalid = true;
+   $scope.formHolder.addProjectForm.$invalid = true;
    return;
   }
   else{
@@ -123,8 +124,8 @@ $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
     })
     .catch(function (error) {
      console.log("Error adding employee: ", error);
-     addProjectForm.$invalid = true;
-     addProjectForm.errorMessage = error.data.message;
+     $scope.formHolder.addProjectForm.$invalid = true;
+     $scope.formHolder.addProjectForm.errorMessage = error.data.message;
     });
   }
  };
@@ -153,12 +154,17 @@ $scope.addProjectFormSubmit = function (modalId, addProjectForm) {
 //  };
 
 
-$scope.editProject = function (project, modalId) {
+$scope.editProject = function (projectData, modalId) {
   $scope.isEditingProject = true;
+  var project = angular.copy(projectData);
   $scope.currentEditingProjectId = project._id;
   console.log("Editing project: ", project);
   $scope.minDueDate = new Date(project.createdAt);
   $scope.addProjectFormData = ProjectFactory.prepareEditData(project);
+
+  $scope.formHolder.addProjectForm.$setPristine();
+  $scope.formHolder.addProjectForm.$setUntouched();
+
   ModalService.showModal(modalId);
  };
 
@@ -313,13 +319,19 @@ $scope.editProject = function (project, modalId) {
 
 
  $scope.launchModal = function (modalId, addProjectForm) {
+   $scope.addProjectFormData.members = []
   if ($scope.isEditingProject) {
-   init();
-   if (addProjectForm) {
-    addProjectForm.$setPristine();
-    addProjectForm.$setUntouched();
-   }
+   
+    init();
+   
+   
   }
+console.log("here",$scope.formHolder.addProjectForm);
+  if ($scope.formHolder.addProjectForm) {
+    $scope.formHolder.addProjectForm.$setPristine();
+    $scope.formHolder.addProjectForm.$setUntouched();
+   }
+
   ModalService.showModal(modalId);
  };
 }
