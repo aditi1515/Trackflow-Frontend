@@ -18,6 +18,10 @@ function TicketService($http, BASE_URL, FormDataFactory) {
 
   return $http.get(BASE_URL + "ticket/all?" + queryString);
  };
+
+ this.deleteTicket = function (ticketId) {
+  return $http.delete(BASE_URL + "ticket/" + ticketId);
+ }
 }
 
 trackflow.service("TicketService", [
