@@ -215,6 +215,8 @@
      </div>
     </div>
    </div>
+
+
    <div class="formerror">
     <div
      class="error"
@@ -463,7 +465,7 @@
      
 
       <div>
-        <i class="bi-trash-fill" ng-click="deleteTicketDialog('deleteTicketModal',true)"></i>
+        <i class="bi-trash-fill" ng-show="canDeleteThisTicket()" ng-click="deleteTicketDialog('deleteTicketModal',true)"></i>
 
         <i
          class=""

@@ -70,7 +70,7 @@ function ticketController(
      }, 2000);
     })
     .catch(function (error) {
-     addTicketForm.errorMessage = error.message;
+     addTicketForm.errorMessage = error.data.message;
      addTicketForm.$invalid = true;
      console.log("Error adding ticket: ", error);
     });
@@ -377,8 +377,9 @@ function ticketController(
   }
  };
 
- $scope.deleteTicket = function (modalId){
-  TicketService.deleteTicket($scope.currentEditingTicket._id)
+ $scope.deleteTicket = function (modalId) {
+
+  TicketService.deleteTicket($scope.currentEditingTicket._id,$scope.projectDetails._id)
    .then(function (response) {
     SnackbarService.showAlert("Ticket deleted successfully", 2000, "success");
     getAllTickets();
@@ -387,8 +388,24 @@ function ticketController(
    })
    .catch(function (error) {
     console.error("Error deleting ticket: ", error);
+    SnackbarService.showAlert(error.data.message, 2000, "danger");
    });
- }
+ };
+
+ $scope.canDeleteThisTicket = function () {
+  var permissions = $scope.profile.role.permissionSet.permissions.TICKET.UPDATE;
+  if (permissions.FULL_ACCESS) return true;
+  else if (permissions.MANAGE_ACCESS) {
+   var isUserExistsInProject = $scope.projectDetails.members.some(function (
+    member
+   ) {
+    return member._id === $scope.profile._id;
+   });
+  }
+  return isUserExistsInProject;
+ };
+
+ return false;
 }
 
 trackflow.controller("ticketController", [
