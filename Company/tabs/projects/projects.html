@@ -69,7 +69,7 @@
       <div
        class="sub-option"
        ui-sref-active="active"
-       ng-if="profile.role.permissionSet.permissions.STATS.ACCESS"
+       ng-if="profile.role.permissionSet.permissions.PROJECT.UPDATE.FULL_ACCESS"
        ui-sref="company.projects.project.dashboard({projectId: project._id})"
       >
        <div class="bi bi-dash"></div>
@@ -77,10 +77,12 @@
         <span class="bi-grid-fill"></span> <span>Dashboard</span>
        </div>
       </div>
+
+      
       <div
        class="sub-option"
        ui-sref-active="active"
-       ng-if="profile.role.permissionSet.permissions.STATS.ACCESS"
+       ng-if="profile.role.permissionSet.permissions.PROJECT.UPDATE.FULL_ACCESS"
        ui-sref="company.projects.project.activity({projectId: project._id})"
       >
        <div class="bi bi-dash"></div>
