@@ -7,7 +7,10 @@
   <div class="head">
    <h2>Manage Projects</h2>
 
-   <button class="btn" ng-click="launchModal('addProjectModal',formHolder.addProjectForm)">
+   <button
+    class="btn"
+    ng-click="launchModal('addProjectModal',formHolder.addProjectForm)"
+   >
     Create Project
    </button>
   </div>
@@ -66,7 +69,10 @@
       >
        Project key is required
       </div>
-      <div class="error" ng-show="keyError && formHolder.addProjectForm.key.$dirty">
+      <div
+       class="error"
+       ng-show="keyError && formHolder.addProjectForm.key.$dirty"
+      >
        {{keyError}}
       </div>
      </div>
@@ -197,7 +203,6 @@
          {{person.firstname + " " + person.lastname }}
         </option>
        </select>
-
       </div>
       <!-- already selected members  -->
       <div
@@ -386,12 +391,22 @@
       <h6>Key</h6>
       <span>{{currentlyViewingProject.key}}</span>
      </div>
-    
+    </div>
+
+    <div class="project-view-body-row">
      <div class="project-view-body-row-item">
       <h6>Start Date</h6>
       <span>{{currentlyViewingProject.createdAt | date : 'MM/dd/yyyy'}}</span>
      </div>
     </div>
+
+    <div class="project-view-body-row">
+     <div class="project-view-body-row-item">
+      <h6>Due Date</h6>
+      <span>{{currentlyViewingProject.dueDate | date : 'MM/dd/yyyy'}}</span>
+     </div>
+    </div>
+
     <div class="project-view-body-row">
      <div class="project-view-body-row-item">
       <h6>Description</h6>
@@ -402,11 +417,10 @@
      <div class="project-view-body-row-item">
       <h6>Members</h6>
       <div class="member-avatar-container">
-        <span
+       <span
         class="badge"
         ng-repeat="member in currentlyViewingProject.members"
-        >
-      
+       >
         <img ng-src="{{member.image}}" class="avatar" alt="" />
         <span
          >{{member.firstname + " " + (member.lastname !== 'undefined'?
