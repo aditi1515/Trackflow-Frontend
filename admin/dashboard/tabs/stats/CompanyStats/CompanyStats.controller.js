@@ -305,14 +305,16 @@ function companyStatsController($scope, AnalyticsService) {
  fetchTopCompany();
  fetchprojectCount();
 
-
  $scope.resetLocationWiseCompanies = function () {
+  $scope.stateWiseCompaniesCountActive = false;
   fetchlocationWiseCompanyCount();
- }
+ };
 
  function filterStateByCountryName(countryName) {
   console.log("countryData", $scope.locationWiseCompaniesCount);
-
+  if ($scope.stateWiseCompaniesCountActive) {
+   return;
+  }
   AnalyticsService.getLocationWiseCompanyCount({
    option: "state",
    countryName: countryName,
@@ -320,14 +322,14 @@ function companyStatsController($scope, AnalyticsService) {
    function (response) {
     console.log(response);
     $scope.locationWiseCompaniesCount = response.data;
+    $scope.currLWCPage = 1;
     displayLocationWiseCompanyCountChart(response.data);
+    $scope.stateWiseCompaniesCountActive = true;
    },
    function (error) {
     console.log(error);
    }
   );
-
-  displayLocationWiseCompanyCountChart(countryData);
  }
 
  function clickHandler(evt) {
@@ -354,6 +356,7 @@ function companyStatsController($scope, AnalyticsService) {
 
  function fetchlocationWiseCompanyCount() {
   console.log("fetchlocationWiseCompanyCount");
+
   var option = $scope.locationWiseCompanyFormData.locationOption || "country";
   AnalyticsService.getLocationWiseCompanyCount({
    option: option,
@@ -369,8 +372,15 @@ function companyStatsController($scope, AnalyticsService) {
   );
  }
 
+ $scope.locationWiseCompanyChange = function (page) {
+  $scope.currLWCPage = page;
+  displayLocationWiseCompanyCountChart($scope.locationWiseCompaniesCount);
+ };
+
  function displayLocationWiseCompanyCountChart(chartData) {
-  var pageSize = 2;
+  console.log("displayLocationWiseCompanyCountChart", chartData);
+
+  var pageSize = 5;
   var totalPages = Math.ceil(chartData.length / pageSize);
   $scope.totalPagesInLWC = totalPages;
   var startIndex = ($scope.currLWCPage - 1) * pageSize;
@@ -378,6 +388,7 @@ function companyStatsController($scope, AnalyticsService) {
    startIndex,
    Math.min(startIndex + pageSize, chartData.length)
   );
+  console.log("displayLocationWiseCompanyCountChart after", chartData);
 
   var lables = chartData.map(function (data) {
    return data._id;
@@ -404,6 +415,8 @@ function companyStatsController($scope, AnalyticsService) {
     },
    ],
   };
+
+  console.log("data", data);
 
   var chartDiv = document.querySelector("#locationWiseCompanyCountChart");
 

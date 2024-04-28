@@ -98,19 +98,19 @@
 
     <div class="locationWiseCompanyCount">
      <h3>Location Wise Companies</h3>
-      <div ng-click="resetLocationWiseCompanies()"><i class="bi-arrow-counterclockwise"></i></div>
+      <div ng-show="stateWiseCompaniesCountActive" ng-click="resetLocationWiseCompanies()"><i class="bi-arrow-left-circle-fill"></i></div>
      <div class="locationWiseCompanyCount__map">
-      <form
+      <!-- <form
        name="locationWiseCompanyForm"
        class="locationWiseCompanyForm date-range-selector"
-      >
+      > -->
        <!-- <select name="locationOption" ng-change="locationWiseCompanyDateChanged()" id="" ng-model="locationWiseCompanyFormData.locationOption" >
         <option  value="country">Country</option>
         <option value="state">State</option>
         <!-- <option value="city">City</option> -->
        <!-- </select> --> 
-       </div>
-      </form>
+       <!-- </div>
+      </form> -->
       <div class="locationWiseCompanyCount__map__chart">
        <canvas id="locationWiseCompanyCountChart"></canvas>
       </div>
