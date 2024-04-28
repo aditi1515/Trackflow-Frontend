@@ -29,7 +29,11 @@
           </div>
 
         </td>
-        <td>{{ticketLog.action}}</td>
+        <td ng-class="{
+          'action-create': ticketLog.action === 'CREATE',
+          'action-update': ticketLog.action === 'UPDATE',
+          'action-delete': ticketLog.action === 'DELETE'
+        }"><div>{{ticketLog.action}}</div></td>
         <td>{{ ticketLog.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
         <td>
           <div class="doneBy">
@@ -71,7 +75,11 @@
 >
  <div class="ticket-log">
 
-  <div class="log-meta-details">
+  <div class="log-meta-details" ng-class="{
+    'log-create': ticketLog.action === 'CREATE',
+    'log-update': ticketLog.action === 'UPDATE',
+    'log-delete': ticketLog.action === 'DELETE'
+  }">
    <div class="left">
     <div class="log-meta-detail">
       <span>Entity : </span>
@@ -209,7 +217,14 @@
       <tbody>
         <tr ng-repeat ="ticketLog in ticketHistory" ng-click="openTicketLogDialog(ticketLog,'ticket-log-view')">
           <td><a href="">{{ticketLog.model.name + "-" + ticketLog.model.id}}</a></td>
-          <td>{{ticketLog.action}}</td>
+          
+          <td ng-class="{
+            'action-create': ticketLog.action === 'CREATE',
+            'action-update': ticketLog.action === 'UPDATE',
+            'action-delete': ticketLog.action === 'DELETE'
+          }"><div>
+            {{ticketLog.action}}
+          </div></td>
           <td>{{ ticketLog.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
           <td>
             <div class="doneBy">

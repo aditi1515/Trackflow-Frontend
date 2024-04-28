@@ -128,6 +128,9 @@
  margin: 0.5rem;
 }
 
+
+
+
 .log-table thead th{
  padding: 0.2rem;
  background-color: #e5dbf2;
@@ -219,12 +222,28 @@
 .log-meta-details {
  display: flex;
  margin: 0.4rem;
- background-color: rgb(194, 232, 194);
+ /* background-color: rgb(194, 232, 194); */
  padding: 0.2rem;
  gap: 1rem;
  justify-content: space-between;
  padding: 0.4rem;
 }
+
+.log-meta-details.log-create{
+ background-color: rgba(95, 168, 95, 0.671);
+
+}
+
+.log-meta-details.log-update{
+ background-color: rgba(123, 203, 189, 0.671);
+
+}
+
+.log-meta-details.log-delete{
+ background-color: rgba(233, 64, 64, 0.671);
+
+}
+
 
 .log-meta-detail {
  display: flex;
@@ -254,4 +273,31 @@
 
 .ticket-history-table{
  width: 95%;
+}
+
+.action-create div{
+ height: fit-content;
+ width: fit-content;
+ background-color: rgba(95, 168, 95, 0.671);
+ padding: 0.2rem;
+ border-radius: 4px;
+ font-size: 12px;
+}
+
+.action-update div{
+ height: fit-content;
+ width: fit-content;
+ background-color: rgba(123, 203, 189, 0.671);
+ padding: 0.2rem;
+ border-radius: 4px;
+ font-size: 12px;
+}
+
+.action-delete div{
+ height: fit-content;
+ width: fit-content;
+ background-color: rgba(233, 64, 64, 0.671);
+ padding: 0.2rem;
+ border-radius: 4px;
+ font-size: 12px;
 }
