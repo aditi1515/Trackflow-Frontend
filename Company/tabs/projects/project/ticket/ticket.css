@@ -793,6 +793,7 @@ option {
  gap: 0.4rem;
  padding: 0.5rem;
  margin-bottom: 1rem;
+ flex-wrap: wrap;
 }
 
 .assignees-preview label {
@@ -804,6 +805,7 @@ option {
  display: flex;
  gap: 1rem;
  font-size: 12px;
+ flex-wrap: wrap;
 }
 
 .assignees-preview-wrapper img {

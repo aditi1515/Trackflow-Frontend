@@ -229,7 +229,7 @@
         data-image="{{person.image}}"
         ng-repeat="person in currentlySelectedProject.members"
        >
-        {{person.firstname}}
+        {{person.firstname + ' ' +( person.lastname !== 'undefined' ? person.lastname : '')}}
        </option>
       </select>
      </div>
