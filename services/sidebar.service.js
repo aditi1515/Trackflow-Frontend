@@ -53,11 +53,13 @@ function sideBarService() {
   }
 
   if (userPermissions.STATS.ACCESS) {
-   sideBarOptions.push({
-    label: "Dashboard",
-    state: "company.dashboard",
-    icon: "bi-house",
-   });
+   if (role.permissionSet.name === "Company Admin") {
+    sideBarOptions.push({
+     label: "Dashboard",
+     state: "company.dashboard",
+     icon: "bi-house",
+    });
+   }
 
    // sideBarOptions.push({
    //   label: "Activity",
