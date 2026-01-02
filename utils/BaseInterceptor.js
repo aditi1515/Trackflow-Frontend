@@ -12,7 +12,7 @@ trackflow.service("subdomainService", function () {
 });
 
 //backend base url
-trackflow.constant("BASE_URL", "http://localhost:3000/api/");
+trackflow.constant("BASE_URL", "https://trackflow-backend-7ou9.onrender.com/api/");
 
 trackflow.service("BaseUrlInterceptor", [
  "subdomainService",
