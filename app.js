@@ -7,6 +7,9 @@ trackflow.config([
   $stateProvider
    .state("home", {
     url: "/",
+    resolve: {
+  auth: isAuthenticated
+}
    })
    .state("login", {
     //login
@@ -219,55 +222,36 @@ function roleCheck(permissions) {
  // loop on permissions and if all true then resolve
 }
 
-function isAuthenticated($q, UserService, $state) {
- return UserService.isAuthenticated()
-  .then(function (user) {
-   console.log("User is authenticated: ", user);
-   return user;
-  })
-  .catch(function () {
-   $state.go("login");
-   return $q.reject();
+function isAuthenticated(UserService) {
+  return UserService.isAuthenticated();
+}
+
+
+//check super admin authentication
+function isSuperAdminAuthenticated(UserService, $q) {
+  return UserService.isAuthenticated().then(function (user) {
+    if (user.role.name !== "SUPER_ADMIN") {
+      return $q.reject("NOT_SUPER_ADMIN");
+    }
+    return user;
   });
 }
 
-//check super admin authentication
-function isSuperAdminAuthenticated($q, UserService, $state) {
- return UserService.isAuthenticated()
-  .then(function (user) {
-   // User is authenticated, allow access to the dashboard
-   console.log("User is authenticated: ", user);
-   if (user.role.name !== "SUPER_ADMIN") {
-    //is user is not superadmin
-    $state.go("login");
-    return $q.reject();
-   }
-   return user; // Resolve with the user object
-  })
-  .catch(function () {
-   // User is not authenticated, redirect to login page
-   $state.go("login");
-   // Rejecting the promise to prevent state transition
-   return $q.reject();
-  });
-}
 
 // to check whether the scompany exists in systenm or not
 function isCompanyExists($q, CompanyService, subdomainService, $state) {
- var companyDomain = subdomainService.extractSubdomain();
+  var companyDomain = subdomainService.extractSubdomain();
 
- return CompanyService.getCompanyByDomain(companyDomain)
-  .then(function (companyRespone) {
-   return companyRespone.data.company;
-  })
-  .catch(function (err) {
-   console.log("Error: ", err);
-   if (err.status === 510) {
-    $state.go("companyNotExists");
-   }
-   return $q.reject();
-  });
+  return CompanyService.getCompanyByDomain(companyDomain)
+    .then(res => res.data.company)
+    .catch(function (err) {
+      if (err.status === 510) {
+        $state.go("companyNotExists");
+      }
+      return $q.reject();
+    });
 }
+
 
 function getStates(LocationService) {
  return LocationService.getAllStates()
@@ -288,3 +272,30 @@ function getCountries(LocationService) {
    console.error("Error getting countries: ", err);
   });
 }
+
+
+trackflow.run([
+  "$transitions",
+  "$state",
+  "UserService",
+  function ($transitions, $state, UserService) {
+
+    $transitions.onStart({}, function (trans) {
+      var toState = trans.to();
+      var resolve = toState.resolve || {};
+      var requiresAuth = !!resolve.auth;
+      console.log("requiresAuth",requiresAuth)
+      // Public page → allow
+      if (!requiresAuth) return;
+
+      // Protected page → must be authenticated
+      return UserService.isAuthenticated().catch(function () {
+        // Avoid infinite loop
+        if (toState.name !== "login") {
+          return $state.target("login");
+        }
+      });
+    });
+  }
+]);
+
