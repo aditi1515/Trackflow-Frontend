@@ -36,7 +36,7 @@ trackflow.service("BaseUrlInterceptor", [
       config.headers = config.headers || {};
 
       // Attach tenant header ONLY if present
-      if (domain) {
+      if (domain && domain !== 'trckflow') {
         config.headers["x_company_domain"] = domain;
       }
 
