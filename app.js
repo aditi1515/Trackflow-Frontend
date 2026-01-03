@@ -282,20 +282,42 @@ trackflow.run([
 
     $transitions.onStart({}, function (trans) {
       var toState = trans.to();
-      var resolve = toState.resolve || {};
-      var requiresAuth = !!resolve.auth;
-      console.log("requiresAuth",requiresAuth)
-      // Public page → allow
-      if (!requiresAuth) return;
 
-      // Protected page → must be authenticated
-      return UserService.isAuthenticated().catch(function () {
-        // Avoid infinite loop
-        if (toState.name !== "login") {
+      return UserService.isAuthenticated()
+        .then(function (user) {
+
+          // ✅ AUTHENTICATED USER
+
+          // "/" → decide landing page
+          if (toState.name === "home") {
+            if (user.role.name === "SUPER_ADMIN") {
+              return $state.target("superAdminDashboard");
+            } else {
+              return $state.target("company");
+            }
+          }
+
+          // Allow all other routes
+          return true;
+        })
+        .catch(function () {
+
+          // ❌ NOT AUTHENTICATED
+
+          // Allow public routes
+          if (
+            toState.name === "login" ||
+            toState.name === "forgotPassword" ||
+            toState.name === "resetPassword"
+          ) {
+            return true;
+          }
+
+          // Everything else → login
           return $state.target("login");
-        }
-      });
+        });
     });
   }
 ]);
+
 
